@@ -1,21 +1,35 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+type Level = 1 | 2 | 3;
+
 export interface GameStatusState {
-    levelSelected: string | null;
+    levelSelected: Level | null;
+    inPlay: boolean;
 }
 
 const initialState: GameStatusState = {
     levelSelected: null,
+    inPlay: false,
 };
 
 const gameStatusSlice = createSlice({
     name: "gameStatus",
     initialState,
     reducers: {
-        selectLevel: (state, action: PayloadAction<{ id: string }>) => {
-            const { id } = action.payload;
+        selectLevel: (state, action: PayloadAction<{ level: Level }>) => {
+            const { level } = action.payload;
 
-            return { levelSelected: id };
+            return { ...state, levelSelected: level };
+        },
+        quitLevel: (state) => {
+            return { ...state, levelSelected: null };
+        },
+
+        startGame: (state) => {
+            return { ...state, inPlay: true };
+        },
+        endGame: (state) => {
+            return { ...state, inPlay: false };
         },
     },
 });

@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 
-import { Stage as PixiStage } from "@pixi/react";
+import { Stage } from "@pixi/react";
 import { ReactReduxContext } from "react-redux";
-import { ContextBridge } from "../../store/ContextBridge";
+import { ContextBridge } from "../../hoc/ContextBridge";
 
 interface StageProps {
     children: React.ReactNode;
@@ -10,14 +10,12 @@ interface StageProps {
     height: number;
 }
 
-type CombinedProps = StageProps & PixiStage;
-
-const Stage: FC<CombinedProps> = ({ children, ...props }) => {
+const BridgedStage: FC<StageProps> = ({ children, ...props }) => {
     return (
         <ContextBridge
             Context={ReactReduxContext}
             render={(children: React.ReactNode) => (
-                <PixiStage {...props}>{children}</PixiStage>
+                <Stage {...props}>{children}</Stage>
             )}
         >
             {children}
@@ -25,4 +23,4 @@ const Stage: FC<CombinedProps> = ({ children, ...props }) => {
     );
 };
 
-export default Stage;
+export default BridgedStage;

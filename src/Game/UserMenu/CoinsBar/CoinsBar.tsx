@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Container, Sprite, Text } from "@pixi/react";
 import { TextStyle } from "pixi.js";
-import Img_Coin from "../../../game_content/Caves/UI/Menu/Coin.png";
-import Img_CoinsBar from "../../../game_content/Caves/UI/Menu/CoinsBar.png";
+import Img_Coin from "../../../assets/UI/Menu/Coin.png";
+import Img_CoinsBar from "../../../assets/UI/Menu/CoinsBar.png";
 import { useAppSelector } from "../../../hooks/hooks";
 
 interface CoinsBarProps {

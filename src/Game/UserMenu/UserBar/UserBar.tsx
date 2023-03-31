@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 import { Container, Sprite, Text } from "@pixi/react";
 import { TextStyle } from "pixi.js";
 
-import Img_UserBar from "../../../game_content/Caves/UI/Menu/UserBar.png";
-import Img_Menu from "../../../game_content/Caves/UI/Menu/Menu.png";
+import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
+import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 
 interface UserBarProps {}
 

@@ -1,8 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
-import { Stage, Container } from "@pixi/react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
-import { BlurFilter } from "pixi.js";
 import Form from "./Form/Login";
 import { withOverlay } from "./Overlay/withOverlay";
 import { completeLoading } from "./store/auth";
