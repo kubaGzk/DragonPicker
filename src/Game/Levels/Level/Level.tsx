@@ -6,14 +6,15 @@ import { calculateDimension } from "../../../utils";
 interface LevelProps {
     img_url: string;
     name: string;
-    multiplier: number;
+    multiplier: string;
     index: number;
     width: number;
     height: number;
+    onClick: () => void;
 }
 
 const Level: FC<LevelProps> = (props) => {
-    const { img_url, name, multiplier, index, width, height } = props;
+    const { img_url, name, multiplier, index, width, height, onClick } = props;
 
     const { x, y, itemWidth, itemHeight } = calculateDimension(
         width,
@@ -86,6 +87,7 @@ const Level: FC<LevelProps> = (props) => {
                 textStyle.letterSpacing = 10;
                 setPixelChange(0);
             }}
+            onclick={onClick}
         >
             <Graphics draw={draw} />
 
@@ -97,7 +99,7 @@ const Level: FC<LevelProps> = (props) => {
                 height={290 + 2 * pixelChange}
             />
             <Text
-                text={`Multipier ${multiplier}`}
+                text={`MAX Multipier ${multiplier}`}
                 style={multiTextStyle}
                 x={10 - pixelChange}
                 y={10 - pixelChange}

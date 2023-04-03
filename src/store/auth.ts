@@ -39,11 +39,28 @@ const authSlice = createSlice({
         completeLoading: (state) => {
             return { ...state, loading: false };
         },
+        decreaseWallet: (state, action: PayloadAction<{ stake: number }>) => {
+            const { stake } = action.payload;
 
-        
+            if (state.coins - stake < 0) {
+                return state;
+            }
+
+            return { ...state, coins: state.coins - stake };
+        },
+
+        increaseWallet: (
+            state,
+            action: PayloadAction<{ returnedCoins: number }>,
+        ) => {
+            const { returnedCoins } = action.payload;
+
+            return { ...state, coins: state.coins + returnedCoins };
+        },
     },
 });
 
-export const { login, completeLoading } = authSlice.actions;
+export const { login, completeLoading, decreaseWallet, increaseWallet } =
+    authSlice.actions;
 
 export default authSlice.reducer;

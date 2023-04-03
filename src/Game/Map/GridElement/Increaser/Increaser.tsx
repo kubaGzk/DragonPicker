@@ -12,10 +12,12 @@ interface IncreaserProps {
     y: number;
     width: number;
     height: number;
+    onIncrease: () => void;
+    onDecrease: () => void;
 }
 
 const Increaser: FC<IncreaserProps> = (props) => {
-    const { x, y, width, height, type } = props;
+    const { x, y, width, height, type, onIncrease, onDecrease } = props;
 
     let topButton: string;
     let lowButton: string;
@@ -61,6 +63,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 width={width}
                 height={height / 2}
                 angle={topRotate}
+                interactive={true}
+                onclick={onIncrease}
             />
             <Sprite
                 image={lowButton}
@@ -69,6 +73,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 width={width}
                 height={height / 2}
                 angle={lowRotate}
+                interactive={true}
+                onclick={onDecrease}
             />
         </Container>
     );

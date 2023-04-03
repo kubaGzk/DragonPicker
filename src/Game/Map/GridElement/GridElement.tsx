@@ -2,7 +2,7 @@ import { Container, Text, Graphics } from "@pixi/react";
 import { FC, useCallback } from "react";
 
 import { TextStyle } from "pixi.js";
-import Increaser from "../Grid/Increaser/Increaser";
+import Increaser from "./Increaser/Increaser";
 
 interface GridElementProps {
     minStake: number;
@@ -12,12 +12,23 @@ interface GridElementProps {
     y: number;
     elWidth: number;
     elHeight: number;
-
     inPlay: boolean;
+    onIncrease: () => void;
+    onDecrease: () => void;
 }
 
 const GridElement: FC<GridElementProps> = (props) => {
-    const { minStake, maxStake, currValue, x, y, elWidth, elHeight } = props;
+    const {
+        minStake,
+        maxStake,
+        currValue,
+        x,
+        y,
+        elWidth,
+        elHeight,
+        onIncrease,
+        onDecrease,
+    } = props;
 
     const draw = useCallback(
         (g: any) => {
@@ -66,6 +77,8 @@ const GridElement: FC<GridElementProps> = (props) => {
                 width={elHeight / 2}
                 height={elHeight}
                 type={increaserType}
+                onIncrease={onIncrease}
+                onDecrease={onDecrease}
             />
             <Text
                 text={currValue.toString()}

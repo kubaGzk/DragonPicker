@@ -1,3 +1,5 @@
+import { GridElement } from "./types";
+
 export const calculateDimension = (
     width: number,
     height: number,
@@ -28,9 +30,9 @@ export const calculateGrid = (
 ): {
     gridElWidth: number;
     gridElHeight: number;
-    gridPositions: { x: number; y: number }[];
+    gridElements: GridElement[];
 } => {
-    const gridPositions: { x: number; y: number }[] = [];
+    const gridElements: GridElement[] = [];
 
     const lvlGrid: 3 | 4 | 5 = level === 1 ? 3 : level === 2 ? 4 : 5;
 
@@ -53,14 +55,16 @@ export const calculateGrid = (
         gridElHeight = level === 1 ? 90 : level === 2 ? 75 : 60;
     }
 
-    for (let x = 0; x < lvlGrid; x++) {
-        for (let y = 0; y < lvlGrid; y++) {
-            gridPositions.push({
-                x: x * widthSpace + 0.05 * width,
-                y: y * heightSpace + 0.2 * height,
+    for (let i = 0; i < lvlGrid; i++) {
+        for (let j = 0; j < lvlGrid; j++) {
+            gridElements.push({
+                x: i * widthSpace + 0.05 * width,
+                y: j * heightSpace + 0.2 * height,
+                value: 0,
+                key: `${i}${j}`,
             });
         }
     }
 
-    return { gridElHeight, gridElWidth, gridPositions };
+    return { gridElHeight, gridElWidth, gridElements };
 };
