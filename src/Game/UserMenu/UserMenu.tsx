@@ -1,6 +1,7 @@
 import { FC } from "react";
 import CoinsBar from "./CoinsBar/CoinsBar";
 import UserBar from "./UserBar/UserBar";
+import { useAppSelector } from "../../hooks/hooks";
 
 interface UserMenuProps {
     width: number;
@@ -10,11 +11,12 @@ interface UserMenuProps {
 const UserMenu: FC<UserMenuProps> = (props) => {
     const { width, height } = props;
 
+    const { coins, username } = useAppSelector((state) => state.auth);
 
     return (
         <>
-            <UserBar />
-            <CoinsBar width={width} height={height} />
+            <UserBar username={username} />
+            <CoinsBar width={width} height={height} coins={coins} />
         </>
     );
 };

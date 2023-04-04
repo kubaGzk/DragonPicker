@@ -3,6 +3,7 @@ import { FC, useEffect } from "react";
 import Grid from "./Grid/Grid";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { recalculateGrid } from "../../store/gameStatus";
+import Dragon from "./Dragon/Dragon";
 interface MapProps {
     width: number;
     height: number;
@@ -11,9 +12,9 @@ interface MapProps {
 const Map: FC<MapProps> = (props) => {
     const { width, height } = props;
 
-    const {
-        levelSelected,
-    } = useAppSelector((state) => state.gameStatus);
+    const { levelSelected, gridElements } = useAppSelector(
+        (state) => state.gameStatus,
+    );
 
     const dispatch = useAppDispatch();
 
@@ -24,6 +25,12 @@ const Map: FC<MapProps> = (props) => {
     return (
         <>
             <Grid />
+            <Dragon
+                width={width}
+                height={height}
+                targetX={gridElements[0].x}
+                targetY={gridElements[0].y}
+            />
         </>
     );
 };

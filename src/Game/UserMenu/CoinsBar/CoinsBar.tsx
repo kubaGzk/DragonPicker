@@ -3,18 +3,16 @@ import { Container, Sprite, Text } from "@pixi/react";
 import { TextStyle } from "pixi.js";
 import Img_Coin from "../../../assets/UI/Menu/Coin.png";
 import Img_CoinsBar from "../../../assets/UI/Menu/CoinsBar.png";
-import { useAppSelector } from "../../../hooks/hooks";
 
 interface CoinsBarProps {
     width: number;
     height: number;
+    coins: number;
 }
 
 const CoinsBar: FC<CoinsBarProps> = (props) => {
-    const { width } = props;
+    const { width, coins } = props;
 
-    const { coins } = useAppSelector((state) => state.auth);
-    console.log(coins, "COINS");
     const stringCoins = coins.toString();
 
     const coinsStyle = new TextStyle({

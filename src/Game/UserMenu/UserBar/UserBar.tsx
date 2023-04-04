@@ -5,9 +5,13 @@ import { TextStyle } from "pixi.js";
 import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
 import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 
-interface UserBarProps {}
+interface UserBarProps {
+    username: string;
+}
 
-const UserBar: FC<UserBarProps> = () => {
+const UserBar: FC<UserBarProps> = (props) => {
+    const { username } = props;
+
     const [menuSize, setMenuSize] = useState<number>(28);
 
     const usernameStyle = new TextStyle({
@@ -39,7 +43,7 @@ const UserBar: FC<UserBarProps> = () => {
             />
 
             <Text
-                text={"Mikeal"}
+                text={username}
                 style={usernameStyle}
                 x={10}
                 y={10}
