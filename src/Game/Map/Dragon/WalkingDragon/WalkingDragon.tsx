@@ -9,10 +9,11 @@ import Walk5 from "../../../../assets/Dragon/Walk5.png";
 interface WalkingDragonProps {
     x: number;
     y: number;
+    gridElHeight: number;
 }
 
 const WalkingDragon: FC<WalkingDragonProps> = (props) => {
-    const { x, y } = props;
+    const { x, y, gridElHeight } = props;
 
     return (
         <AnimatedSprite
@@ -20,7 +21,7 @@ const WalkingDragon: FC<WalkingDragonProps> = (props) => {
             animationSpeed={0.1}
             images={[Walk1, Walk2, Walk3, Walk4, Walk5]}
             x={x}
-            y={y}
+            y={y - gridElHeight}
         />
     );
 };

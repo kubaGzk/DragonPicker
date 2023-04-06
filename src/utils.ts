@@ -61,10 +61,39 @@ export const calculateGrid = (
                 x: i * widthSpace + 0.05 * width,
                 y: j * heightSpace + 0.2 * height,
                 value: 0,
-                key: `${i}${j}`,
+                id: `${i}${j}`,
+                winner: false,
             });
         }
     }
 
     return { gridElHeight, gridElWidth, gridElements };
+};
+
+export const selectWinners = (
+    level: 1 | 2 | 3,
+    gridElements: GridElement[],
+): { winners: string[]; winnersPosition: { x: number; y: number }[] } => {
+    const lvlGrid: 3 | 4 | 5 = level === 1 ? 3 : level === 2 ? 4 : 5;
+
+    const x = Math.floor(Math.random() * lvlGrid);
+    const y = Math.floor(Math.random() * lvlGrid);
+
+    console.log("WINNERS", x, y);
+
+    const winners: string[] = [];
+    const winnersPosition: { x: number; y: number }[] = [];
+
+    for (let i = lvlGrid - 1; i >= x; i--) {
+        const lookInd = gridElements.findIndex((el) => el.id === `${i}${y}`);
+
+        winners.push(`${i}${y}`);
+
+        winnersPosition.push({
+            x: gridElements[lookInd].x,
+            y: gridElements[lookInd].y,
+        });
+    }
+
+    return { winners, winnersPosition };
 };

@@ -21,15 +21,15 @@ const Grid: FC<GridProps> = (props) => {
 
     const dispatch = useAppDispatch();
 
-    const increaseHandler = (key: string, value: number) => {
+    const increaseHandler = (id: string, value: number) => {
         if (coins - bidAmount >= 0 && value + bidAmount <= maxStake) {
-            dispatch(increaseBid({ key }));
+            dispatch(increaseBid({ id }));
             dispatch(decreaseWallet({ stake: bidAmount }));
         }
     };
-    const decreaseHandler = (key: string, value: number) => {
+    const decreaseHandler = (id: string, value: number) => {
         if (value - bidAmount >= minStake) {
-            dispatch(decreaseBid({ key }));
+            dispatch(decreaseBid({ id }));
             dispatch(increaseWallet({ returnedCoins: bidAmount }));
         }
     };
@@ -47,9 +47,9 @@ const Grid: FC<GridProps> = (props) => {
                         elWidth={gridElWidth}
                         elHeight={gridElHeight}
                         inPlay={inPlay}
-                        key={el.key}
-                        onIncrease={() => increaseHandler(el.key, el.value)}
-                        onDecrease={() => decreaseHandler(el.key, el.value)}
+                        key={el.id}
+                        onIncrease={() => increaseHandler(el.id, el.value)}
+                        onDecrease={() => decreaseHandler(el.id, el.value)}
                     />
                 );
             })}

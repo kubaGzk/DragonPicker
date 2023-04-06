@@ -1,89 +1,122 @@
-import { FC, useState, useEffect, useCallback } from "react";
-import { Container, Sprite, useTick } from "@pixi/react";
+import { FC, useState, useEffect } from "react";
+import { Container, useTick } from "@pixi/react";
 import WalkingDragon from "./WalkingDragon/WalkingDragon";
 import AttackingDragon from "./AttackingDragon/AttackingDragon";
-import Walk1 from "../../../assets/Dragon/Walk1.png";
 import DragonFlame from "./DragoFlame/DragonFlame";
+import FlameBlow from "./Flames/FlameBlow/FlameBlow";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { removeWinnersPoistion } from "../../../store/gameStatus";
+import Flames from "./Flames/Flames";
 
 interface DragonProps {
     width: number;
     height: number;
-    targetX: number;
-    targetY: number;
 }
 
 const Dragon: FC<DragonProps> = (props) => {
-    const { width, targetX, targetY } = props;
+    const { width } = props;
+
+    const { winnersPosition, gridElHeight } = useAppSelector(
+        (state) => state.gameStatus,
+    );
+    const dispatch = useAppDispatch();
 
     const [walk, setWalk] = useState<boolean>(false);
-    const [x, setX] = useState<number>(width * 1.05);
+    const [exit, setExit] = useState<boolean>(false);
+    const [walkX, setWalkX] = useState<number>(0);
 
     const [throwFlame, setThrowFlame] = useState<boolean>(false);
-    const [flameX, setFlameX] = useState<number>(width * 0.8);
+    const [flameX, setFlameX] = useState<number>(0);
 
-    const endDragonFlame = () => {
-        setThrowFlame(false);
-    };
-
-    const dragonFlame = useCallback(() => {
-        setThrowFlame(true);
-        let i = 0;
-        const entrance = setInterval(() => {
-            const intervalX = (width * 0.8 - targetX) / 45;
-
-            i++;
-            setFlameX((prevX) => prevX - intervalX);
-            if (i === 45) {
-                clearInterval(entrance);
-            }
-        }, 100);
-    }, []);
-
-    const dragonEntrance = useCallback(() => {
-        setWalk(true);
-        let i = 0;
-        const entrance = setInterval(() => {
-            i++;
-            setX((prevX) => prevX - 0.01 * width);
-            if (i === 25) {
-                clearInterval(entrance);
-                setWalk(false);
-                setTimeout(() => dragonFlame(), 300);
-            }
-        }, 100);
-    }, []);
-
-    const dragonExit = useCallback(() => {
-        setWalk(true);
-        let i = 0;
-        const entrance = setInterval(() => {
-            i++;
-            setX((prevX) => prevX + 0.01 * width);
-            if (i === 25) {
-                clearInterval(entrance);
-            }
-        }, 100);
-    }, []);
+    const [commonY, setCommonY] = useState<number>(0);
 
     useEffect(() => {
+        setWalkX(width * 1.05);
+        setFlameX(width * 0.8);
+        setCommonY(winnersPosition[winnersPosition.length - 1].y);
+
         dragonEntrance();
     }, []);
 
+    useTick((delta) => {
+        //DragonEntrance
+        if (walk && walkX > width * 0.8) {
+            setWalkX((prevX) => prevX - delta);
+        } else if (walk && walkX <= width * 0.8) {
+            setWalk(false);
+
+            setTimeout(() => {
+                setThrowFlame(true);
+            }, 300);
+        }
+    });
+
+    useTick((delta) => {
+        //DragonExit
+        if (exit && walkX < width * 1.05) {
+            setWalkX((prevX) => prevX + delta);
+        } else if (exit && walkX <= width * 1.05) {
+            setExit(false);
+        }
+    });
+
+    useTick((delta) => {
+        //FlameThrower
+        if (
+            throwFlame &&
+            flameX > winnersPosition[winnersPosition.length - 1].x
+        ) {
+            setFlameX((prevX) => prevX - delta);
+        } else if (
+            throwFlame &&
+            flameX <= winnersPosition[winnersPosition.length - 1].x
+        ) {
+            setThrowFlame(false);
+        }
+    });
+
+    const removeBlowHandler = (x: number) => {
+        dispatch(removeWinnersPoistion({ x }));
+    };
+
+    const dragonEntrance = () => {
+        setWalk(true);
+    };
+
+    const dragonExit = () => {
+        setExit(true);
+    };
+
     return (
         <Container>
-            {walk ? (
-                <WalkingDragon x={x} y={targetY} />
+            {walk || exit ? (
+                <WalkingDragon
+                    x={walkX}
+                    y={commonY}
+                    gridElHeight={gridElHeight}
+                />
             ) : (
-                <AttackingDragon onComplete={dragonExit} x={x} y={targetY} />
+                <AttackingDragon
+                    onComplete={dragonExit}
+                    x={walkX}
+                    y={commonY}
+                    gridElHeight={gridElHeight}
+                />
             )}
 
             {throwFlame && (
                 <DragonFlame
-                    onComplete={endDragonFlame}
-                    x={flameX - 55}
-                    y={targetY + 55}
+                    x={flameX}
+                    y={commonY}
+                    gridElHeight={gridElHeight}
                 />
             )}
+            <Flames
+                removeBlowHandler={removeBlowHandler}
+                winnersPosition={winnersPosition}
+                gridElHeight={gridElHeight}
+                flameX={flameX}
+            />
         </Container>
     );
 };

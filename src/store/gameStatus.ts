@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { calculateGrid } from "../utils";
+import { calculateGrid, selectWinners } from "../utils";
 import { GridElement } from "../types";
 
 type Level = 1 | 2 | 3;
@@ -13,6 +13,7 @@ export interface GameStatusState {
     minStake: number;
     maxStake: number;
     bidAmount: number;
+    winnersPosition: { x: number; y: number }[];
 }
 
 const initialState: GameStatusState = {
@@ -24,6 +25,7 @@ const initialState: GameStatusState = {
     minStake: 0,
     maxStake: 100,
     bidAmount: 10,
+    winnersPosition: [],
 };
 
 const gameStatusSlice = createSlice({
@@ -69,7 +71,7 @@ const gameStatusSlice = createSlice({
 
                 const updatedElements = gridElements.map((el) => {
                     const lookInd = state.gridElements.findIndex(
-                        (stateEl) => stateEl.key === el.key,
+                        (stateEl) => stateEl.id === el.id,
                     );
 
                     return { ...el, value: state.gridElements[lookInd].value };
@@ -85,12 +87,12 @@ const gameStatusSlice = createSlice({
 
             return state;
         },
-        increaseBid: (state, action: PayloadAction<{ key: string }>) => {
-            const { key } = action.payload;
+        increaseBid: (state, action: PayloadAction<{ id: string }>) => {
+            const { id } = action.payload;
 
             const newGridElements = state.gridElements.map((el) => {
                 if (
-                    el.key === key &&
+                    el.id === id &&
                     el.value + state.bidAmount <= state.maxStake
                 ) {
                     return { ...el, value: el.value + state.bidAmount };
@@ -101,12 +103,12 @@ const gameStatusSlice = createSlice({
 
             return { ...state, gridElements: newGridElements };
         },
-        decreaseBid: (state, action: PayloadAction<{ key: string }>) => {
-            const { key } = action.payload;
+        decreaseBid: (state, action: PayloadAction<{ id: string }>) => {
+            const { id } = action.payload;
 
             const newGridElements = state.gridElements.map((el) => {
                 if (
-                    el.key === key &&
+                    el.id === id &&
                     el.value - state.bidAmount >= state.minStake
                 ) {
                     return { ...el, value: el.value - state.bidAmount };
@@ -132,10 +134,25 @@ const gameStatusSlice = createSlice({
         },
 
         startGame: (state) => {
-            return { ...state, inPlay: true };
+            const { winners, winnersPosition } = selectWinners(
+                state.levelSelected!,
+                state.gridElements,
+            );
+
+            return { ...state, inPlay: true, winnersPosition: winnersPosition };
         },
         endGame: (state) => {
-            return { ...state, inPlay: false };
+            return { ...state, inPlay: false, winnersPosition: [] };
+        },
+        removeWinnersPoistion: (
+            state,
+            action: PayloadAction<{ x: number }>,
+        ) => {
+            const { x } = action.payload;
+
+            const newPostion = state.winnersPosition.filter((el) => el.x !== x);
+
+            return { ...state, winnersPosition: newPostion };
         },
     },
 });
@@ -147,8 +164,9 @@ export const {
     decreaseBid,
     setStakes,
     quitLevel,
-    endGame,
     startGame,
+    endGame,
+    removeWinnersPoistion,
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;

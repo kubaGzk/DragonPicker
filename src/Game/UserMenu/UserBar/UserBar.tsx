@@ -31,6 +31,8 @@ const UserBar: FC<UserBarProps> = (props) => {
         wordWrapWidth: 440,
     });
 
+    //ADD Outline Filter
+
     return (
         <Container x={30} y={10}>
             <Sprite

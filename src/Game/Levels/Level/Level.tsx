@@ -58,6 +58,9 @@ const Level: FC<LevelProps> = (props) => {
         wordWrapWidth: 440,
     });
 
+
+        //ADD Outline Filter
+
     const draw = useCallback((g: any) => {
         g.clear();
 

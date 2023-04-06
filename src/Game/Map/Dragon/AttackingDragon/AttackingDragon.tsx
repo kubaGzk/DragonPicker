@@ -10,18 +10,28 @@ interface AttackingDragonProps {
     onComplete: () => void;
     x: number;
     y: number;
+    gridElHeight: number;
 }
 
 const AttackingDragon: FC<AttackingDragonProps> = (props) => {
-    const { onComplete, x ,y } = props;
+    const { onComplete, x, y, gridElHeight } = props;
 
     return (
         <AnimatedSprite
             isPlaying={true}
             animationSpeed={0.1}
-            images={[Attack4, Attack3, Attack2, Attack1, Attack2, Attack3, Attack4]}
+            images={[
+                Attack4,
+                Attack3,
+                Attack2,
+                Attack1,
+                Attack2,
+                Attack3,
+                Attack4,
+            ]}
             onLoop={onComplete}
-            x={x} y={y}
+            x={x}
+            y={y - gridElHeight}
         />
     );
 };
