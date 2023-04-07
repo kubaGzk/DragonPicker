@@ -1,37 +1,95 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { calculateGrid, selectWinners } from "../utils";
-import { GridElement } from "../types";
-
-type Level = 1 | 2 | 3;
+import {
+    calculateGrid,
+    selectCollectables,
+    selectWinElement,
+    selectWinners,
+} from "../utils";
+import { GridElement, Level, Winner } from "../types";
 
 export interface GameStatusState {
+    username: string;
+    coins: number;
+    isAuth: boolean;
+    loading: boolean;
     levelSelected: Level | null;
     inPlay: boolean;
+    isCollect: boolean;
     gridElements: GridElement[];
     gridElWidth: number;
     gridElHeight: number;
     minStake: number;
     maxStake: number;
     bidAmount: number;
-    winnersPosition: { x: number; y: number }[];
+    winners: Winner[];
+    totalWin: number;
+    itemsToCollect: boolean;
 }
 
 const initialState: GameStatusState = {
+    username: "",
+    coins: 0,
+    isAuth: false,
+    loading: true,
     levelSelected: null,
     inPlay: false,
+    isCollect: false,
     gridElements: [],
     gridElWidth: 0,
     gridElHeight: 0,
     minStake: 0,
     maxStake: 100,
     bidAmount: 10,
-    winnersPosition: [],
+    winners: [],
+    totalWin: 0,
+    itemsToCollect: false,
 };
 
 const gameStatusSlice = createSlice({
     name: "gameStatus",
     initialState,
     reducers: {
+        login: (
+            state,
+            action: PayloadAction<{ username: string; coins?: number }>,
+        ) => {
+            const { username, coins } = action.payload;
+
+            const validCoins = coins || 1000;
+
+            localStorage.setItem("GAME_Username", username);
+            localStorage.setItem("GAME_Coins", validCoins.toString());
+
+            return {
+                ...state,
+                username,
+                coins: validCoins,
+                isAuth: true,
+                loading: false,
+            };
+        },
+        completeLoading: (state) => {
+            return { ...state, loading: false };
+        },
+        decreaseWallet: (state, action: PayloadAction<{ stake: number }>) => {
+            const { stake } = action.payload;
+
+            if (state.coins - stake < 0) {
+                return state;
+            }
+
+            return { ...state, coins: state.coins - stake };
+        },
+
+        increaseWallet: (
+            state,
+            action: PayloadAction<{ returnedCoins: number }>,
+        ) => {
+            const { returnedCoins } = action.payload;
+
+            return { ...state, coins: state.coins + returnedCoins };
+        },
+
         selectLevel: (
             state,
             action: PayloadAction<{
@@ -101,7 +159,11 @@ const gameStatusSlice = createSlice({
                 }
             });
 
-            return { ...state, gridElements: newGridElements };
+            return {
+                ...state,
+                gridElements: newGridElements,
+                coins: state.coins - state.bidAmount,
+            };
         },
         decreaseBid: (state, action: PayloadAction<{ id: string }>) => {
             const { id } = action.payload;
@@ -117,7 +179,11 @@ const gameStatusSlice = createSlice({
                 }
             });
 
-            return { ...state, gridElements: newGridElements };
+            return {
+                ...state,
+                gridElements: newGridElements,
+                coins: state.coins - state.bidAmount,
+            };
         },
 
         setStakes: (
@@ -134,30 +200,73 @@ const gameStatusSlice = createSlice({
         },
 
         startGame: (state) => {
-            const { winners, winnersPosition } = selectWinners(
+            const { winners } = selectWinners(
                 state.levelSelected!,
                 state.gridElements,
             );
 
-            return { ...state, inPlay: true, winnersPosition: winnersPosition };
+            const newGridElements = state.gridElements.map((el) => {
+                const ind = winners.findIndex((win) => win.id === el.id);
+
+                if (ind >= 0) {
+                    return { ...el, winner: true };
+                }
+                return el;
+            });
+
+            return {
+                ...state,
+                inPlay: true,
+                winners,
+                gridElements: newGridElements,
+            };
         },
         endGame: (state) => {
-            return { ...state, inPlay: false, winnersPosition: [] };
+            return {
+                ...state,
+                inPlay: false,
+                winners: [],
+                isCollect: true,
+            };
         },
-        removeWinnersPoistion: (
-            state,
-            action: PayloadAction<{ x: number }>,
-        ) => {
-            const { x } = action.payload;
 
-            const newPostion = state.winnersPosition.filter((el) => el.x !== x);
+        setCollectable: (state, action: PayloadAction<{ id: string }>) => {
+            const { id } = action.payload;
 
-            return { ...state, winnersPosition: newPostion };
+            const { newGridElements, win, itemsToCollect } = selectCollectables(
+                id,
+                state.gridElements,
+            );
+
+            return {
+                ...state,
+                gridElements: newGridElements,
+                totalWin: state.totalWin + win,
+                itemsToCollect: state.itemsToCollect || itemsToCollect,
+            };
+        },
+        collectWin: (state, action: PayloadAction<{ id: string }>) => {
+            const { id } = action.payload;
+
+            const { newGridElements, itemsToCollect, collectedWin } =
+                selectWinElement(id, state.gridElements);
+
+            return {
+                ...state,
+                gridElements: newGridElements,
+                itemsToCollect,
+                coins: state.coins + collectedWin,
+                isCollect: itemsToCollect,
+            };
         },
     },
 });
 
 export const {
+    login,
+    completeLoading,
+    decreaseWallet,
+    increaseWallet,
     selectLevel,
     recalculateGrid,
     increaseBid,
@@ -166,7 +275,7 @@ export const {
     quitLevel,
     startGame,
     endGame,
-    removeWinnersPoistion,
+    setCollectable,
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;

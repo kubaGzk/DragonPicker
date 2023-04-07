@@ -3,10 +3,9 @@ import { Container, useTick } from "@pixi/react";
 import WalkingDragon from "./WalkingDragon/WalkingDragon";
 import AttackingDragon from "./AttackingDragon/AttackingDragon";
 import DragonFlame from "./DragoFlame/DragonFlame";
-import FlameBlow from "./Flames/FlameBlow/FlameBlow";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { removeWinnersPoistion } from "../../../store/gameStatus";
 import Flames from "./Flames/Flames";
+import { endGame, setCollectable } from "../../../store/gameStatus";
 
 interface DragonProps {
     width: number;
@@ -16,7 +15,7 @@ interface DragonProps {
 const Dragon: FC<DragonProps> = (props) => {
     const { width } = props;
 
-    const { winnersPosition, gridElHeight } = useAppSelector(
+    const { winners, gridElHeight } = useAppSelector(
         (state) => state.gameStatus,
     );
     const dispatch = useAppDispatch();
@@ -33,7 +32,7 @@ const Dragon: FC<DragonProps> = (props) => {
     useEffect(() => {
         setWalkX(width * 1.05);
         setFlameX(width * 0.8);
-        setCommonY(winnersPosition[winnersPosition.length - 1].y);
+        setCommonY(winners[winners.length - 1].y);
 
         dragonEntrance();
     }, []);
@@ -62,22 +61,13 @@ const Dragon: FC<DragonProps> = (props) => {
 
     useTick((delta) => {
         //FlameThrower
-        if (
-            throwFlame &&
-            flameX > winnersPosition[winnersPosition.length - 1].x
-        ) {
+        if (throwFlame && flameX > winners[winners.length - 1].x) {
             setFlameX((prevX) => prevX - delta);
-        } else if (
-            throwFlame &&
-            flameX <= winnersPosition[winnersPosition.length - 1].x
-        ) {
+        } else if (throwFlame && flameX <= winners[winners.length - 1].x) {
             setThrowFlame(false);
+            endGameHandler();
         }
     });
-
-    const removeBlowHandler = (x: number) => {
-        dispatch(removeWinnersPoistion({ x }));
-    };
 
     const dragonEntrance = () => {
         setWalk(true);
@@ -85,6 +75,14 @@ const Dragon: FC<DragonProps> = (props) => {
 
     const dragonExit = () => {
         setExit(true);
+    };
+
+    const collectableHandler = (id: string) => {
+        dispatch(setCollectable({ id }));
+    };
+
+    const endGameHandler = () => {
+        dispatch(endGame());
     };
 
     return (
@@ -112,8 +110,8 @@ const Dragon: FC<DragonProps> = (props) => {
                 />
             )}
             <Flames
-                removeBlowHandler={removeBlowHandler}
-                winnersPosition={winnersPosition}
+                onComplete={collectableHandler}
+                winners={winners}
                 gridElHeight={gridElHeight}
                 flameX={flameX}
             />

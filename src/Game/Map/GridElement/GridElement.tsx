@@ -15,6 +15,7 @@ interface GridElementProps {
     inPlay: boolean;
     onIncrease: () => void;
     onDecrease: () => void;
+    collectable: boolean;
 }
 
 const GridElement: FC<GridElementProps> = (props) => {
@@ -28,6 +29,7 @@ const GridElement: FC<GridElementProps> = (props) => {
         elHeight,
         onIncrease,
         onDecrease,
+        collectable,
     } = props;
 
     const draw = useCallback(
@@ -35,11 +37,11 @@ const GridElement: FC<GridElementProps> = (props) => {
             g.clear();
 
             g.lineStyle(2, 0xff00bb, 1);
-            g.beginFill(0xff00bb, 0.25);
+            g.beginFill(collectable ? 0xff7900 : 0xff00bb, 0.25);
             g.drawRoundedRect(0, 0, elWidth, elHeight, 15);
             g.endFill();
         },
-        [elWidth, elHeight],
+        [elWidth, elHeight, collectable],
     );
 
     const textStyle = new TextStyle({

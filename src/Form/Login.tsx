@@ -1,6 +1,6 @@
 import { FunctionComponent, useState } from "react";
 import { useAppDispatch } from "../hooks/hooks";
-import { login } from "../store/auth";
+import { login } from "../store/gameStatus";
 import LoginForm from "./LoginForm/LoginForm";
 import UserQuestion from "./UserQuestion/UserQuestion";
 

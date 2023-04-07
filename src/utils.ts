@@ -1,4 +1,4 @@
-import { GridElement } from "./types";
+import { GridElement, Level, Winner } from "./types";
 
 export const calculateDimension = (
     width: number,
@@ -24,7 +24,7 @@ export const calculateDimension = (
 };
 
 export const calculateGrid = (
-    level: 1 | 2 | 3,
+    level: Level,
     width: number,
     height: number,
 ): {
@@ -63,6 +63,7 @@ export const calculateGrid = (
                 value: 0,
                 id: `${i}${j}`,
                 winner: false,
+                collectable: false,
             });
         }
     }
@@ -71,29 +72,82 @@ export const calculateGrid = (
 };
 
 export const selectWinners = (
-    level: 1 | 2 | 3,
+    level: Level,
     gridElements: GridElement[],
-): { winners: string[]; winnersPosition: { x: number; y: number }[] } => {
+): { winners: Winner[] } => {
     const lvlGrid: 3 | 4 | 5 = level === 1 ? 3 : level === 2 ? 4 : 5;
 
     const x = Math.floor(Math.random() * lvlGrid);
     const y = Math.floor(Math.random() * lvlGrid);
 
-    console.log("WINNERS", x, y);
-
-    const winners: string[] = [];
-    const winnersPosition: { x: number; y: number }[] = [];
+    const winners: Winner[] = [];
 
     for (let i = lvlGrid - 1; i >= x; i--) {
         const lookInd = gridElements.findIndex((el) => el.id === `${i}${y}`);
 
-        winners.push(`${i}${y}`);
-
-        winnersPosition.push({
+        winners.push({
             x: gridElements[lookInd].x,
             y: gridElements[lookInd].y,
+            id: `${i}${y}`,
         });
     }
 
-    return { winners, winnersPosition };
+    return { winners };
+};
+
+export const selectCollectables = (
+    id: string,
+    gridElements: GridElement[],
+): { newGridElements: GridElement[]; win: number; itemsToCollect: boolean } => {
+    const multiLevels = Math.sqrt(gridElements.length);
+
+    let win: number = 0;
+    let itemsToCollect: boolean = false;
+
+    const newGridElements = gridElements.map((el) => {
+        const [x, y] = el.id.split("");
+
+        const multiplier = multiLevels - parseInt(y) * 2;
+
+        if (el.id === id && el.value > 0) {
+            itemsToCollect = true;
+            win = el.value * multiplier;
+            return { ...el, collectable: true, value: win };
+        }
+        return el;
+    });
+
+    return { newGridElements, win, itemsToCollect };
+};
+
+export const selectWinElement = (
+    id: string,
+    gridElements: GridElement[],
+): {
+    newGridElements: GridElement[];
+    itemsToCollect: boolean;
+    collectedWin: number;
+} => {
+    let itemsToCollect: boolean = false;
+    let collectedWin: number = 0;
+
+    const newGridElements = gridElements.map((el) => {
+        if (el.collectable) {
+            collectedWin = el.value;
+        }
+
+        if (el.collectable && el.id === id) {
+            return { ...el, collectable: false, value: 0, winner: false };
+        }
+
+        return el;
+    });
+
+    return { newGridElements, itemsToCollect, collectedWin };
+};
+
+export const findCollectables = (gridElements: GridElement[]): boolean => {
+    return gridElements.reduce((acc, el) => {
+        return acc || el.collectable;
+    }, false);
 };

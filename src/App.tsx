@@ -3,13 +3,13 @@ import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import Form from "./Form/Login";
 import { withOverlay } from "./Overlay/withOverlay";
-import { completeLoading } from "./store/auth";
+import { completeLoading } from "./store/gameStatus";
 import GameStage from "./Game/GameStage";
 
 function App() {
     const FormWithOverlay = withOverlay(Form);
 
-    const { isAuth, loading } = useAppSelector((state) => state.auth);
+    const { isAuth, loading } = useAppSelector((state) => state.gameStatus);
     const dispatch = useAppDispatch();
 
     const [localUser, setLocalUser] = useState<

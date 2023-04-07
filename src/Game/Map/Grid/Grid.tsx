@@ -2,7 +2,6 @@ import { FC } from "react";
 import GridElement from "../GridElement/GridElement";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { decreaseBid, increaseBid } from "../../../store/gameStatus";
-import { decreaseWallet, increaseWallet } from "../../../store/auth";
 
 interface GridProps {}
 
@@ -15,24 +14,25 @@ const Grid: FC<GridProps> = (props) => {
         bidAmount,
         minStake,
         maxStake,
+        coins,
     } = useAppSelector((state) => state.gameStatus);
-
-    const { coins } = useAppSelector((state) => state.auth);
 
     const dispatch = useAppDispatch();
 
     const increaseHandler = (id: string, value: number) => {
         if (coins - bidAmount >= 0 && value + bidAmount <= maxStake) {
             dispatch(increaseBid({ id }));
-            dispatch(decreaseWallet({ stake: bidAmount }));
         }
     };
     const decreaseHandler = (id: string, value: number) => {
         if (value - bidAmount >= minStake) {
             dispatch(decreaseBid({ id }));
-            dispatch(increaseWallet({ returnedCoins: bidAmount }));
         }
     };
+
+    // const collectHandler = (id: string) =>{
+    //     dispatch(collectW)
+    // }
 
     return (
         <>
@@ -50,6 +50,7 @@ const Grid: FC<GridProps> = (props) => {
                         key={el.id}
                         onIncrease={() => increaseHandler(el.id, el.value)}
                         onDecrease={() => decreaseHandler(el.id, el.value)}
+                        collectable={el.collectable}
                     />
                 );
             })}

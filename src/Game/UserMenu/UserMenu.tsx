@@ -11,7 +11,7 @@ interface UserMenuProps {
 const UserMenu: FC<UserMenuProps> = (props) => {
     const { width, height } = props;
 
-    const { coins, username } = useAppSelector((state) => state.auth);
+    const { coins, username } = useAppSelector((state) => state.gameStatus);
 
     return (
         <>

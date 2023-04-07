@@ -13,15 +13,28 @@ interface FlameBlowProps {
 }
 
 const FlameBlow: FC<FlameBlowProps> = (props) => {
-    const { x, y, gridElHeight, flameX } = props;
+    const { x, y, gridElHeight, flameX, onComplete } = props;
 
     const [showBlow, setShowBlow] = useState<boolean>(false);
 
     useEffect(() => {
-        if (Math.round(flameX) === Math.round(x)) {
+        console.log(flameX);
+
+        if (
+            (Math.round(flameX) ||
+                Math.round(flameX) - 1 ||
+                Math.round(flameX) + 1) === Math.round(x)
+        ) {
             setShowBlow(true);
         }
     }, [flameX, x]);
+
+    const completeBlowHandler = () => {
+        if (showBlow) {
+            onComplete();
+            setShowBlow(false);
+        }
+    };
 
     return (
         <AnimatedSprite
@@ -32,7 +45,7 @@ const FlameBlow: FC<FlameBlowProps> = (props) => {
             y={y - gridElHeight}
             width={gridElHeight * 2.5}
             height={gridElHeight * 2.5}
-            onLoop={() => setShowBlow(false)}
+            onLoop={completeBlowHandler}
             visible={showBlow}
         />
     );

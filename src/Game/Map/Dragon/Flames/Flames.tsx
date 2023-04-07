@@ -1,25 +1,26 @@
 import { FC } from "react";
 import FlameBlow from "./FlameBlow/FlameBlow";
+import { Winner } from "../../../../types";
 
 interface FlamesProps {
-    removeBlowHandler: (x: number) => void;
-    winnersPosition: { x: number; y: number }[];
+    onComplete: (id: string) => void;
+    winners: Winner[];
     gridElHeight: number;
     flameX: number;
 }
 
 const Flames: FC<FlamesProps> = (props) => {
-    const { winnersPosition, gridElHeight, removeBlowHandler, flameX } = props;
+    const { winners, gridElHeight, onComplete, flameX } = props;
 
     return (
         <>
-            {winnersPosition.map((win) => {
+            {winners.map((win) => {
                 return (
                     <FlameBlow
                         x={win.x}
                         y={win.y}
                         key={win.x}
-                        onComplete={() => removeBlowHandler(win.x)}
+                        onComplete={() => onComplete(win.id)}
                         gridElHeight={gridElHeight}
                         flameX={flameX}
                     />

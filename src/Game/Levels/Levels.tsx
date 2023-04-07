@@ -5,6 +5,7 @@ import Level3 from "../../assets/Caves/Level3.png";
 import Level from "./Level/Level";
 import { useAppDispatch } from "../../hooks/hooks";
 import { selectLevel } from "../../store/gameStatus";
+import { Level as TLevel } from "../../types";
 
 interface LevelsProps {
     width: number;
@@ -16,7 +17,7 @@ const Levels: FC<LevelsProps> = (props) => {
 
     const levelArr: {
         name: string;
-        id: 1 | 2 | 3;
+        id: TLevel;
         img_url: string;
         maxMultiplier: string;
     }[] = [
@@ -27,7 +28,7 @@ const Levels: FC<LevelsProps> = (props) => {
 
     const dispatch = useAppDispatch();
 
-    const levelSelectHandler = (level: 1 | 2 | 3) => {
+    const levelSelectHandler = (level: TLevel) => {
         dispatch(selectLevel({ level, width, height }));
     };
 

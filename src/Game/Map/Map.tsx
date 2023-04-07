@@ -14,7 +14,7 @@ interface MapProps {
 const Map: FC<MapProps> = (props) => {
     const { width, height } = props;
 
-    const { levelSelected, gridElements, gridElHeight, inPlay, winnersPosition } =
+    const { levelSelected, gridElements, gridElHeight, inPlay, isCollect } =
         useAppSelector((state) => state.gameStatus);
 
     const dispatch = useAppDispatch();
@@ -45,9 +45,16 @@ const Map: FC<MapProps> = (props) => {
         <>
             <Grid />
             {inPlay ? (
-                <Dragon
-                    width={width}
-                    height={height}
+                <Dragon width={width} height={height} />
+            ) : isCollect ? (
+                <Text
+                    text={"Collect your win"}
+                    style={startStyle}
+                    x={width * 0.8}
+                    y={height / 2}
+                    width={150}
+                    interactive={true}
+                    onclick={() => dispatch(startGame())}
                 />
             ) : (
                 <Text
