@@ -7,7 +7,7 @@ import Img_Button_Plus from "../../../../assets/Grid/Button_Plus.png";
 import Img_Button_Minus from "../../../../assets/Grid/Button_Minus.png";
 
 interface IncreaserProps {
-    type: "low" | "regular" | "high";
+    type: "low" | "regular" | "high" | "blocked";
     x: number;
     y: number;
     width: number;
@@ -51,6 +51,14 @@ const Increaser: FC<IncreaserProps> = (props) => {
             topRotate = 270;
             lowRotate = 270;
 
+            break;
+
+        case "blocked":
+            topButton = Img_Button_Block_High;
+            lowButton = Img_Button_Block_Low;
+
+            topRotate = 270;
+            lowRotate = 270;
             break;
     }
 

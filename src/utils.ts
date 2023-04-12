@@ -105,9 +105,9 @@ export const selectCollectables = (
     let itemsToCollect: boolean = false;
 
     const newGridElements = gridElements.map((el) => {
-        const [x, y] = el.id.split("");
+        const [x, _] = el.id.split("");
 
-        const multiplier = multiLevels - parseInt(y) * 2;
+        const multiplier = multiLevels - parseInt(x) * 2;
 
         if (el.id === id && el.value > 0) {
             itemsToCollect = true;
@@ -120,7 +120,7 @@ export const selectCollectables = (
     return { newGridElements, win, itemsToCollect };
 };
 
-export const selectWinElement = (
+export const getWinElement = (
     id: string,
     gridElements: GridElement[],
 ): {
@@ -131,13 +131,14 @@ export const selectWinElement = (
     let itemsToCollect: boolean = false;
     let collectedWin: number = 0;
 
-    const newGridElements = gridElements.map((el) => {
-        if (el.collectable) {
+    let newGridElements = gridElements.map((el) => {
+        if (el.collectable && el.id === id) {
             collectedWin = el.value;
+            return { ...el, collectable: false, value: 0, winner: false };
         }
 
-        if (el.collectable && el.id === id) {
-            return { ...el, collectable: false, value: 0, winner: false };
+        if (el.collectable) {
+            itemsToCollect = true;
         }
 
         return el;
@@ -146,8 +147,22 @@ export const selectWinElement = (
     return { newGridElements, itemsToCollect, collectedWin };
 };
 
-export const findCollectables = (gridElements: GridElement[]): boolean => {
-    return gridElements.reduce((acc, el) => {
-        return acc || el.collectable;
-    }, false);
+export const getAllWinElements = (
+    gridElements: GridElement[],
+): {
+    newGridElements: GridElement[];
+    collectedWin: number;
+} => {
+    let collectedWin: number = 0;
+
+    const newGridElements = gridElements.map((el) => {
+        if (el.collectable) {
+            collectedWin += el.value;
+            return { ...el, collectable: false, value: 0, winner: false };
+        }
+
+        return el;
+    });
+
+    return { newGridElements, collectedWin };
 };

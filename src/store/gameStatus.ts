@@ -2,10 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
     calculateGrid,
     selectCollectables,
-    selectWinElement,
+    getWinElement,
     selectWinners,
+    getAllWinElements,
 } from "../utils";
-import { GridElement, Level, Winner } from "../types";
+import { CurrentStatus, GridElement, Level, Winner } from "../types";
 
 export interface GameStatusState {
     username: string;
@@ -13,8 +14,7 @@ export interface GameStatusState {
     isAuth: boolean;
     loading: boolean;
     levelSelected: Level | null;
-    inPlay: boolean;
-    isCollect: boolean;
+    currentStatus: CurrentStatus;
     gridElements: GridElement[];
     gridElWidth: number;
     gridElHeight: number;
@@ -32,8 +32,7 @@ const initialState: GameStatusState = {
     isAuth: false,
     loading: true,
     levelSelected: null,
-    inPlay: false,
-    isCollect: false,
+    currentStatus: CurrentStatus.Start,
     gridElements: [],
     gridElWidth: 0,
     gridElHeight: 0,
@@ -125,7 +124,7 @@ const gameStatusSlice = createSlice({
 
             if (state.levelSelected) {
                 const { gridElWidth, gridElHeight, gridElements } =
-                    calculateGrid(state.levelSelected, width, height);
+                    calculateGrid(state.levelSelected, width, height,);
 
                 const updatedElements = gridElements.map((el) => {
                     const lookInd = state.gridElements.findIndex(
@@ -146,6 +145,8 @@ const gameStatusSlice = createSlice({
             return state;
         },
         increaseBid: (state, action: PayloadAction<{ id: string }>) => {
+            if (state.currentStatus === CurrentStatus.Play) return state;
+
             const { id } = action.payload;
 
             const newGridElements = state.gridElements.map((el) => {
@@ -166,6 +167,8 @@ const gameStatusSlice = createSlice({
             };
         },
         decreaseBid: (state, action: PayloadAction<{ id: string }>) => {
+            if (state.currentStatus === CurrentStatus.Play) return state;
+
             const { id } = action.payload;
 
             const newGridElements = state.gridElements.map((el) => {
@@ -216,7 +219,7 @@ const gameStatusSlice = createSlice({
 
             return {
                 ...state,
-                inPlay: true,
+                currentStatus: CurrentStatus.Play,
                 winners,
                 gridElements: newGridElements,
             };
@@ -224,9 +227,8 @@ const gameStatusSlice = createSlice({
         endGame: (state) => {
             return {
                 ...state,
-                inPlay: false,
+                currentStatus: CurrentStatus.Collect,
                 winners: [],
-                isCollect: true,
             };
         },
 
@@ -245,18 +247,33 @@ const gameStatusSlice = createSlice({
                 itemsToCollect: state.itemsToCollect || itemsToCollect,
             };
         },
-        collectWin: (state, action: PayloadAction<{ id: string }>) => {
+        collectWinElement: (state, action: PayloadAction<{ id: string }>) => {
             const { id } = action.payload;
 
             const { newGridElements, itemsToCollect, collectedWin } =
-                selectWinElement(id, state.gridElements);
+                getWinElement(id, state.gridElements);
 
             return {
                 ...state,
                 gridElements: newGridElements,
                 itemsToCollect,
                 coins: state.coins + collectedWin,
-                isCollect: itemsToCollect,
+                currentStatus: itemsToCollect
+                    ? CurrentStatus.Collect
+                    : CurrentStatus.Start,
+            };
+        },
+        collectAllWinElements: (state) => {
+            const { newGridElements, collectedWin } = getAllWinElements(
+                state.gridElements,
+            );
+
+            return {
+                ...state,
+                gridElements: newGridElements,
+                itemsToCollect: false,
+                coins: state.coins + collectedWin,
+                currentStatus: CurrentStatus.Start,
             };
         },
     },
@@ -276,6 +293,8 @@ export const {
     startGame,
     endGame,
     setCollectable,
+    collectWinElement,
+    collectAllWinElements
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;

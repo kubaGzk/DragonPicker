@@ -14,3 +14,9 @@ export interface Winner {
     y: number;
     id: string;
 }
+
+export enum CurrentStatus {
+    Start,
+    Play,
+    Collect,
+}

@@ -1,7 +1,12 @@
 import { FC } from "react";
 import GridElement from "../GridElement/GridElement";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { decreaseBid, increaseBid } from "../../../store/gameStatus";
+import {
+    collectWinElement,
+    decreaseBid,
+    increaseBid,
+} from "../../../store/gameStatus";
+import { CurrentStatus } from "../../../types";
 
 interface GridProps {}
 
@@ -10,7 +15,7 @@ const Grid: FC<GridProps> = (props) => {
         gridElWidth,
         gridElHeight,
         gridElements,
-        inPlay,
+        currentStatus,
         bidAmount,
         minStake,
         maxStake,
@@ -30,9 +35,9 @@ const Grid: FC<GridProps> = (props) => {
         }
     };
 
-    // const collectHandler = (id: string) =>{
-    //     dispatch(collectW)
-    // }
+    const collectHandler = (id: string) => {
+        dispatch(collectWinElement({ id }));
+    };
 
     return (
         <>
@@ -46,11 +51,12 @@ const Grid: FC<GridProps> = (props) => {
                         y={el.y}
                         elWidth={gridElWidth}
                         elHeight={gridElHeight}
-                        inPlay={inPlay}
+                        currentStatus={currentStatus}
                         key={el.id}
                         onIncrease={() => increaseHandler(el.id, el.value)}
                         onDecrease={() => decreaseHandler(el.id, el.value)}
                         collectable={el.collectable}
+                        onCollect={() => collectHandler(el.id)}
                     />
                 );
             })}

@@ -1,8 +1,8 @@
 import { Container, Text, Graphics } from "@pixi/react";
 import { FC, useCallback } from "react";
-
-import { TextStyle } from "pixi.js";
 import Increaser from "./Increaser/Increaser";
+import { CurrentStatus } from "../../../types";
+import { gridElementStyle } from "../../../styles";
 
 interface GridElementProps {
     minStake: number;
@@ -12,10 +12,11 @@ interface GridElementProps {
     y: number;
     elWidth: number;
     elHeight: number;
-    inPlay: boolean;
+    currentStatus: CurrentStatus;
     onIncrease: () => void;
     onDecrease: () => void;
     collectable: boolean;
+    onCollect: () => void;
 }
 
 const GridElement: FC<GridElementProps> = (props) => {
@@ -23,6 +24,7 @@ const GridElement: FC<GridElementProps> = (props) => {
         minStake,
         maxStake,
         currValue,
+        currentStatus,
         x,
         y,
         elWidth,
@@ -30,6 +32,7 @@ const GridElement: FC<GridElementProps> = (props) => {
         onIncrease,
         onDecrease,
         collectable,
+        onCollect,
     } = props;
 
     const draw = useCallback(
@@ -44,26 +47,12 @@ const GridElement: FC<GridElementProps> = (props) => {
         [elWidth, elHeight, collectable],
     );
 
-    const textStyle = new TextStyle({
-        align: "center",
-        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-        fontSize: elHeight * 0.45,
-        fontWeight: "400",
-        fill: ["#ffffff", "#00ff99"], // gradient
-        stroke: "#01d27e",
-        strokeThickness: 2,
-        letterSpacing: 8,
-        dropShadow: true,
-        dropShadowColor: "#ccced2",
-        dropShadowBlur: 6,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 4,
-        wordWrap: true,
-        wordWrapWidth: 440,
-    });
+    const textStyle = gridElementStyle(elHeight, collectable);
 
     const increaserType =
-        minStake < currValue
+        currentStatus === CurrentStatus.Play
+            ? "blocked"
+            : minStake < currValue
             ? currValue < maxStake
                 ? "regular"
                 : "high"
@@ -71,7 +60,11 @@ const GridElement: FC<GridElementProps> = (props) => {
 
     return (
         <Container x={x} y={y}>
-            <Graphics draw={draw} />
+            <Graphics
+                draw={draw}
+                interactive={collectable}
+                onclick={onCollect}
+            />
 
             <Increaser
                 x={elWidth * 0.9}
