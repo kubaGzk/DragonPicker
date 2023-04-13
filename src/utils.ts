@@ -34,7 +34,8 @@ export const calculateGrid = (
 } => {
     const gridElements: GridElement[] = [];
 
-    const lvlGrid: 3 | 4 | 5 = level === 1 ? 3 : level === 2 ? 4 : 5;
+    const lvlGrid: 3 | 4 | 5 =
+        level === Level.First ? 3 : level === Level.Second ? 4 : 5;
 
     const gridWidth = width * 0.75;
     const gridHeight = height * 0.8;
@@ -75,7 +76,8 @@ export const selectWinners = (
     level: Level,
     gridElements: GridElement[],
 ): { winners: Winner[] } => {
-    const lvlGrid: 3 | 4 | 5 = level === 1 ? 3 : level === 2 ? 4 : 5;
+    const lvlGrid: 3 | 4 | 5 =
+        level === Level.First ? 3 : level === Level.Second ? 4 : 5;
 
     const x = Math.floor(Math.random() * lvlGrid);
     const y = Math.floor(Math.random() * lvlGrid);
@@ -107,7 +109,7 @@ export const selectCollectables = (
     const newGridElements = gridElements.map((el) => {
         const [x, _] = el.id.split("");
 
-        const multiplier = multiLevels - parseInt(x) * 2;
+        const multiplier = (multiLevels - parseInt(x)) * 2;
 
         if (el.id === id && el.value > 0) {
             itemsToCollect = true;
@@ -159,9 +161,9 @@ export const getAllWinElements = (
         if (el.collectable) {
             collectedWin += el.value;
             return { ...el, collectable: false, value: 0, winner: false };
+        } else {
+            return { ...el, value: 0 };
         }
-
-        return el;
     });
 
     return { newGridElements, collectedWin };

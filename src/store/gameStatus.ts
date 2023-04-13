@@ -13,7 +13,7 @@ export interface GameStatusState {
     coins: number;
     isAuth: boolean;
     loading: boolean;
-    levelSelected: Level | null;
+    levelSelected: Level;
     currentStatus: CurrentStatus;
     gridElements: GridElement[];
     gridElWidth: number;
@@ -31,7 +31,7 @@ const initialState: GameStatusState = {
     coins: 0,
     isAuth: false,
     loading: true,
-    levelSelected: null,
+    levelSelected: Level.Menu,
     currentStatus: CurrentStatus.Start,
     gridElements: [],
     gridElWidth: 0,
@@ -70,24 +70,6 @@ const gameStatusSlice = createSlice({
         completeLoading: (state) => {
             return { ...state, loading: false };
         },
-        decreaseWallet: (state, action: PayloadAction<{ stake: number }>) => {
-            const { stake } = action.payload;
-
-            if (state.coins - stake < 0) {
-                return state;
-            }
-
-            return { ...state, coins: state.coins - stake };
-        },
-
-        increaseWallet: (
-            state,
-            action: PayloadAction<{ returnedCoins: number }>,
-        ) => {
-            const { returnedCoins } = action.payload;
-
-            return { ...state, coins: state.coins + returnedCoins };
-        },
 
         selectLevel: (
             state,
@@ -122,9 +104,9 @@ const gameStatusSlice = createSlice({
         ) => {
             const { width, height } = action.payload;
 
-            if (state.levelSelected) {
+            if (state.levelSelected !== Level.Menu) {
                 const { gridElWidth, gridElHeight, gridElements } =
-                    calculateGrid(state.levelSelected, width, height,);
+                    calculateGrid(state.levelSelected, width, height);
 
                 const updatedElements = gridElements.map((el) => {
                     const lookInd = state.gridElements.findIndex(
@@ -185,7 +167,7 @@ const gameStatusSlice = createSlice({
             return {
                 ...state,
                 gridElements: newGridElements,
-                coins: state.coins - state.bidAmount,
+                coins: state.coins + state.bidAmount,
             };
         },
 
@@ -208,6 +190,10 @@ const gameStatusSlice = createSlice({
                 state.gridElements,
             );
 
+            const validCoins = state.coins;
+
+            localStorage.setItem("GAME_Coins", validCoins.toString());
+
             const newGridElements = state.gridElements.map((el) => {
                 const ind = winners.findIndex((win) => win.id === el.id);
 
@@ -228,7 +214,6 @@ const gameStatusSlice = createSlice({
             return {
                 ...state,
                 currentStatus: CurrentStatus.Collect,
-                winners: [],
             };
         },
 
@@ -253,14 +238,27 @@ const gameStatusSlice = createSlice({
             const { newGridElements, itemsToCollect, collectedWin } =
                 getWinElement(id, state.gridElements);
 
+            let updatedElements = newGridElements;
+
+            if (!itemsToCollect) {
+                updatedElements = newGridElements.map((el) => ({
+                    ...el,
+                    value: 0,
+                }));
+            }
+
+            const validCoins = state.coins + collectedWin;
+            localStorage.setItem("GAME_Coins", validCoins.toString());
+
             return {
                 ...state,
-                gridElements: newGridElements,
+                gridElements: updatedElements,
                 itemsToCollect,
                 coins: state.coins + collectedWin,
                 currentStatus: itemsToCollect
                     ? CurrentStatus.Collect
                     : CurrentStatus.Start,
+                winners: itemsToCollect ? state.winners : [],
             };
         },
         collectAllWinElements: (state) => {
@@ -268,12 +266,16 @@ const gameStatusSlice = createSlice({
                 state.gridElements,
             );
 
+            const validCoins = state.coins + collectedWin;
+            localStorage.setItem("GAME_Coins", validCoins.toString());
+
             return {
                 ...state,
                 gridElements: newGridElements,
                 itemsToCollect: false,
                 coins: state.coins + collectedWin,
                 currentStatus: CurrentStatus.Start,
+                winners: [],
             };
         },
     },
@@ -282,8 +284,6 @@ const gameStatusSlice = createSlice({
 export const {
     login,
     completeLoading,
-    decreaseWallet,
-    increaseWallet,
     selectLevel,
     recalculateGrid,
     increaseBid,
@@ -294,7 +294,7 @@ export const {
     endGame,
     setCollectable,
     collectWinElement,
-    collectAllWinElements
+    collectAllWinElements,
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;

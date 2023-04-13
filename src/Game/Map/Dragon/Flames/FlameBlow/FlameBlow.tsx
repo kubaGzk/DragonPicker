@@ -18,12 +18,11 @@ const FlameBlow: FC<FlameBlowProps> = (props) => {
     const [showBlow, setShowBlow] = useState<boolean>(false);
 
     useEffect(() => {
-        console.log(flameX);
-
         if (
-            (Math.round(flameX) ||
-                Math.round(flameX) - 1 ||
-                Math.round(flameX) + 1) === Math.round(x)
+            showBlow === false &&
+            (Math.round(flameX) === Math.round(x) ||
+                Math.round(flameX) === Math.round(x - 1) ||
+                Math.round(flameX) === Math.round(x + 1))
         ) {
             setShowBlow(true);
         }
@@ -38,7 +37,7 @@ const FlameBlow: FC<FlameBlowProps> = (props) => {
 
     return (
         <AnimatedSprite
-            isPlaying={true}
+            isPlaying={showBlow}
             animationSpeed={0.1}
             images={[Fire_Attack4, Fire_Attack5, Fire_Attack6]}
             x={x - 0.3 * gridElHeight}

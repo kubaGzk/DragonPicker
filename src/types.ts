@@ -7,7 +7,12 @@ export interface GridElement {
     collectable: boolean;
 }
 
-export type Level = 1 | 2 | 3;
+export enum Level {
+    Menu,
+    First,
+    Second,
+    Third,
+}
 
 export interface Winner {
     x: number;

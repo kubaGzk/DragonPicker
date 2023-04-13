@@ -32,6 +32,8 @@ const AttackingDragon: FC<AttackingDragonProps> = (props) => {
             onLoop={onComplete}
             x={x}
             y={y - gridElHeight}
+            width={gridElHeight * 3}
+            height={gridElHeight * 3}
         />
     );
 };

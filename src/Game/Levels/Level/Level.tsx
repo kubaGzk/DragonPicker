@@ -1,7 +1,8 @@
-import { Container, Graphics, Sprite, Text } from "@pixi/react";
-import { TextStyle } from "pixi.js";
-import { FC, useCallback, useState } from "react";
+import { Container, Sprite, Text } from "@pixi/react";
+import { FC, useMemo, useState } from "react";
 import { calculateDimension } from "../../../utils";
+import { levelTextStyle, multiplierTextStyle } from "../../../styles";
+import { OutlineFilter } from "@pixi/filter-outline";
 
 interface LevelProps {
     img_url: string;
@@ -22,53 +23,29 @@ const Level: FC<LevelProps> = (props) => {
         index,
     );
 
-    const [pixelChange, setPixelChange] = useState<number>(0);
+    const [filters, setFilters] = useState<OutlineFilter[]>([]);
 
-    const multiTextStyle = new TextStyle({
-        align: "center",
-        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-        fontSize: 20,
-        fontWeight: "800",
-        fill: ["#996c0a", "#e1e430"], // gradient
-        stroke: "#e1e430",
-        strokeThickness: 0,
-        letterSpacing: 1,
-        dropShadow: true,
-        dropShadowColor: "#5c5610",
-        dropShadowBlur: 8,
-        dropShadowAngle: Math.PI / 2,
-        dropShadowDistance: 2,
-    });
+    const outlineFilter = useMemo(
+        () => new OutlineFilter(5, 0xfcee21, 0.1, 0.3),
+        [],
+    );
 
-    const textStyle = new TextStyle({
-        align: "center",
-        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-        fontSize: 50,
-        fontWeight: "400",
-        fill: ["#ffffff", "#00ff99"], // gradient
-        stroke: "#01d27e",
-        strokeThickness: 5,
-        letterSpacing: 10,
-        dropShadow: true,
-        dropShadowColor: "#ccced2",
-        dropShadowBlur: 4,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 6,
-        wordWrap: true,
-        wordWrapWidth: 440,
-    });
+    const addFilterHandler = () => {
+        setFilters([outlineFilter]);
+    };
 
+    const removeFilterHandler = () => {
+        setFilters([]);
+    };
 
-        //ADD Outline Filter
+    // const draw = useCallback((g: any) => {
+    //     g.clear();
 
-    const draw = useCallback((g: any) => {
-        g.clear();
-
-        g.lineStyle(2, 0xff00bb, 1);
-        g.beginFill(0xff00bb, 0.25);
-        g.drawRoundedRect(0, 0, 300, 400, 15);
-        g.endFill();
-    }, []);
+    //     g.lineStyle(2, 0xff00bb, 1);
+    //     g.beginFill(0xff00bb, 0.25);
+    //     g.drawRoundedRect(0, 0, 300, 400, 15);
+    //     g.endFill();
+    // }, []);
 
     return (
         <Container
@@ -77,43 +54,40 @@ const Level: FC<LevelProps> = (props) => {
             x={x}
             y={y}
             interactive={true}
-            onmouseenter={(e) => {
-                console.log("on");
-
-                textStyle.letterSpacing = 12;
-
-                setPixelChange(5);
-            }}
-            onmouseleave={(e) => {
-                console.log("on");
-
-                textStyle.letterSpacing = 10;
-                setPixelChange(0);
-            }}
+            onmouseenter={addFilterHandler}
+            onmouseleave={removeFilterHandler}
             onclick={onClick}
         >
-            <Graphics draw={draw} />
+            {/* <Graphics draw={draw} /> */}
 
             <Sprite
                 image={img_url}
-                x={55 - pixelChange}
-                y={5 - pixelChange}
-                width={190 + 2 * pixelChange}
-                height={290 + 2 * pixelChange}
+                x={itemWidth / 2}
+                y={itemHeight / 2}
+                width={itemWidth * 0.8}
+                height={itemHeight * 0.8}
+                anchor={0.5}
+                zIndex={2}
+                filters={filters}
             />
             <Text
-                text={`MAX Multipier ${multiplier}`}
-                style={multiTextStyle}
-                x={10 - pixelChange}
-                y={10 - pixelChange}
+                text={`MAX Multiplier ${multiplier}`}
+                style={multiplierTextStyle}
+                x={10}
+                y={10}
                 anchor={0}
+                zIndex={3}
+                filters={filters}
             />
             <Text
                 text={name}
-                style={textStyle}
-                x={50}
-                y={295 + pixelChange}
-                width={220}
+                style={levelTextStyle}
+                x={itemWidth / 2}
+                width={itemWidth}
+                y={itemHeight * 0.9}
+                anchor={0.5}
+                zIndex={3}
+                filters={filters}
             />
         </Container>
     );

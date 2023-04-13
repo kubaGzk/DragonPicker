@@ -21,9 +21,24 @@ const Levels: FC<LevelsProps> = (props) => {
         img_url: string;
         maxMultiplier: string;
     }[] = [
-        { name: "Level 1", id: 1, img_url: Level1, maxMultiplier: "1,6" },
-        { name: "Level 2", id: 2, img_url: Level2, maxMultiplier: "1,8" },
-        { name: "Level 3", id: 3, img_url: Level3, maxMultiplier: "2" },
+        {
+            name: "Level 1",
+            id: TLevel.First,
+            img_url: Level1,
+            maxMultiplier: "6",
+        },
+        {
+            name: "Level 2",
+            id: TLevel.Second,
+            img_url: Level2,
+            maxMultiplier: "8",
+        },
+        {
+            name: "Level 3",
+            id: TLevel.Third,
+            img_url: Level3,
+            maxMultiplier: "10",
+        },
     ];
 
     const dispatch = useAppDispatch();

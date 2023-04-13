@@ -1,7 +1,7 @@
 import { Container, Text, Graphics } from "@pixi/react";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import Increaser from "./Increaser/Increaser";
-import { CurrentStatus } from "../../../types";
+import { CurrentStatus, Level } from "../../../types";
 import { gridElementStyle } from "../../../styles";
 
 interface GridElementProps {
@@ -17,6 +17,7 @@ interface GridElementProps {
     onDecrease: () => void;
     collectable: boolean;
     onCollect: () => void;
+    levelSelected: Level;
 }
 
 const GridElement: FC<GridElementProps> = (props) => {
@@ -33,24 +34,34 @@ const GridElement: FC<GridElementProps> = (props) => {
         onDecrease,
         collectable,
         onCollect,
+        levelSelected,
     } = props;
+
+    const fillColors: number[] = useMemo(
+        () => [0xa25f4e, 0x485c4a, 0x5e5b3d],
+        [],
+    );
 
     const draw = useCallback(
         (g: any) => {
             g.clear();
 
-            g.lineStyle(2, 0xff00bb, 1);
-            g.beginFill(collectable ? 0xff7900 : 0xff00bb, 0.25);
+            g.lineStyle(2, 0xcbc6af, 1);
+            g.beginFill(
+                collectable ? 0xfcee21 : fillColors[levelSelected - 1],
+                0.6,
+            );
             g.drawRoundedRect(0, 0, elWidth, elHeight, 15);
             g.endFill();
         },
-        [elWidth, elHeight, collectable],
+        [elWidth, elHeight, collectable, fillColors, levelSelected],
     );
 
     const textStyle = gridElementStyle(elHeight, collectable);
 
     const increaserType =
-        currentStatus === CurrentStatus.Play
+        currentStatus === CurrentStatus.Play ||
+        currentStatus === CurrentStatus.Collect
             ? "blocked"
             : minStake < currValue
             ? currValue < maxStake

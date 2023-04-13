@@ -1,9 +1,10 @@
-import { FC, useState } from "react";
+import { FC, useState, useMemo } from "react";
 import { Container, Sprite, Text } from "@pixi/react";
-import { TextStyle } from "pixi.js";
+import { OutlineFilter } from "@pixi/filter-outline";
 
 import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
 import Img_Menu from "../../../assets/UI/Menu/Menu.png";
+import { usernameTextStyle } from "../../../styles";
 
 interface UserBarProps {
     username: string;
@@ -12,26 +13,20 @@ interface UserBarProps {
 const UserBar: FC<UserBarProps> = (props) => {
     const { username } = props;
 
-    const [menuSize, setMenuSize] = useState<number>(28);
+    const [filters, setFilters] = useState<OutlineFilter[]>([]);
 
-    const usernameStyle = new TextStyle({
-        align: "center",
-        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-        fontSize: 20,
-        fontWeight: "400",
-        fill: ["#ffffff", "#ffffff"], // gradient
-        stroke: "#808080",
-        strokeThickness: 2,
-        letterSpacing: 10,
-        dropShadow: true,
-        dropShadowColor: "#ccced2",
-        dropShadowBlur: 5,
-        dropShadowDistance: 2,
-        wordWrap: true,
-        wordWrapWidth: 440,
-    });
+    const outlineFilter = useMemo(
+        () => new OutlineFilter(5, 0x000000, 0.1, 0.3),
+        [],
+    );
 
-    //ADD Outline Filter
+    const addFilterHandler = () => {
+        setFilters([outlineFilter]);
+    };
+
+    const removeFilterHandler = () => {
+        setFilters([]);
+    };
 
     return (
         <Container x={30} y={10}>
@@ -43,32 +38,27 @@ const UserBar: FC<UserBarProps> = (props) => {
                 height={60}
                 anchor={0}
             />
+                <Text
+                    text={username}
+                    style={usernameTextStyle}
+                    x={10}
+                    y={10}
+                    anchor={0}
+                />
 
-            <Text
-                text={username}
-                style={usernameStyle}
-                x={10}
-                y={10}
-                anchor={0}
-            />
             <Sprite
                 interactive={true}
                 image={Img_Menu}
                 x={210}
                 y={15}
-                width={menuSize}
-                height={menuSize}
-                onmouseenter={() => {
-                    console.log("enter");
-                    setMenuSize(30);
-                }}
-                onmouseleave={() => {
-                    setMenuSize(28);
-                    console.log("leave");
-                }}
+                width={28}
+                height={28}
+                onmouseenter={addFilterHandler}
+                onmouseleave={removeFilterHandler}
                 onmousedown={() => {
                     console.log("click");
                 }}
+                filters={filters}
             />
         </Container>
     );

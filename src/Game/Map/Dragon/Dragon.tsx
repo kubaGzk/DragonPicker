@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { Container, useTick } from "@pixi/react";
 import WalkingDragon from "./WalkingDragon/WalkingDragon";
 import AttackingDragon from "./AttackingDragon/AttackingDragon";
-import DragonFlame from "./DragoFlame/DragonFlame";
+import DragonFlame from "./DragonFlame/DragonFlame";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import Flames from "./Flames/Flames";
 import { endGame, setCollectable } from "../../../store/gameStatus";
@@ -32,7 +32,7 @@ const Dragon: FC<DragonProps> = (props) => {
     useEffect(() => {
         setWalkX(width * 1.05);
         setFlameX(width * 0.8);
-        setCommonY(winners[winners.length - 1].y);
+        setCommonY(winners[0].y);
 
         dragonEntrance();
     }, []);
@@ -65,7 +65,6 @@ const Dragon: FC<DragonProps> = (props) => {
             setFlameX((prevX) => prevX - delta);
         } else if (throwFlame && flameX <= winners[winners.length - 1].x) {
             setThrowFlame(false);
-            endGameHandler();
         }
     });
 
@@ -77,12 +76,11 @@ const Dragon: FC<DragonProps> = (props) => {
         setExit(true);
     };
 
-    const collectableHandler = (id: string) => {
+    const collectableHandler = (id: string, ind: number) => {
         dispatch(setCollectable({ id }));
-    };
-
-    const endGameHandler = () => {
-        dispatch(endGame());
+        if (ind + 1 === winners.length) {
+            dispatch(endGame());
+        }
     };
 
     return (

@@ -3,6 +3,7 @@ import { Container, Sprite, Text } from "@pixi/react";
 import { TextStyle } from "pixi.js";
 import Img_Coin from "../../../assets/UI/Menu/Coin.png";
 import Img_CoinsBar from "../../../assets/UI/Menu/CoinsBar.png";
+import { coinsTextStyle } from "../../../styles";
 
 interface CoinsBarProps {
     width: number;
@@ -15,23 +16,6 @@ const CoinsBar: FC<CoinsBarProps> = (props) => {
 
     const stringCoins = coins.toString();
 
-    const coinsStyle = new TextStyle({
-        align: "center",
-        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-        fontSize: 20,
-        fontWeight: "900",
-        fill: ["#ffffff", "#FCEE21"], // gradient
-        stroke: "#c8a11fe6",
-        strokeThickness: 5,
-        letterSpacing: 10,
-        dropShadow: true,
-        dropShadowColor: "#444a57",
-        dropShadowBlur: 4,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 6,
-        wordWrap: true,
-        wordWrapWidth: 440,
-    });
     return (
         <Container x={width - 280} y={10}>
             <Sprite
@@ -46,7 +30,7 @@ const CoinsBar: FC<CoinsBarProps> = (props) => {
 
             <Text
                 text={stringCoins}
-                style={coinsStyle}
+                style={coinsTextStyle}
                 x={60}
                 y={20}
                 width={stringCoins.length * 18}

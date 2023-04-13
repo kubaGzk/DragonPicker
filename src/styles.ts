@@ -3,7 +3,7 @@ import { TextStyle } from "pixi.js";
 export const startStyle = new TextStyle({
     align: "center",
     fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
-    fontSize: 20,
+    fontSize: 60,
     fontWeight: "900",
     fill: ["#ffffff", "#FCEE21"], // gradient
     stroke: "#c8a11fe6",
@@ -16,6 +16,24 @@ export const startStyle = new TextStyle({
     dropShadowDistance: 6,
     wordWrap: true,
     wordWrapWidth: 440,
+});
+
+export const endGameStyle = new TextStyle({
+    align: "center",
+    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontSize: 40,
+    fontWeight: "800",
+    fill: ["#ffffff", "#FCEE21"], // gradient
+    stroke: "#c8a11fe6",
+    strokeThickness: 5,
+    letterSpacing: 2,
+    dropShadow: true,
+    dropShadowColor: "#444a57",
+    dropShadowBlur: 5,
+    dropShadowAngle: Math.PI / 2,
+    dropShadowDistance: 3,
+    wordWrap: true,
+    wordWrapWidth: 220,
 });
 
 export const gridElementStyle = (elHeight: number, collectable: boolean) =>
@@ -36,3 +54,74 @@ export const gridElementStyle = (elHeight: number, collectable: boolean) =>
         wordWrap: true,
         wordWrapWidth: 440,
     });
+
+export const multiplierTextStyle = new TextStyle({
+    align: "center",
+    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontSize: 20,
+    fontWeight: "900",
+    fill: ["#ffffff", "#FCEE21"], // gradient
+    stroke: "645110",
+    strokeThickness: 5,
+    letterSpacing: 5,
+    dropShadow: true,
+    dropShadowColor: "#444a57",
+    dropShadowBlur: 4,
+    dropShadowAngle: Math.PI / 3,
+    dropShadowDistance: 10,
+    wordWrap: true,
+    wordWrapWidth: 440,
+});
+
+export const levelTextStyle = new TextStyle({
+    align: "center",
+    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontSize: 50,
+    fontWeight: "400",
+    fill: ["91A574", "B1D0B3"], // gradient
+    stroke: "B1D0B3",
+    strokeThickness: 3,
+    letterSpacing: 10,
+    dropShadow: true,
+    dropShadowColor: "0x000000",
+    dropShadowBlur: 4,
+    dropShadowAngle: Math.PI / 2,
+    dropShadowDistance: 6,
+    wordWrap: true,
+    wordWrapWidth: 600,
+});
+
+export const usernameTextStyle = new TextStyle({
+    align: "center",
+    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontSize: 20,
+    fontWeight: "400",
+    fill: ["#ffffff", "#ffffff"], // gradient
+    stroke: "#808080",
+    strokeThickness: 2,
+    letterSpacing: 8,
+    dropShadow: true,
+    dropShadowColor: "#ccced2",
+    dropShadowBlur: 5,
+    dropShadowDistance: 2,
+    wordWrap: true,
+    wordWrapWidth: 440,
+});
+
+export const coinsTextStyle = new TextStyle({
+    align: "center",
+    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontSize: 20,
+    fontWeight: "900",
+    fill: ["#ffffff", "#FCEE21"], // gradient
+    stroke: "#c8a11fe6",
+    strokeThickness: 5,
+    letterSpacing: 10,
+    dropShadow: true,
+    dropShadowColor: "#444a57",
+    dropShadowBlur: 4,
+    dropShadowAngle: Math.PI / 6,
+    dropShadowDistance: 6,
+    wordWrap: true,
+    wordWrapWidth: 440,
+});

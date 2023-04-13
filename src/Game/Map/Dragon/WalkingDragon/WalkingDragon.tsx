@@ -22,6 +22,8 @@ const WalkingDragon: FC<WalkingDragonProps> = (props) => {
             images={[Walk1, Walk2, Walk3, Walk4, Walk5]}
             x={x}
             y={y - gridElHeight}
+            width={gridElHeight * 3}
+            height={gridElHeight * 3}
         />
     );
 };

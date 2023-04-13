@@ -20,6 +20,7 @@ const Grid: FC<GridProps> = (props) => {
         minStake,
         maxStake,
         coins,
+        levelSelected
     } = useAppSelector((state) => state.gameStatus);
 
     const dispatch = useAppDispatch();
@@ -57,6 +58,7 @@ const Grid: FC<GridProps> = (props) => {
                         onDecrease={() => decreaseHandler(el.id, el.value)}
                         collectable={el.collectable}
                         onCollect={() => collectHandler(el.id)}
+                        levelSelected={levelSelected}
                     />
                 );
             })}

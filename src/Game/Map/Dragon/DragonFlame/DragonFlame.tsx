@@ -19,7 +19,9 @@ const DragonFlame: FC<DragonFlameProps> = (props) => {
             animationSpeed={0.1}
             images={[Fire_Attack2, Fire_Attack3]}
             x={x}
-            y={y - gridElHeight}
+            y={y}
+            width={gridElHeight}
+            height={gridElHeight}
         />
     );
 };

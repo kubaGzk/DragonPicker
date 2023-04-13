@@ -17,7 +17,7 @@ interface MapProps {
 const Map: FC<MapProps> = (props) => {
     const { width, height } = props;
 
-    const { levelSelected, currentStatus } = useAppSelector(
+    const { levelSelected, currentStatus, totalWin } = useAppSelector(
         (state) => state.gameStatus,
     );
 
@@ -45,6 +45,7 @@ const Map: FC<MapProps> = (props) => {
                 height={height}
                 startGame={startGameHandler}
                 collectAll={collectAllWinHandler}
+                totalWin={totalWin}
             />
         </>
     );
