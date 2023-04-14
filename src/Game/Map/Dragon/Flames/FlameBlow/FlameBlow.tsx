@@ -26,7 +26,7 @@ const FlameBlow: FC<FlameBlowProps> = (props) => {
         ) {
             setShowBlow(true);
         }
-    }, [flameX, x]);
+    }, [flameX, x, showBlow]);
 
     const completeBlowHandler = () => {
         if (showBlow) {

@@ -1,8 +1,9 @@
 import { TextStyle } from "pixi.js";
+import "./fonts/alagard.ttf"
 
 export const startStyle = new TextStyle({
     align: "center",
-    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontFamily: "Alagard",
     fontSize: 60,
     fontWeight: "900",
     fill: ["#ffffff", "#FCEE21"], // gradient
@@ -20,7 +21,7 @@ export const startStyle = new TextStyle({
 
 export const endGameStyle = new TextStyle({
     align: "center",
-    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontFamily: "Alagard",
     fontSize: 40,
     fontWeight: "800",
     fill: ["#ffffff", "#FCEE21"], // gradient
@@ -39,7 +40,7 @@ export const endGameStyle = new TextStyle({
 export const gridElementStyle = (elHeight: number, collectable: boolean) =>
     new TextStyle({
         align: "center",
-        fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+        fontFamily: "Alagard",
         fontSize: elHeight * 0.45,
         fontWeight: "400",
         fill: collectable ? ["#ffffff", "#00ff99"] : ["#ffffff", "#00ff59"], // gradient
@@ -57,7 +58,7 @@ export const gridElementStyle = (elHeight: number, collectable: boolean) =>
 
 export const multiplierTextStyle = new TextStyle({
     align: "center",
-    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontFamily: "Alagard",
     fontSize: 20,
     fontWeight: "900",
     fill: ["#ffffff", "#FCEE21"], // gradient
@@ -75,7 +76,7 @@ export const multiplierTextStyle = new TextStyle({
 
 export const levelTextStyle = new TextStyle({
     align: "center",
-    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontFamily: "Alagard",
     fontSize: 50,
     fontWeight: "400",
     fill: ["91A574", "B1D0B3"], // gradient
@@ -93,7 +94,7 @@ export const levelTextStyle = new TextStyle({
 
 export const usernameTextStyle = new TextStyle({
     align: "center",
-    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontFamily: "Alagard",
     fontSize: 20,
     fontWeight: "400",
     fill: ["#ffffff", "#ffffff"], // gradient
@@ -110,7 +111,7 @@ export const usernameTextStyle = new TextStyle({
 
 export const coinsTextStyle = new TextStyle({
     align: "center",
-    fontFamily: '"Source Sans Pro", Helvetica, sans-serif',
+    fontFamily: "Alagard",
     fontSize: 20,
     fontWeight: "900",
     fill: ["#ffffff", "#FCEE21"], // gradient

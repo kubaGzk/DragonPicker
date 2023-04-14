@@ -33,7 +33,7 @@ const GameStage: FC<GameStageProps> = () => {
             {isAuth && <UserMenu width={width} height={height} />}
 
             {isAuth ? (
-                levelSelected ? (
+                levelSelected > 0 ? (
                     <Map width={width} height={height} />
                 ) : (
                     <Levels width={width} height={height} />

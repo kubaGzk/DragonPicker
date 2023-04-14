@@ -40,7 +40,7 @@ const Dragon: FC<DragonProps> = (props) => {
     useTick((delta) => {
         //DragonEntrance
         if (walk && walkX > width * 0.8) {
-            setWalkX((prevX) => prevX - delta);
+            setWalkX((prevX) => prevX - delta * 2);
         } else if (walk && walkX <= width * 0.8) {
             setWalk(false);
 
@@ -48,21 +48,17 @@ const Dragon: FC<DragonProps> = (props) => {
                 setThrowFlame(true);
             }, 300);
         }
-    });
 
-    useTick((delta) => {
         //DragonExit
         if (exit && walkX < width * 1.05) {
             setWalkX((prevX) => prevX + delta);
         } else if (exit && walkX <= width * 1.05) {
             setExit(false);
         }
-    });
 
-    useTick((delta) => {
         //FlameThrower
         if (throwFlame && flameX > winners[winners.length - 1].x) {
-            setFlameX((prevX) => prevX - delta);
+            setFlameX((prevX) => prevX - delta * 2);
         } else if (throwFlame && flameX <= winners[winners.length - 1].x) {
             setThrowFlame(false);
         }

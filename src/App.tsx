@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
-import Form from "./Form/Login";
+import Form from "./Menu/Login";
 import { withOverlay } from "./Overlay/withOverlay";
 import { completeLoading } from "./store/gameStatus";
 import GameStage from "./Game/GameStage";
@@ -39,8 +39,7 @@ function App() {
 
     return (
         <div className="App">
-            <GameStage />
-
+            {!loading && <GameStage />}
             {!loading && !isAuth && (
                 <FormWithOverlay
                     localUser={localUser}

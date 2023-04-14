@@ -23,9 +23,19 @@ code {
         monospace;
 }
 
-.overlay{
-  text-align: center;
-  position: absolute;
-  padding: 0;
-  margin: 0;
+.overlay {
+    text-align: center;
+    position: absolute;
+    padding: 0;
+    margin: 0;
+}
+
+@font-face {
+    font-family: "Alagard";
+    src: local("Alagard"), url(./fonts/alagard.ttf) format("truetype");
+}
+
+#useFont {
+    font-family: "Alagard";
+    font-size: 10pt;
 }

@@ -5,7 +5,6 @@ import Level3 from "../../assets/Caves/Level3.png";
 import Level from "./Level/Level";
 import { useAppDispatch } from "../../hooks/hooks";
 import { selectLevel } from "../../store/gameStatus";
-import { Level as TLevel } from "../../types";
 
 interface LevelsProps {
     width: number;
@@ -17,25 +16,25 @@ const Levels: FC<LevelsProps> = (props) => {
 
     const levelArr: {
         name: string;
-        id: TLevel;
+        id: number;
         img_url: string;
         maxMultiplier: string;
     }[] = [
         {
             name: "Level 1",
-            id: TLevel.First,
+            id: 1,
             img_url: Level1,
             maxMultiplier: "6",
         },
         {
             name: "Level 2",
-            id: TLevel.Second,
+            id: 2,
             img_url: Level2,
             maxMultiplier: "8",
         },
         {
             name: "Level 3",
-            id: TLevel.Third,
+            id: 3,
             img_url: Level3,
             maxMultiplier: "10",
         },
@@ -43,7 +42,7 @@ const Levels: FC<LevelsProps> = (props) => {
 
     const dispatch = useAppDispatch();
 
-    const levelSelectHandler = (level: TLevel) => {
+    const levelSelectHandler = (level: number) => {
         dispatch(selectLevel({ level, width, height }));
     };
 
@@ -59,6 +58,7 @@ const Levels: FC<LevelsProps> = (props) => {
                     width={width}
                     height={height}
                     onClick={() => levelSelectHandler(lvl.id)}
+                    numberOfLevels={levelArr.length}
                 />
             ))}
         </>

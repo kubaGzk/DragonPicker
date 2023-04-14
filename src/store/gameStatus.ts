@@ -6,14 +6,14 @@ import {
     selectWinners,
     getAllWinElements,
 } from "../utils";
-import { CurrentStatus, GridElement, Level, Winner } from "../types";
+import { CurrentStatus, GridElement, Winner } from "../types";
 
 export interface GameStatusState {
     username: string;
     coins: number;
     isAuth: boolean;
     loading: boolean;
-    levelSelected: Level;
+    levelSelected: number;
     currentStatus: CurrentStatus;
     gridElements: GridElement[];
     gridElWidth: number;
@@ -31,7 +31,7 @@ const initialState: GameStatusState = {
     coins: 0,
     isAuth: false,
     loading: true,
-    levelSelected: Level.Menu,
+    levelSelected: 0,
     currentStatus: CurrentStatus.Start,
     gridElements: [],
     gridElWidth: 0,
@@ -74,7 +74,7 @@ const gameStatusSlice = createSlice({
         selectLevel: (
             state,
             action: PayloadAction<{
-                level: Level;
+                level: number;
                 width: number;
                 height: number;
             }>,
@@ -104,7 +104,7 @@ const gameStatusSlice = createSlice({
         ) => {
             const { width, height } = action.payload;
 
-            if (state.levelSelected !== Level.Menu) {
+            if (state.levelSelected !== 0) {
                 const { gridElWidth, gridElHeight, gridElements } =
                     calculateGrid(state.levelSelected, width, height);
 
@@ -259,6 +259,7 @@ const gameStatusSlice = createSlice({
                     ? CurrentStatus.Collect
                     : CurrentStatus.Start,
                 winners: itemsToCollect ? state.winners : [],
+                totalWin: itemsToCollect ? state.totalWin : 0,
             };
         },
         collectAllWinElements: (state) => {
@@ -276,6 +277,7 @@ const gameStatusSlice = createSlice({
                 coins: state.coins + collectedWin,
                 currentStatus: CurrentStatus.Start,
                 winners: [],
+                totalWin: 0,
             };
         },
     },

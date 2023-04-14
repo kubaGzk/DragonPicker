@@ -1,30 +1,29 @@
-import { GridElement, Level, Winner } from "./types";
+import { GridElement, Winner } from "./types";
 
 export const calculateDimension = (
     width: number,
     height: number,
     ind: number,
-): { x: number; y: number; itemWidth: number; itemHeight: number } => {
-    let itemWidth = 300;
-    let itemHeight = 400;
-    if (width <= 960) {
-        itemWidth = 200;
-        itemHeight = 267;
+    numberOfLevels: number,
+): { x: number; y: number; scale: number } => {
+    const space = width / (numberOfLevels + 1);
+    const x = space + space * ind;
+    const y = height / 2;
+
+    //320x380 - fixed image
+
+    let scale = 1;
+    if (space < 320) {
+        scale = space / 320;
     }
 
-    if (height < 550) {
-        itemWidth = 200;
-        itemHeight = 267;
-    }
-    const space = (width - 3 * itemWidth) / 4;
-    const x = space + (itemWidth + space) * ind;
-    const y = (height - itemHeight) / 2;
+    console.log(scale);
 
-    return { x, y, itemWidth, itemHeight };
+    return { x, y, scale };
 };
 
 export const calculateGrid = (
-    level: Level,
+    level: number,
     width: number,
     height: number,
 ): {
@@ -34,8 +33,7 @@ export const calculateGrid = (
 } => {
     const gridElements: GridElement[] = [];
 
-    const lvlGrid: 3 | 4 | 5 =
-        level === Level.First ? 3 : level === Level.Second ? 4 : 5;
+    const lvlGrid: number = level + 2;
 
     const gridWidth = width * 0.75;
     const gridHeight = height * 0.8;
@@ -73,11 +71,10 @@ export const calculateGrid = (
 };
 
 export const selectWinners = (
-    level: Level,
+    level: number,
     gridElements: GridElement[],
 ): { winners: Winner[] } => {
-    const lvlGrid: 3 | 4 | 5 =
-        level === Level.First ? 3 : level === Level.Second ? 4 : 5;
+    const lvlGrid: number = level + 2;
 
     const x = Math.floor(Math.random() * lvlGrid);
     const y = Math.floor(Math.random() * lvlGrid);

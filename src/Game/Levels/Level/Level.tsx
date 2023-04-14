@@ -12,16 +12,22 @@ interface LevelProps {
     width: number;
     height: number;
     onClick: () => void;
+    numberOfLevels: number;
 }
 
 const Level: FC<LevelProps> = (props) => {
-    const { img_url, name, multiplier, index, width, height, onClick } = props;
-
-    const { x, y, itemWidth, itemHeight } = calculateDimension(
+    const {
+        img_url,
+        name,
+        multiplier,
+        index,
         width,
         height,
-        index,
-    );
+        onClick,
+        numberOfLevels,
+    } = props;
+
+    const { x, y, scale } = calculateDimension(width, height, index, numberOfLevels);
 
     const [filters, setFilters] = useState<OutlineFilter[]>([]);
 
@@ -38,56 +44,33 @@ const Level: FC<LevelProps> = (props) => {
         setFilters([]);
     };
 
-    // const draw = useCallback((g: any) => {
-    //     g.clear();
-
-    //     g.lineStyle(2, 0xff00bb, 1);
-    //     g.beginFill(0xff00bb, 0.25);
-    //     g.drawRoundedRect(0, 0, 300, 400, 15);
-    //     g.endFill();
-    // }, []);
-
     return (
         <Container
-            height={itemHeight}
-            width={itemWidth}
             x={x}
             y={y}
             interactive={true}
             onmouseenter={addFilterHandler}
             onmouseleave={removeFilterHandler}
             onclick={onClick}
+            pivot={{ x: 0.5, y: 0 }}
+            scale={scale}
         >
-            {/* <Graphics draw={draw} /> */}
-
-            <Sprite
-                image={img_url}
-                x={itemWidth / 2}
-                y={itemHeight / 2}
-                width={itemWidth * 0.8}
-                height={itemHeight * 0.8}
-                anchor={0.5}
-                zIndex={2}
-                filters={filters}
-            />
+            <Sprite image={img_url} anchor={0.5} filters={filters} />
             <Text
                 text={`MAX Multiplier ${multiplier}`}
                 style={multiplierTextStyle}
                 x={10}
-                y={10}
-                anchor={0}
-                zIndex={3}
-                filters={filters}
+                y={-190}
+                anchor={0.5}
+                // filters={filters}
             />
             <Text
                 text={name}
                 style={levelTextStyle}
-                x={itemWidth / 2}
-                width={itemWidth}
-                y={itemHeight * 0.9}
-                anchor={0.5}
-                zIndex={3}
-                filters={filters}
+                y={190}
+                anchor={{x:0.5, y:0.5}}
+                
+                // filters={filters}
             />
         </Container>
     );

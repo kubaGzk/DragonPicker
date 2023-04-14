@@ -1,7 +1,7 @@
 import { Container, Text, Graphics } from "@pixi/react";
 import { FC, useCallback, useMemo } from "react";
 import Increaser from "./Increaser/Increaser";
-import { CurrentStatus, Level } from "../../../types";
+import { CurrentStatus } from "../../../types";
 import { gridElementStyle } from "../../../styles";
 
 interface GridElementProps {
@@ -17,7 +17,7 @@ interface GridElementProps {
     onDecrease: () => void;
     collectable: boolean;
     onCollect: () => void;
-    levelSelected: Level;
+    levelSelected: number;
 }
 
 const GridElement: FC<GridElementProps> = (props) => {
