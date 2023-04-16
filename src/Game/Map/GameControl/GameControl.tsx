@@ -1,9 +1,14 @@
 import { FC, ReactNode, useMemo } from "react";
 import { CurrentStatus } from "../../../types";
 import Dragon from "../Dragon/Dragon";
-import { Text } from "@pixi/react";
-import { startStyle, endGameStyle } from "../../../styles";
+import { Sprite, Text, Container } from "@pixi/react";
+import { endGameStyle } from "../../../styles";
 import { OutlineFilter } from "@pixi/filter-outline";
+
+import Play from "../../../assets/UI/GameControls/Play.png";
+import EndGame from "../../../assets/UI/GameControls/EndGame.png";
+import CollectAll from "../../../assets/UI/GameControls/CollectAll.png";
+import { scaleCalculator } from "../../../utils";
 
 interface GameControlProps {
     currentStatus: CurrentStatus;
@@ -28,17 +33,30 @@ const GameControl: FC<GameControlProps> = (props) => {
     switch (currentStatus) {
         case CurrentStatus.Start:
             control = (
-                <Text
-                    text={"Start Game"}
-                    style={startStyle}
-                    x={width * 0.8}
+                <Container
+                    x={0.9 * width}
                     y={height / 2}
-                    width={150}
-                    interactive={true}
-                    onclick={startGame}
-                    anchor={{ x: 0, y: 0.5 }}
-                    filters={[outlineFilter]}
-                />
+                    anchor={0.5}
+                    scale={scaleCalculator(width, height)}
+                >
+                    <Text
+                        text={`Place your bids and click Play`}
+                        style={endGameStyle}
+                        x={0}
+                        y={-height / 3}
+                        filters={[outlineFilter]}
+                        anchor={0.5}
+                    />
+                    <Sprite
+                        image={Play}
+                        interactive={true}
+                        onclick={startGame}
+                        x={0}
+                        y={height / 3}
+                        anchor={0.5}
+                        cursor="pointer"
+                    />
+                </Container>
             );
             break;
 
@@ -48,49 +66,55 @@ const GameControl: FC<GameControlProps> = (props) => {
         case CurrentStatus.Collect:
             control =
                 totalWin > 0 ? (
-                    <>
+                    <Container
+                        x={0.9 * width}
+                        y={height / 2}
+                        anchor={0.5}
+                        scale={scaleCalculator(width, height)}
+                    >
                         <Text
                             text={`You won ${totalWin} coins`}
                             style={endGameStyle}
-                            x={width * 0.8}
-                            y={height / 3}
-                            width={150}
+                            x={0}
+                            y={-height / 3}
                             filters={[outlineFilter]}
+                            anchor={0.5}
                         />
-                        <Text
-                            text={"Collect your win"}
-                            style={endGameStyle}
-                            x={width * 0.8}
-                            y={(height * 2) / 3}
-                            width={150}
+                        <Sprite
+                            image={CollectAll}
                             interactive={true}
                             onclick={collectAll}
-                            filters={[outlineFilter]}
+                            x={0}
+                            y={height / 3}
+                            anchor={0.5}
+                            cursor="pointer"
                         />
-                    </>
+                    </Container>
                 ) : (
-                    <>
+                    <Container
+                        x={0.9 * width}
+                        y={height / 2}
+                        anchor={0.5}
+                        scale={scaleCalculator(width, height)}
+                    >
                         <Text
                             text={`Try again, you won 0 coins`}
                             style={endGameStyle}
-                            x={width * 0.8}
+                            x={0}
+                            y={-height / 3}
+                            filters={[outlineFilter]}
+                            anchor={0.5}
+                        />
+                        <Sprite
+                            image={EndGame}
+                            interactive={true}
+                            onclick={collectAll}
+                            x={0}
                             y={height / 3}
-                            width={150}
-                            interactive={true}
-                            onclick={collectAll}
-                            filters={[outlineFilter]}
+                            anchor={0.5}
+                            cursor="pointer"
                         />
-                        <Text
-                            text={"Finish the game"}
-                            style={endGameStyle}
-                            x={width * 0.8}
-                            y={(height * 2) / 3}
-                            width={150}
-                            interactive={true}
-                            onclick={collectAll}
-                            filters={[outlineFilter]}
-                        />
-                    </>
+                    </Container>
                 );
             break;
     }

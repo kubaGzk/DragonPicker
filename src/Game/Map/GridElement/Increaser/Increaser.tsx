@@ -25,6 +25,9 @@ const Increaser: FC<IncreaserProps> = (props) => {
     let topRotate: number;
     let lowRotate: number;
 
+    let topCursor: string;
+    let lowCursor: string;
+
     switch (type) {
         case "low":
             topButton = Img_Button_Plus;
@@ -32,6 +35,9 @@ const Increaser: FC<IncreaserProps> = (props) => {
 
             topRotate = 270;
             lowRotate = 270;
+
+            topCursor = "pointer";
+            lowCursor = "default";
 
             break;
 
@@ -42,6 +48,9 @@ const Increaser: FC<IncreaserProps> = (props) => {
             topRotate = 270;
             lowRotate = 270;
 
+            topCursor = "pointer";
+            lowCursor = "pointer";
+
             break;
 
         case "high":
@@ -51,6 +60,9 @@ const Increaser: FC<IncreaserProps> = (props) => {
             topRotate = 270;
             lowRotate = 270;
 
+            topCursor = "default";
+            lowCursor = "pointer";
+
             break;
 
         case "blocked":
@@ -59,6 +71,10 @@ const Increaser: FC<IncreaserProps> = (props) => {
 
             topRotate = 270;
             lowRotate = 270;
+
+            topCursor = "default";
+            lowCursor = "default";
+
             break;
     }
 
@@ -73,6 +89,7 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 angle={topRotate}
                 interactive={true}
                 onclick={onIncrease}
+                cursor={topCursor}
             />
             <Sprite
                 image={lowButton}
@@ -83,6 +100,7 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 angle={lowRotate}
                 interactive={true}
                 onclick={onDecrease}
+                cursor={lowCursor}
             />
         </Container>
     );

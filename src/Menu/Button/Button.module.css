@@ -1,0 +1,9 @@
+.Button {
+    cursor: url("../../assets/UI/Cursor/Pointer.png"), pointer;
+    font-family: "Alagard";
+    font-size: 3vw;
+
+    width: 20vw;
+    height: 10vw;
+    margin: 10vw;
+}

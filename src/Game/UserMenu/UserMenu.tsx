@@ -15,7 +15,7 @@ const UserMenu: FC<UserMenuProps> = (props) => {
 
     return (
         <>
-            <UserBar username={username} />
+            <UserBar username={username} width={width} height={height} />
             <CoinsBar width={width} height={height} coins={coins} />
         </>
     );

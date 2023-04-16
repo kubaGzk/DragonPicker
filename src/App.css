@@ -3,10 +3,9 @@
     position: absolute;
     padding: 0;
     margin: 0;
+
 }
 
 canvas {
     object-fit: cover;
 }
-
-

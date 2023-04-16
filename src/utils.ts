@@ -5,21 +5,12 @@ export const calculateDimension = (
     height: number,
     ind: number,
     numberOfLevels: number,
-): { x: number; y: number; scale: number } => {
+): { x: number; y: number } => {
     const space = width / (numberOfLevels + 1);
     const x = space + space * ind;
     const y = height / 2;
 
-    //320x380 - fixed image
-
-    let scale = 1;
-    if (space < 320) {
-        scale = space / 320;
-    }
-
-    console.log(scale);
-
-    return { x, y, scale };
+    return { x, y };
 };
 
 export const calculateGrid = (
@@ -164,4 +155,11 @@ export const getAllWinElements = (
     });
 
     return { newGridElements, collectedWin };
+};
+
+export const scaleCalculator = (width: number, height: number) => {
+    const scaleW = width / 1920;
+    const scaleH = height / 1080;
+
+    return scaleW > scaleH ? scaleH : scaleW;
 };

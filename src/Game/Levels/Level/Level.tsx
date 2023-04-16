@@ -1,6 +1,6 @@
 import { Container, Sprite, Text } from "@pixi/react";
 import { FC, useMemo, useState } from "react";
-import { calculateDimension } from "../../../utils";
+import { calculateDimension, scaleCalculator } from "../../../utils";
 import { levelTextStyle, multiplierTextStyle } from "../../../styles";
 import { OutlineFilter } from "@pixi/filter-outline";
 
@@ -27,7 +27,7 @@ const Level: FC<LevelProps> = (props) => {
         numberOfLevels,
     } = props;
 
-    const { x, y, scale } = calculateDimension(width, height, index, numberOfLevels);
+    const { x, y } = calculateDimension(width, height, index, numberOfLevels);
 
     const [filters, setFilters] = useState<OutlineFilter[]>([]);
 
@@ -53,11 +53,12 @@ const Level: FC<LevelProps> = (props) => {
             onmouseleave={removeFilterHandler}
             onclick={onClick}
             pivot={{ x: 0.5, y: 0 }}
-            scale={scale}
+            scale={scaleCalculator(width, height)}
+            cursor="pointer"
         >
             <Sprite image={img_url} anchor={0.5} filters={filters} />
             <Text
-                text={`MAX Multiplier ${multiplier}`}
+                text={`Bid Multiplier ${multiplier}`}
                 style={multiplierTextStyle}
                 x={10}
                 y={-190}

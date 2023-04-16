@@ -24,6 +24,7 @@ export interface GameStatusState {
     winners: Winner[];
     totalWin: number;
     itemsToCollect: boolean;
+    menuOn: boolean;
 }
 
 const initialState: GameStatusState = {
@@ -42,6 +43,7 @@ const initialState: GameStatusState = {
     winners: [],
     totalWin: 0,
     itemsToCollect: false,
+    menuOn: false,
 };
 
 const gameStatusSlice = createSlice({
@@ -279,6 +281,13 @@ const gameStatusSlice = createSlice({
                 winners: [],
                 totalWin: 0,
             };
+        },
+
+        turnMenuOn: (state) => {
+            return { ...state, menuOn: true };
+        },
+        turnMenuOff: (state) => {
+            return { ...state, menuOn: false };
         },
     },
 });

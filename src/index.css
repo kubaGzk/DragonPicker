@@ -5,9 +5,8 @@ body {
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-        "Helvetica Neue", sans-serif;
+    font-family: "Alagard";
+    font-size: 10pt;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     width: 100vw;
@@ -16,6 +15,10 @@ body {
     margin: 0;
     min-width: 600px;
     min-height: 800px;
+
+    cursor: url("assets//UI/Cursor/Default.png"), auto;
+    /* cursor: url("assets//UI/Cursor/Default.png"), default; */
+    /* cursor: url("assets/UI/Cursor/Pointer.png"), pointer; */
 }
 
 code {
@@ -39,3 +42,5 @@ code {
     font-family: "Alagard";
     font-size: 10pt;
 }
+
+

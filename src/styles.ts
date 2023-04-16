@@ -1,5 +1,4 @@
 import { TextStyle } from "pixi.js";
-import "./fonts/alagard.ttf"
 
 export const startStyle = new TextStyle({
     align: "center",
@@ -54,13 +53,14 @@ export const gridElementStyle = (elHeight: number, collectable: boolean) =>
         dropShadowDistance: 4,
         wordWrap: true,
         wordWrapWidth: 440,
+        
     });
 
 export const multiplierTextStyle = new TextStyle({
     align: "center",
     fontFamily: "Alagard",
-    fontSize: 20,
-    fontWeight: "900",
+    fontSize: 40,
+    fontWeight: "600",
     fill: ["#ffffff", "#FCEE21"], // gradient
     stroke: "645110",
     strokeThickness: 5,
@@ -95,8 +95,8 @@ export const levelTextStyle = new TextStyle({
 export const usernameTextStyle = new TextStyle({
     align: "center",
     fontFamily: "Alagard",
-    fontSize: 20,
-    fontWeight: "400",
+    fontSize: 35,
+    fontWeight: "500",
     fill: ["#ffffff", "#ffffff"], // gradient
     stroke: "#808080",
     strokeThickness: 2,

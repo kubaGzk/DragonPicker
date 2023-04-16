@@ -5,13 +5,16 @@ import { OutlineFilter } from "@pixi/filter-outline";
 import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
 import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 import { usernameTextStyle } from "../../../styles";
+import { scaleCalculator } from "../../../utils";
 
 interface UserBarProps {
     username: string;
+    width: number;
+    height: number;
 }
 
 const UserBar: FC<UserBarProps> = (props) => {
-    const { username } = props;
+    const { username, width, height } = props;
 
     const [filters, setFilters] = useState<OutlineFilter[]>([]);
 
@@ -29,36 +32,30 @@ const UserBar: FC<UserBarProps> = (props) => {
     };
 
     return (
-        <Container x={30} y={10}>
-            <Sprite
-                image={Img_UserBar}
-                x={0}
-                y={0}
-                width={250}
-                height={60}
-                anchor={0}
+        <Container x={30} y={10} scale={scaleCalculator(width,height)} anchor={0}>
+            <Sprite image={Img_UserBar} x={0} y={0} />
+            <Text
+                text={username}
+                style={usernameTextStyle}
+                anchor={{ x: 0, y: 0.5 }}
+                x={20}
+                y={43}
             />
-                <Text
-                    text={username}
-                    style={usernameTextStyle}
-                    x={10}
-                    y={10}
-                    anchor={0}
-                />
 
             <Sprite
                 interactive={true}
                 image={Img_Menu}
-                x={210}
-                y={15}
-                width={28}
-                height={28}
+                x={340}
+                y={43}
+                scale={0.8}
+                anchor={{ x: 1, y: 0.5 }}
                 onmouseenter={addFilterHandler}
                 onmouseleave={removeFilterHandler}
                 onmousedown={() => {
                     console.log("click");
                 }}
                 filters={filters}
+                cursor="pointer"
             />
         </Container>
     );

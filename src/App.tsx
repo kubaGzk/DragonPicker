@@ -5,6 +5,7 @@ import Form from "./Menu/Login";
 import { withOverlay } from "./Overlay/withOverlay";
 import { completeLoading } from "./store/gameStatus";
 import GameStage from "./Game/GameStage";
+import FontFaceObserver from "fontfaceobserver";
 
 function App() {
     const FormWithOverlay = withOverlay(Form);
@@ -20,11 +21,19 @@ function App() {
         | undefined
     >(undefined);
 
+    //CONTINUE WITH FACE OBSERVER
+    const font = new FontFaceObserver("Alagard");
+
     useEffect(() => {
         const username = localStorage.getItem("GAME_Username");
         const coins = parseInt(localStorage.getItem("GAME_Coins") || "");
 
         setLocalUser({ username: username || "", coins: coins });
+
+        font.load().then(
+            () => {},
+            () => console.error("No font found."),
+        );
     }, []);
 
     useEffect(() => {

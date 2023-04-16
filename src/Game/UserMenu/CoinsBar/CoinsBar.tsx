@@ -4,6 +4,7 @@ import { TextStyle } from "pixi.js";
 import Img_Coin from "../../../assets/UI/Menu/Coin.png";
 import Img_CoinsBar from "../../../assets/UI/Menu/CoinsBar.png";
 import { coinsTextStyle } from "../../../styles";
+import { scaleCalculator } from "../../../utils";
 
 interface CoinsBarProps {
     width: number;
@@ -12,28 +13,34 @@ interface CoinsBarProps {
 }
 
 const CoinsBar: FC<CoinsBarProps> = (props) => {
-    const { width, coins } = props;
+    const { width, coins, height } = props;
 
     const stringCoins = coins.toString();
+    const scale = scaleCalculator(width, height);
 
     return (
-        <Container x={width - 280} y={10}>
+        <Container
+            x={width - 354 * scale -30}
+            y={10}
+            scale={scale}
+            anchor={{ x: 0, y: 0 }}
+        >
+            <Sprite image={Img_CoinsBar} x={0} y={0} />
+
             <Sprite
-                image={Img_CoinsBar}
-                x={0}
-                y={10}
-                width={250}
-                height={60}
-                anchor={0}
+                image={Img_Coin}
+                anchor={{ x: 0, y: 0.5 }}
+                y={43}
+                x={-20}
+                scale={0.95}
             />
-            <Sprite image={Img_Coin} x={-30} y={0} width={80} height={80} />
 
             <Text
                 text={stringCoins}
                 style={coinsTextStyle}
-                x={60}
-                y={20}
-                width={stringCoins.length * 18}
+                anchor={{ x: 0, y: 0.5 }}
+                x={90}
+                y={43}
             />
         </Container>
     );

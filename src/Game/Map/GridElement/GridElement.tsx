@@ -3,6 +3,7 @@ import { FC, useCallback, useMemo } from "react";
 import Increaser from "./Increaser/Increaser";
 import { CurrentStatus } from "../../../types";
 import { gridElementStyle } from "../../../styles";
+import { Graphics as PixiGraphics } from "pixi.js";
 
 interface GridElementProps {
     minStake: number;
@@ -43,7 +44,7 @@ const GridElement: FC<GridElementProps> = (props) => {
     );
 
     const draw = useCallback(
-        (g: any) => {
+        (g: PixiGraphics) => {
             g.clear();
 
             g.lineStyle(2, 0xcbc6af, 1);
@@ -51,13 +52,16 @@ const GridElement: FC<GridElementProps> = (props) => {
                 collectable ? 0xfcee21 : fillColors[levelSelected - 1],
                 0.6,
             );
-            g.drawRoundedRect(0, 0, elWidth, elHeight, 15);
+            g.drawRoundedRect(0, 0, elWidth, elHeight, 5);
             g.endFill();
         },
         [elWidth, elHeight, collectable, fillColors, levelSelected],
     );
 
-    const textStyle = gridElementStyle(elHeight, collectable);
+    const textStyle = useMemo(
+        () => gridElementStyle(elHeight, collectable),
+        [elHeight, collectable],
+    );
 
     const increaserType =
         currentStatus === CurrentStatus.Play ||
@@ -75,6 +79,7 @@ const GridElement: FC<GridElementProps> = (props) => {
                 draw={draw}
                 interactive={collectable}
                 onclick={onCollect}
+                cursor={collectable ? "pointer" : "default"}
             />
 
             <Increaser

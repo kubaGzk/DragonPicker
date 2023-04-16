@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 
 import Button from "../Button/Button";
 import classes from "./LoginForm.module.css";
@@ -8,11 +8,11 @@ interface LoginFormProps {
     loginHandler: () => void;
 }
 
-const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
+const LoginForm: FC<LoginFormProps> = (props) => {
     const { usernameInputHandler, loginHandler } = props;
 
     return (
-        <div className={classes.LoginForm}>
+        <>
             <h1>Please provide your Username</h1>
             <label htmlFor="fname">Username</label>
             <input
@@ -23,7 +23,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = (props) => {
             />
 
             <Button onClick={loginHandler}>Start game</Button>
-        </div>
+        </>
     );
 };
 

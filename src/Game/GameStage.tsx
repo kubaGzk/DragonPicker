@@ -11,6 +11,7 @@ import Background3 from "../assets/Background/Battleground3.png";
 import Background4 from "../assets/Background/Battleground4.png";
 
 import Background from "./Background/Background";
+import GameLogo from "./UserMenu/GameLogo/GameLogo";
 
 interface GameStageProps {}
 
@@ -36,7 +37,10 @@ const GameStage: FC<GameStageProps> = () => {
                 levelSelected > 0 ? (
                     <Map width={width} height={height} />
                 ) : (
-                    <Levels width={width} height={height} />
+                    <>
+                        <GameLogo width={width} height={height} />
+                        <Levels width={width} height={height} />
+                    </>
                 )
             ) : null}
         </Stage>

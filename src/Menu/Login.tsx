@@ -3,6 +3,7 @@ import { useAppDispatch } from "../hooks/hooks";
 import { login } from "../store/gameStatus";
 import LoginForm from "./LoginForm/LoginForm";
 import UserQuestion from "./UserQuestion/UserQuestion";
+import Modal from "./Modal/Modal";
 
 interface FormProps {
     localUser?: { username: string; coins: number };
@@ -49,7 +50,7 @@ const Form: FunctionComponent<FormProps> = (props) => {
         );
     }
 
-    return form;
+    return <Modal>{form}</Modal>;
 };
 
 export default Form;
