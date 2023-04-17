@@ -1,18 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-    calculateGrid,
+    // calculateGrid,
     selectCollectables,
     getWinElement,
     selectWinners,
     getAllWinElements,
+    newCalculateGrid,
 } from "../utils";
 import { CurrentStatus, GridElement, Winner } from "../types";
 
 export interface GameStatusState {
-    username: string;
     coins: number;
-    isAuth: boolean;
-    loading: boolean;
     levelSelected: number;
     currentStatus: CurrentStatus;
     gridElements: GridElement[];
@@ -24,14 +22,10 @@ export interface GameStatusState {
     winners: Winner[];
     totalWin: number;
     itemsToCollect: boolean;
-    menuOn: boolean;
 }
 
 const initialState: GameStatusState = {
-    username: "",
     coins: 0,
-    isAuth: false,
-    loading: true,
     levelSelected: 0,
     currentStatus: CurrentStatus.Start,
     gridElements: [],
@@ -43,30 +37,20 @@ const initialState: GameStatusState = {
     winners: [],
     totalWin: 0,
     itemsToCollect: false,
-    menuOn: false,
 };
 
 const gameStatusSlice = createSlice({
     name: "gameStatus",
     initialState,
     reducers: {
-        login: (
-            state,
-            action: PayloadAction<{ username: string; coins?: number }>,
-        ) => {
-            const { username, coins } = action.payload;
+        addCoins: (state, action: PayloadAction<{ coins: number }>) => {
+            const { coins } = action.payload;
 
-            const validCoins = coins || 1000;
-
-            localStorage.setItem("GAME_Username", username);
-            localStorage.setItem("GAME_Coins", validCoins.toString());
+            localStorage.setItem("GAME_Coins", coins.toString());
 
             return {
                 ...state,
-                username,
-                coins: validCoins,
-                isAuth: true,
-                loading: false,
+                coins,
             };
         },
         completeLoading: (state) => {
@@ -77,17 +61,13 @@ const gameStatusSlice = createSlice({
             state,
             action: PayloadAction<{
                 level: number;
-                width: number;
-                height: number;
+                scale: number;
             }>,
         ) => {
-            const { level, width, height } = action.payload;
+            const { level, scale } = action.payload;
 
-            const { gridElWidth, gridElHeight, gridElements } = calculateGrid(
-                level,
-                width,
-                height,
-            );
+            const { gridElWidth, gridElHeight, gridElements } =
+                newCalculateGrid(level, scale);
 
             return {
                 ...state,
@@ -100,22 +80,26 @@ const gameStatusSlice = createSlice({
         recalculateGrid: (
             state,
             action: PayloadAction<{
-                width: number;
-                height: number;
+                scale: number;
             }>,
         ) => {
-            const { width, height } = action.payload;
+            const { scale } = action.payload;
 
             if (state.levelSelected !== 0) {
                 const { gridElWidth, gridElHeight, gridElements } =
-                    calculateGrid(state.levelSelected, width, height);
+                    newCalculateGrid(state.levelSelected, scale);
 
                 const updatedElements = gridElements.map((el) => {
                     const lookInd = state.gridElements.findIndex(
                         (stateEl) => stateEl.id === el.id,
                     );
 
-                    return { ...el, value: state.gridElements[lookInd].value };
+                    return {
+                        ...el,
+                        value: state.gridElements[lookInd].value,
+                        winner: state.gridElements[lookInd].winner,
+                        collectable: state.gridElements[lookInd].collectable,
+                    };
                 });
 
                 return {
@@ -283,18 +267,11 @@ const gameStatusSlice = createSlice({
             };
         },
 
-        turnMenuOn: (state) => {
-            return { ...state, menuOn: true };
-        },
-        turnMenuOff: (state) => {
-            return { ...state, menuOn: false };
-        },
     },
 });
 
 export const {
-    login,
-    completeLoading,
+    addCoins,
     selectLevel,
     recalculateGrid,
     increaseBid,

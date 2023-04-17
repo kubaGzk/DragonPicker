@@ -1,60 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
-import Form from "./Menu/Login";
-import { withOverlay } from "./Overlay/withOverlay";
-import { completeLoading } from "./store/gameStatus";
+import Menu from "./Menu/Menu";
+import { localCheck } from "./store/auth";
 import GameStage from "./Game/GameStage";
 import FontFaceObserver from "fontfaceobserver";
 
 function App() {
-    const FormWithOverlay = withOverlay(Form);
-
-    const { isAuth, loading } = useAppSelector((state) => state.gameStatus);
+    const { isAuth, loading, menuOn } = useAppSelector((state) => ({
+        ...state.auth,
+        ...state.menu,
+    }));
     const dispatch = useAppDispatch();
 
-    const [localUser, setLocalUser] = useState<
-        | {
-              username: string;
-              coins: number;
-          }
-        | undefined
-    >(undefined);
-
-    //CONTINUE WITH FACE OBSERVER
-    const font = new FontFaceObserver("Alagard");
+    const font = useMemo(() => new FontFaceObserver("Alagard"), []);
 
     useEffect(() => {
-        const username = localStorage.getItem("GAME_Username");
-        const coins = parseInt(localStorage.getItem("GAME_Coins") || "");
-
-        setLocalUser({ username: username || "", coins: coins });
+        dispatch(localCheck());
 
         font.load().then(
             () => {},
             () => console.error("No font found."),
         );
-    }, []);
-
-    useEffect(() => {
-        if (localUser) {
-            dispatch(completeLoading());
-        }
-    }, [localUser, dispatch]);
-
-    const clearLocalUser = () => {
-        setLocalUser(undefined);
-    };
+    }, [dispatch, font]);
 
     return (
         <div className="App">
             {!loading && <GameStage />}
-            {!loading && !isAuth && (
-                <FormWithOverlay
-                    localUser={localUser}
-                    clearLocalUser={clearLocalUser}
-                />
-            )}
+            {!loading && (!isAuth || menuOn) && <Menu />}
         </div>
     );
 }

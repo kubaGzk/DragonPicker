@@ -8,8 +8,6 @@ import Img_Button_Minus from "../../../../assets/Grid/Button_Minus.png";
 
 interface IncreaserProps {
     type: "low" | "regular" | "high" | "blocked";
-    x: number;
-    y: number;
     width: number;
     height: number;
     onIncrease: () => void;
@@ -17,7 +15,7 @@ interface IncreaserProps {
 }
 
 const Increaser: FC<IncreaserProps> = (props) => {
-    const { x, y, width, height, type, onIncrease, onDecrease } = props;
+    const { width, height, type, onIncrease, onDecrease } = props;
 
     let topButton: string;
     let lowButton: string;
@@ -79,13 +77,17 @@ const Increaser: FC<IncreaserProps> = (props) => {
     }
 
     return (
-        <Container x={x} y={y} width={width} height={height}>
+        <Container
+            x={0.8 * width}
+            y={0}
+            height={height}
+        >
             <Sprite
                 image={topButton}
-                x={0}
-                y={0}
-                width={width}
                 height={height / 2}
+                width={height / 2}
+                x={0}
+                y={height / 2}
                 angle={topRotate}
                 interactive={true}
                 onclick={onIncrease}
@@ -94,9 +96,9 @@ const Increaser: FC<IncreaserProps> = (props) => {
             <Sprite
                 image={lowButton}
                 x={0}
-                y={height / 2}
-                width={width}
                 height={height / 2}
+                width={height / 2}
+                y={height}
                 angle={lowRotate}
                 interactive={true}
                 onclick={onDecrease}

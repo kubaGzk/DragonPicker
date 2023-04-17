@@ -13,10 +13,9 @@ export const calculateDimension = (
     return { x, y };
 };
 
-export const calculateGrid = (
+export const newCalculateGrid = (
     level: number,
-    width: number,
-    height: number,
+    scale: number,
 ): {
     gridElWidth: number;
     gridElHeight: number;
@@ -26,30 +25,20 @@ export const calculateGrid = (
 
     const lvlGrid: number = level + 2;
 
-    const gridWidth = width * 0.75;
-    const gridHeight = height * 0.8;
+    const gridWidth = 1920 * 0.8 * scale;
+    const gridHeight = 1080 * 0.8 * scale;
 
-    const widthSpace = gridWidth / lvlGrid;
-    const heightSpace = gridHeight / lvlGrid;
+    const gridElWidth = gridWidth / (lvlGrid + 1);
+    const gridElHeight = gridHeight / (lvlGrid + 1);
 
-    let gridElWidth = level === 1 ? 160 : level === 2 ? 120 : 100;
-    let gridElHeight = level === 1 ? 120 : level === 2 ? 90 : 75;
-
-    if (width < 960) {
-        gridElWidth = level === 1 ? 120 : level === 2 ? 100 : 80;
-        gridElHeight = level === 1 ? 90 : level === 2 ? 75 : 60;
-    }
-
-    if (height < 540) {
-        gridElWidth = level === 1 ? 120 : level === 2 ? 100 : 80;
-        gridElHeight = level === 1 ? 90 : level === 2 ? 75 : 60;
-    }
+    const spaceWidth = gridElWidth / (lvlGrid + 1);
+    const spaceHeight = gridElHeight / (lvlGrid + 1);
 
     for (let i = 0; i < lvlGrid; i++) {
         for (let j = 0; j < lvlGrid; j++) {
             gridElements.push({
-                x: i * widthSpace + 0.05 * width,
-                y: j * heightSpace + 0.2 * height,
+                x: i * (gridElWidth + spaceWidth) + spaceWidth,
+                y: j * (gridElHeight + spaceHeight) + 0.2 * 1080 * scale,
                 value: 0,
                 id: `${i}${j}`,
                 winner: false,
@@ -163,3 +152,51 @@ export const scaleCalculator = (width: number, height: number) => {
 
     return scaleW > scaleH ? scaleH : scaleW;
 };
+
+// const calculateGrid = (
+//     level: number,
+//     width: number,
+//     height: number,
+// ): {
+//     gridElWidth: number;
+//     gridElHeight: number;
+//     gridElements: GridElement[];
+// } => {
+//     const gridElements: GridElement[] = [];
+
+//     const lvlGrid: number = level + 2;
+
+//     const gridWidth = width * 0.75;
+//     const gridHeight = height * 0.8;
+
+//     const widthSpace = gridWidth / lvlGrid;
+//     const heightSpace = gridHeight / lvlGrid;
+
+//     let gridElWidth = level === 1 ? 160 : level === 2 ? 120 : 100;
+//     let gridElHeight = level === 1 ? 120 : level === 2 ? 90 : 75;
+
+//     if (width < 960) {
+//         gridElWidth = level === 1 ? 120 : level === 2 ? 100 : 80;
+//         gridElHeight = level === 1 ? 90 : level === 2 ? 75 : 60;
+//     }
+
+//     if (height < 540) {
+//         gridElWidth = level === 1 ? 120 : level === 2 ? 100 : 80;
+//         gridElHeight = level === 1 ? 90 : level === 2 ? 75 : 60;
+//     }
+
+//     for (let i = 0; i < lvlGrid; i++) {
+//         for (let j = 0; j < lvlGrid; j++) {
+//             gridElements.push({
+//                 x: i * widthSpace + 0.05 * width,
+//                 y: j * heightSpace + 0.2 * height,
+//                 value: 0,
+//                 id: `${i}${j}`,
+//                 winner: false,
+//                 collectable: false,
+//             });
+//         }
+//     }
+
+//     return { gridElHeight, gridElWidth, gridElements };
+// };

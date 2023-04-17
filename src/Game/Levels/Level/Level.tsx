@@ -1,6 +1,6 @@
 import { Container, Sprite, Text } from "@pixi/react";
 import { FC, useMemo, useState } from "react";
-import { calculateDimension, scaleCalculator } from "../../../utils";
+import { calculateDimension } from "../../../utils";
 import { levelTextStyle, multiplierTextStyle } from "../../../styles";
 import { OutlineFilter } from "@pixi/filter-outline";
 
@@ -13,6 +13,7 @@ interface LevelProps {
     height: number;
     onClick: () => void;
     numberOfLevels: number;
+    scale: number;
 }
 
 const Level: FC<LevelProps> = (props) => {
@@ -25,6 +26,7 @@ const Level: FC<LevelProps> = (props) => {
         height,
         onClick,
         numberOfLevels,
+        scale,
     } = props;
 
     const { x, y } = calculateDimension(width, height, index, numberOfLevels);
@@ -53,7 +55,7 @@ const Level: FC<LevelProps> = (props) => {
             onmouseleave={removeFilterHandler}
             onclick={onClick}
             pivot={{ x: 0.5, y: 0 }}
-            scale={scaleCalculator(width, height)}
+            scale={scale}
             cursor="pointer"
         >
             <Sprite image={img_url} anchor={0.5} filters={filters} />
@@ -63,15 +65,12 @@ const Level: FC<LevelProps> = (props) => {
                 x={10}
                 y={-190}
                 anchor={0.5}
-                // filters={filters}
             />
             <Text
                 text={name}
                 style={levelTextStyle}
                 y={190}
-                anchor={{x:0.5, y:0.5}}
-                
-                // filters={filters}
+                anchor={{ x: 0.5, y: 0.5 }}
             />
         </Container>
     );

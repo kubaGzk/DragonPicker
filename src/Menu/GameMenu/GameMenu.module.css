@@ -1,0 +1,15 @@
+.GameMenu ul {
+    list-style: none;
+    font-size: 6vh;
+}
+
+.GameMenu li {
+    margin: 2vh;
+}
+
+.GameMenu li:hover {
+    color: brown;
+}
+.GameMenu li:active {
+    color: burlywood;
+}

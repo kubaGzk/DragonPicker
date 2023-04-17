@@ -1,5 +1,7 @@
 import { FC } from "react";
 import { AnimatedSprite } from "@pixi/react";
+
+
 import Walk1 from "../../../../assets/Dragon/Walk1.png";
 import Walk2 from "../../../../assets/Dragon/Walk2.png";
 import Walk3 from "../../../../assets/Dragon/Walk3.png";

@@ -12,10 +12,11 @@ import { CurrentStatus } from "../../types";
 interface MapProps {
     width: number;
     height: number;
+    scale: number;
 }
 
 const Map: FC<MapProps> = (props) => {
-    const { width, height } = props;
+    const { width, height, scale } = props;
 
     const { levelSelected, currentStatus, totalWin } = useAppSelector(
         (state) => state.gameStatus,
@@ -32,13 +33,17 @@ const Map: FC<MapProps> = (props) => {
     };
 
     useEffect(() => {
-        if (levelSelected && currentStatus === CurrentStatus.Start)
-            dispatch(recalculateGrid({ width, height }));
-    }, [width, height, dispatch, levelSelected, currentStatus]);
+        if (
+            levelSelected &&
+            (currentStatus === CurrentStatus.Start ||
+                currentStatus === CurrentStatus.Collect)
+        )
+            dispatch(recalculateGrid({ scale }));
+    }, [scale, dispatch, levelSelected, currentStatus]);
 
     return (
         <>
-            <Grid />
+            <Grid scale={scale} />
             <GameControl
                 currentStatus={currentStatus}
                 width={width}
@@ -46,6 +51,7 @@ const Map: FC<MapProps> = (props) => {
                 startGame={startGameHandler}
                 collectAll={collectAllWinHandler}
                 totalWin={totalWin}
+                scale={scale}
             />
         </>
     );

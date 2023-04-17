@@ -6,11 +6,15 @@ import {
     decreaseBid,
     increaseBid,
 } from "../../../store/gameStatus";
-import { CurrentStatus } from "../../../types";
+import { Container } from "@pixi/react";
 
-interface GridProps {}
+interface GridProps {
+    scale: number;
+}
 
 const Grid: FC<GridProps> = (props) => {
+    const { scale } = props;
+
     const {
         gridElWidth,
         gridElHeight,
@@ -20,7 +24,7 @@ const Grid: FC<GridProps> = (props) => {
         minStake,
         maxStake,
         coins,
-        levelSelected
+        levelSelected,
     } = useAppSelector((state) => state.gameStatus);
 
     const dispatch = useAppDispatch();
@@ -41,7 +45,7 @@ const Grid: FC<GridProps> = (props) => {
     };
 
     return (
-        <>
+        <Container x={0} y={0} >
             {gridElements.map((el) => {
                 return (
                     <GridElement
@@ -59,10 +63,11 @@ const Grid: FC<GridProps> = (props) => {
                         collectable={el.collectable}
                         onCollect={() => collectHandler(el.id)}
                         levelSelected={levelSelected}
+                        scale={scale}
                     />
                 );
             })}
-        </>
+        </Container>
     );
 };
 

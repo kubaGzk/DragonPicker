@@ -12,7 +12,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
     const { usernameInputHandler, loginHandler } = props;
 
     return (
-        <>
+        <div className={classes.LoginForm}>
             <h1>Please provide your Username</h1>
             <label htmlFor="fname">Username</label>
             <input
@@ -23,7 +23,7 @@ const LoginForm: FC<LoginFormProps> = (props) => {
             />
 
             <Button onClick={loginHandler}>Start game</Button>
-        </>
+        </div>
     );
 };
 

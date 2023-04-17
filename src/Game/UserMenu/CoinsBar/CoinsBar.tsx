@@ -1,27 +1,27 @@
 import { FC } from "react";
 import { Container, Sprite, Text } from "@pixi/react";
-import { TextStyle } from "pixi.js";
+
 import Img_Coin from "../../../assets/UI/Menu/Coin.png";
 import Img_CoinsBar from "../../../assets/UI/Menu/CoinsBar.png";
+
 import { coinsTextStyle } from "../../../styles";
-import { scaleCalculator } from "../../../utils";
 
 interface CoinsBarProps {
     width: number;
     height: number;
     coins: number;
+    scale: number;
 }
 
 const CoinsBar: FC<CoinsBarProps> = (props) => {
-    const { width, coins, height } = props;
+    const { width, coins, scale } = props;
 
     const stringCoins = coins.toString();
-    const scale = scaleCalculator(width, height);
 
     return (
         <Container
-            x={width - 354 * scale -30}
-            y={10}
+            x={width - 384 * scale}
+            y={10 * scale}
             scale={scale}
             anchor={{ x: 0, y: 0 }}
         >

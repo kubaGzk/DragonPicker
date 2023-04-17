@@ -20,9 +20,8 @@ const FlameBlow: FC<FlameBlowProps> = (props) => {
     useEffect(() => {
         if (
             showBlow === false &&
-            (Math.round(flameX) === Math.round(x) ||
-                Math.round(flameX) === Math.round(x - 1) ||
-                Math.round(flameX) === Math.round(x + 1))
+            Math.round(flameX) < Math.round(x) + 5 &&
+            Math.round(flameX) > Math.round(x) - 5
         ) {
             setShowBlow(true);
         }

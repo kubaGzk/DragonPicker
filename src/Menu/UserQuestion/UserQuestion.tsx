@@ -18,9 +18,7 @@ const UserQuestion: FC<UserQuestionProps> = (props) => {
             </h2>
             <div className={classes.ButtonContainer}>
                 <Button onClick={localUserHandler}>Yes</Button>
-                <Button onClick={newUserHandler}>
-                    No, I want to start with new account
-                </Button>
+                <Button onClick={newUserHandler}>No</Button>
             </div>
         </>
     );

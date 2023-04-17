@@ -9,10 +9,11 @@ import { selectLevel } from "../../store/gameStatus";
 interface LevelsProps {
     width: number;
     height: number;
+    scale: number;
 }
 
 const Levels: FC<LevelsProps> = (props) => {
-    const { width, height } = props;
+    const { width, height, scale } = props;
 
     const levelArr: {
         name: string;
@@ -43,7 +44,7 @@ const Levels: FC<LevelsProps> = (props) => {
     const dispatch = useAppDispatch();
 
     const levelSelectHandler = (level: number) => {
-        dispatch(selectLevel({ level, width, height }));
+        dispatch(selectLevel({ level, scale }));
     };
 
     return (
@@ -59,6 +60,7 @@ const Levels: FC<LevelsProps> = (props) => {
                     height={height}
                     onClick={() => levelSelectHandler(lvl.id)}
                     numberOfLevels={levelArr.length}
+                    scale={scale}
                 />
             ))}
         </>

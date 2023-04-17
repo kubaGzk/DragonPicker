@@ -4,6 +4,7 @@ import Increaser from "./Increaser/Increaser";
 import { CurrentStatus } from "../../../types";
 import { gridElementStyle } from "../../../styles";
 import { Graphics as PixiGraphics } from "pixi.js";
+import { PixelateFilter } from "@pixi/filter-pixelate";
 
 interface GridElementProps {
     minStake: number;
@@ -19,6 +20,7 @@ interface GridElementProps {
     collectable: boolean;
     onCollect: () => void;
     levelSelected: number;
+    scale: number;
 }
 
 const GridElement: FC<GridElementProps> = (props) => {
@@ -36,6 +38,7 @@ const GridElement: FC<GridElementProps> = (props) => {
         collectable,
         onCollect,
         levelSelected,
+        scale,
     } = props;
 
     const fillColors: number[] = useMemo(
@@ -43,19 +46,24 @@ const GridElement: FC<GridElementProps> = (props) => {
         [],
     );
 
+    const pixelFilter = useMemo(() => {
+        const pixelScale = 3 * scale;
+        return new PixelateFilter(pixelScale);
+    }, [scale]);
+
     const draw = useCallback(
         (g: PixiGraphics) => {
             g.clear();
 
-            g.lineStyle(2, 0xcbc6af, 1);
+            g.lineStyle(10 * scale, 0xcbc6af, 1);
             g.beginFill(
                 collectable ? 0xfcee21 : fillColors[levelSelected - 1],
                 0.6,
             );
-            g.drawRoundedRect(0, 0, elWidth, elHeight, 5);
+            g.drawRoundedRect(0, 0, elWidth, elHeight, 2);
             g.endFill();
         },
-        [elWidth, elHeight, collectable, fillColors, levelSelected],
+        [elWidth, elHeight, collectable, fillColors, levelSelected, scale],
     );
 
     const textStyle = useMemo(
@@ -72,29 +80,27 @@ const GridElement: FC<GridElementProps> = (props) => {
                 ? "regular"
                 : "high"
             : "low";
-
     return (
-        <Container x={x} y={y}>
+        <Container x={x} y={y} anchor={0}>
             <Graphics
                 draw={draw}
                 interactive={collectable}
                 onclick={onCollect}
                 cursor={collectable ? "pointer" : "default"}
+                filters={[pixelFilter]}
             />
 
             <Increaser
-                x={elWidth * 0.9}
-                y={elHeight / 2}
-                width={elHeight / 2}
-                height={elHeight}
                 type={increaserType}
                 onIncrease={onIncrease}
                 onDecrease={onDecrease}
+                width={elWidth}
+                height={elHeight}
             />
             <Text
                 text={currValue.toString()}
                 style={textStyle}
-                x={2}
+                x={10 * scale}
                 y={0.2 * elHeight}
                 anchor={0}
             />
