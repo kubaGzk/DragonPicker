@@ -4,15 +4,26 @@ import { clearLocalUser, login } from "../store/auth";
 import LoginForm from "./LoginForm/LoginForm";
 import UserQuestion from "./UserQuestion/UserQuestion";
 import Modal from "./Modal/Modal";
-import { addCoins } from "../store/gameStatus";
+import { addCoins, quitLevel } from "../store/gameStatus";
 import GameMenu from "./GameMenu/GameMenu";
 import { withOverlay } from "../Overlay/withOverlay";
+import { turnMenuOff } from "../store/menu";
 
 interface FormProps {}
 
 const Menu: FunctionComponent<FormProps> = (props) => {
-    const { isAuth, localUsername, localCoins, hasLocalUser, menuOn } =
-        useAppSelector((state) => ({ ...state.auth, ...state.menu }));
+    const {
+        isAuth,
+        localUsername,
+        localCoins,
+        hasLocalUser,
+        menuOn,
+        levelSelected,
+    } = useAppSelector((state) => ({
+        ...state.auth,
+        ...state.menu,
+        ...state.gameStatus,
+    }));
 
     const dispatch = useAppDispatch();
 
@@ -36,6 +47,15 @@ const Menu: FunctionComponent<FormProps> = (props) => {
 
     const clearLocalHandler = () => {
         dispatch(clearLocalUser());
+    };
+
+    const closeMenuHandler = () => {
+        dispatch(turnMenuOff());
+    };
+
+    const levelMenuHandler = () => {
+        dispatch(turnMenuOff());
+        dispatch(quitLevel());
     };
 
     const ModalWithOverlay = withOverlay(Modal);
@@ -63,7 +83,11 @@ const Menu: FunctionComponent<FormProps> = (props) => {
     } else if (menuOn) {
         menu = (
             <ModalWithOverlay>
-                <GameMenu />
+                <GameMenu
+                    closeMenuHandler={closeMenuHandler}
+                    levelMenuHandler={levelMenuHandler}
+                    levelSelected={levelSelected}
+                />
             </ModalWithOverlay>
         );
     }

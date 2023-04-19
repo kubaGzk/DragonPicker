@@ -6,7 +6,6 @@ import {
     decreaseBid,
     increaseBid,
 } from "../../../store/gameStatus";
-import { Container } from "@pixi/react";
 
 interface GridProps {
     scale: number;
@@ -45,7 +44,7 @@ const Grid: FC<GridProps> = (props) => {
     };
 
     return (
-        <Container x={0} y={0} >
+        <>
             {gridElements.map((el) => {
                 return (
                     <GridElement
@@ -67,7 +66,7 @@ const Grid: FC<GridProps> = (props) => {
                     />
                 );
             })}
-        </Container>
+        </>
     );
 };
 

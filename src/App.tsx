@@ -5,6 +5,7 @@ import Menu from "./Menu/Menu";
 import { localCheck } from "./store/auth";
 import GameStage from "./Game/GameStage";
 import FontFaceObserver from "fontfaceobserver";
+import Loader from "./Menu/Loader/Loader";
 
 function App() {
     const { isAuth, loading, menuOn } = useAppSelector((state) => ({
@@ -28,6 +29,7 @@ function App() {
         <div className="App">
             {!loading && <GameStage />}
             {!loading && (!isAuth || menuOn) && <Menu />}
+            {loading && <Loader />}
         </div>
     );
 }

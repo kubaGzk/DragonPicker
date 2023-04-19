@@ -166,10 +166,6 @@ const gameStatusSlice = createSlice({
             return { ...state, minStake, maxStake };
         },
 
-        quitLevel: () => {
-            return { ...initialState };
-        },
-
         startGame: (state) => {
             const { winners } = selectWinners(
                 state.levelSelected!,
@@ -266,7 +262,11 @@ const gameStatusSlice = createSlice({
                 totalWin: 0,
             };
         },
-
+        quitLevel: (state) => {
+            if (state.currentStatus === CurrentStatus.Start) {
+                return { ...initialState, coins: state.coins };
+            }
+        },
     },
 });
 

@@ -1,0 +1,32 @@
+.Loader {
+    margin: 10vh;
+    color: #fff;
+    display: inline-block;
+    position: relative;
+    font-size: 10vh;
+    box-sizing: border-box;
+}
+
+.Loader::after {
+    content: "";
+    width: 1vw;
+    height: 1vh;
+    background: currentColor;
+    position: absolute;
+    bottom: 2vh;
+    right: -1vw;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite;
+}
+
+@keyframes animloader {
+    0% {
+        box-shadow: 1vw 0 rgba(255, 255, 255, 0), 2vw 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+        box-shadow: 1vw 0 white, 2vw 0 rgba(255, 255, 255, 0);
+    }
+    100% {
+        box-shadow: 1vw 0 white, 2vw 0 white;
+    }
+}

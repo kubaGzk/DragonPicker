@@ -1,7 +1,7 @@
 import { FC } from "react";
-import Level1 from "../../assets/Caves/Level1.png";
-import Level2 from "../../assets/Caves/Level2.png";
-import Level3 from "../../assets/Caves/Level3.png";
+import Level1 from "../../assets/Level/Level1.png";
+import Level2 from "../../assets/Level/Level2.png";
+import Level3 from "../../assets/Level/Level3.png";
 import Level from "./Level/Level";
 import { useAppDispatch } from "../../hooks/hooks";
 import { selectLevel } from "../../store/gameStatus";
