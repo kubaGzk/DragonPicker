@@ -28,7 +28,7 @@ function App() {
     return (
         <div className="App">
             {!loading && <GameStage />}
-            {!loading && (!isAuth || menuOn) && <Menu />}
+            {!loading && !isAuth && <Menu />}
             {loading && <Loader />}
         </div>
     );

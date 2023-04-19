@@ -49,14 +49,14 @@ const Menu: FunctionComponent<FormProps> = (props) => {
         dispatch(clearLocalUser());
     };
 
-    const closeMenuHandler = () => {
-        dispatch(turnMenuOff());
-    };
+    // const closeMenuHandler = () => {
+    //     dispatch(turnMenuOff());
+    // };
 
-    const levelMenuHandler = () => {
-        dispatch(turnMenuOff());
-        dispatch(quitLevel());
-    };
+    // const levelMenuHandler = () => {
+    //     dispatch(turnMenuOff());
+    //     dispatch(quitLevel());
+    // };
 
     const ModalWithOverlay = withOverlay(Modal);
 
@@ -77,16 +77,7 @@ const Menu: FunctionComponent<FormProps> = (props) => {
                 <LoginForm
                     usernameInputHandler={usernameInputHandler}
                     loginHandler={loginHandler}
-                />
-            </ModalWithOverlay>
-        );
-    } else if (menuOn) {
-        menu = (
-            <ModalWithOverlay>
-                <GameMenu
-                    closeMenuHandler={closeMenuHandler}
-                    levelMenuHandler={levelMenuHandler}
-                    levelSelected={levelSelected}
+                    inputValue={username}
                 />
             </ModalWithOverlay>
         );

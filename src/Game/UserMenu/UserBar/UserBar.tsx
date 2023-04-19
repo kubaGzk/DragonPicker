@@ -1,12 +1,12 @@
-import { FC, useState, useMemo, useEffect } from "react";
+import { FC, useState, useMemo } from "react";
 import { Container, Sprite, Text } from "@pixi/react";
 import { OutlineFilter } from "@pixi/filter-outline";
 
-// import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
+import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
 import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 import { usernameTextStyle } from "../../../styles";
 import { CurrentStatus } from "../../../types";
-import { Assets, Filter, Texture } from "pixi.js";
+import { Filter } from "pixi.js";
 
 interface UserBarProps {
     username: string;
@@ -19,8 +19,6 @@ const UserBar: FC<UserBarProps> = (props) => {
     const { username, scale, currentStatus, openMenuHandler } = props;
 
     const [filters, setFilters] = useState<Filter[]>([]);
-
-    const [bar, setBar] = useState<Texture | undefined>();
 
     const outlineFilter = useMemo(
         () => new OutlineFilter(5, 0x000000, 0.1, 0.3),
@@ -35,24 +33,9 @@ const UserBar: FC<UserBarProps> = (props) => {
         currentStatus === CurrentStatus.Start && setFilters([]);
     };
 
-    const asyncLoad = async () => {
-        let bar: Texture | undefined;
-        try {
-            bar = await Assets.load("../../../assets/UI/Menu/UserBar.png");
-        } catch (err) {
-            console.error(err);
-        }
-
-        setBar(bar);
-    };
-
-    useEffect(() => {
-        asyncLoad();
-    }, []);
-
     return (
         <Container x={30 * scale} y={10 * scale} scale={scale} anchor={0}>
-            {bar && <Sprite texture={bar} x={0} y={0} />}
+            <Sprite image={Img_UserBar} x={0} y={0} />
             <Text
                 text={username}
                 style={usernameTextStyle}

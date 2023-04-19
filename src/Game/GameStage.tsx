@@ -1,4 +1,4 @@
-import { FC, useMemo, useEffect } from "react";
+import { FC, useMemo } from "react";
 import { useAppSelector, useWindowResize } from "../hooks/hooks";
 import Levels from "./Levels/Levels";
 import Map from "./Map/Map";
@@ -13,7 +13,6 @@ import Background3 from "../assets/Background/Battleground3.png";
 import Background from "./Background/Background";
 import GameLogo from "./UserMenu/GameLogo/GameLogo";
 import { scaleCalculator } from "../utils";
-import { assetLoader } from "../assetLoader";
 
 interface GameStageProps {}
 
@@ -29,12 +28,6 @@ const GameStage: FC<GameStageProps> = () => {
         () => scaleCalculator(width, height),
         [width, height],
     );
-
-    // useEffect(() => {
-    //     assetLoader([], [], () => {
-    //         console.log("resolved");
-    //     });
-    // },[]);
 
     return (
         <Stage width={width} height={height}>

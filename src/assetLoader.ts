@@ -12,7 +12,7 @@ export interface IBundle {
 
 export const assetLoader = async (
     levelPaths: string[],
-    battlegroundPVaths: string[],
+    battlegroundPaths: string[],
     onResolve: () => void,
     onError?: () => void,
 ) => {
