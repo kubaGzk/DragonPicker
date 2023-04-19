@@ -30,11 +30,11 @@ const GameStage: FC<GameStageProps> = () => {
         [width, height],
     );
 
-    useEffect(() => {
-        assetLoader([], [], () => {
-            console.log("resolved");
-        });
-    },[]);
+    // useEffect(() => {
+    //     assetLoader([], [], () => {
+    //         console.log("resolved");
+    //     });
+    // },[]);
 
     return (
         <Stage width={width} height={height}>
