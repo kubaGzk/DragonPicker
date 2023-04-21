@@ -1,0 +1,36 @@
+{"frames": {
+
+"CollectAll.png":
+{
+	"frame": {"x":0,"y":0,"w":381,"h":138},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":381,"h":138},
+	"sourceSize": {"w":381,"h":138}
+},
+"EndGame.png":
+{
+	"frame": {"x":0,"y":138,"w":381,"h":138},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":381,"h":138},
+	"sourceSize": {"w":381,"h":138}
+},
+"Play.png":
+{
+	"frame": {"x":0,"y":276,"w":381,"h":138},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":381,"h":138},
+	"sourceSize": {"w":381,"h":138}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "GameControls.png",
+	"format": "RGBA8888",
+	"size": {"w":381,"h":414},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:c40411d7a90970cbfeb17995db4fdad8:038a518c1ad816ed452dee9e449fff71:7e95acba62775ea707628a9cbf622b39$"
+}
+}

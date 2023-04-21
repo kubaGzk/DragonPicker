@@ -215,6 +215,8 @@ const gameStatusSlice = createSlice({
             };
         },
         collectWinElement: (state, action: PayloadAction<{ id: string }>) => {
+            if (state.currentStatus === CurrentStatus.Play) return state;
+
             const { id } = action.payload;
 
             const { newGridElements, itemsToCollect, collectedWin } =
@@ -267,6 +269,9 @@ const gameStatusSlice = createSlice({
                 return { ...initialState, coins: state.coins };
             }
         },
+        finishGameGameStatus: () => {
+            return initialState;
+        },
     },
 });
 
@@ -283,6 +288,7 @@ export const {
     setCollectable,
     collectWinElement,
     collectAllWinElements,
+    finishGameGameStatus,
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;

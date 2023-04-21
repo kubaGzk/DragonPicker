@@ -3,7 +3,55 @@
     font-family: "Alagard";
     font-size: 2.5vw;
 
-    width: 20vw;
-    height: 10vw;
-    margin: 5vw;
+    width: 15vw;
+    height: 10vh;
+    margin: 1vw;
+    background-color: #fcef1b;
+    border: none;
+    clip-path: polygon(
+        0px calc(100% - 2vh),
+        1vh calc(100% - 2vh),
+        1vh calc(100% - 1.5vh),
+        2vh calc(100% - 1.5vh),
+        2vh calc(100% - 2vh),
+        1.5vh calc(100% - 2vh),
+        1.5vh calc(100% - 1vh),
+        2vh calc(100% - 1vh),
+        2vh 100%,
+        calc(100% - 2vh) 100%,
+        calc(100% - 2vh) calc(100% - 1vh),
+        calc(100% - 1.5vh) calc(100% - 1vh),
+        calc(100% - 1.5vh) calc(100% - 2vh),
+        calc(100% - 2vh) calc(100% - 2vh),
+        calc(100% - 2vh) calc(100% - 1.5vh),
+        calc(100% - 1vh) calc(100% - 1.5vh),
+        calc(100% - 1vh) calc(100% - 2vh),
+        100% calc(100% - 2vh),
+        100% 2vh,
+        calc(100% - 1vh) 2vh,
+        calc(100% - 1vh) 1.5vh,
+        calc(100% - 2vh) 1.5vh,
+        calc(100% - 2vh) 2vh,
+        calc(100% - 1.5vh) 2vh,
+        calc(100% - 1.5vh) 1vh,
+        calc(100% - 2vh) 1vh,
+        calc(100% - 2vh) 0px,
+        2vh 0px,
+        2vh 1vh,
+        1.5vh 1vh,
+        1.5vh 2vh,
+        2vh 2vh,
+        2vh 1.5vh,
+        1vh 1.5vh,
+        1vh 2vh,
+        0px 2vh
+    );
+}
+
+.Button:hover {
+    background-color: #c9a219;
+}
+
+.Button:active {
+    background-color: #fcd31b;
 }

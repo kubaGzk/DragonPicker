@@ -6,17 +6,17 @@ import classes from "./ImgLogo.module.css";
 interface ImgLogoProps {}
 
 const ImgLogo: FC<ImgLogoProps> = () => {
-    // let [img, setImg] = useState<HTMLImageElement | undefined>();
+    let [img, setImg] = useState<HTMLImageElement | undefined>();
 
-    // useEffect(() => {
-    //     const newImg = new Image();
-    //     newImg.src = Logo;
+    useEffect(() => {
+        const newImg = new Image();
+        newImg.src = Logo;
 
-    //     setImg(newImg);
-    // }, []);
+        setImg(newImg);
+    }, []);
 
-    return Logo ? (
-        <img src={Logo} alt="Logo.png" className={classes.ImgLogo} />
+    return img ? (
+        <img src={img.src} alt="Logo.png" className={classes.ImgLogo} />
     ) : null;
 };
 

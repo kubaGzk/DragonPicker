@@ -65,9 +65,13 @@ const authSlice = createSlice({
                 hasLocalUser: false,
             };
         },
+        finishGameAuth: () => {
+            return { ...initialState, loading: false };
+        },
     },
 });
 
-export const { localCheck, login, clearLocalUser } = authSlice.actions;
+export const { localCheck, login, clearLocalUser, finishGameAuth } =
+    authSlice.actions;
 
 export default authSlice.reducer;

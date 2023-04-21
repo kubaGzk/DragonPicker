@@ -1,17 +1,31 @@
 import { FunctionComponent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { clearLocalUser, login } from "../store/auth";
+import { clearLocalUser, finishGameAuth, login } from "../store/auth";
 import LoginForm from "./LoginForm/LoginForm";
 import UserQuestion from "./UserQuestion/UserQuestion";
 import Modal from "./Modal/Modal";
-import { addCoins, quitLevel } from "../store/gameStatus";
+import { addCoins, finishGameGameStatus, quitLevel } from "../store/gameStatus";
 import GameMenu from "./GameMenu/GameMenu";
-import { withOverlay } from "../Overlay/withOverlay";
-import { turnMenuOff } from "../store/menu";
+import {
+    finishLoading,
+    startLoading,
+    turnMenuOff,
+    turnSaveMenuOn,
+    turnSaveMenuOff,
+    closeLeaderboard,
+    finishGameMenu,
+} from "../store/menu";
+import Loader from "./Loader/Loader";
+import BoardQuestion from "./BoardQuestion/BoardQuestion";
+import Leaderboard from "./Leaderboard/Leaderboard";
 
-interface FormProps {}
+interface FormProps {
+    assetLoading: boolean;
+}
 
 const Menu: FunctionComponent<FormProps> = (props) => {
+    const { assetLoading } = props;
+
     const {
         isAuth,
         localUsername,
@@ -19,6 +33,12 @@ const Menu: FunctionComponent<FormProps> = (props) => {
         hasLocalUser,
         menuOn,
         levelSelected,
+        saveMenuOn,
+        leaderboard,
+        leaderboardError,
+        leaderboardOn,
+        leaderboardLoading,
+        endingGame,
     } = useAppSelector((state) => ({
         ...state.auth,
         ...state.menu,
@@ -28,14 +48,22 @@ const Menu: FunctionComponent<FormProps> = (props) => {
     const dispatch = useAppDispatch();
 
     const [username, setUsername] = useState<string>("");
+    const [nameError, setNameError] = useState<boolean>(false);
+    const [nameTouched, setNameTouched] = useState<boolean>(false);
 
     const loginHandler = () => {
-        dispatch(login({ username }));
-        dispatch(addCoins({ coins: 1000 }));
+        if (!nameError && nameTouched) {
+            dispatch(login({ username }));
+            dispatch(addCoins({ coins: 1000 }));
+        }
     };
 
     const usernameInputHandler = (e: React.FormEvent<HTMLInputElement>) => {
+        const pattern = /^[a-zA-Z0-9_.-]{1,10}$/;
+        const result = !pattern.test(e.currentTarget.value);
+        setNameError(result);
         setUsername(e.currentTarget.value);
+        setNameTouched(true);
     };
 
     const localUserHandler = () => {
@@ -49,41 +77,95 @@ const Menu: FunctionComponent<FormProps> = (props) => {
         dispatch(clearLocalUser());
     };
 
-    // const closeMenuHandler = () => {
-    //     dispatch(turnMenuOff());
-    // };
+    const closeMenuHandler = () => {
+        dispatch(turnMenuOff());
+    };
 
-    // const levelMenuHandler = () => {
-    //     dispatch(turnMenuOff());
-    //     dispatch(quitLevel());
-    // };
+    const levelMenuHandler = () => {
+        dispatch(turnMenuOff());
+        dispatch(quitLevel());
+    };
 
-    const ModalWithOverlay = withOverlay(Modal);
+    const saveMenuHandler = () => {
+        dispatch(turnSaveMenuOn());
+    };
+
+    const saveScoreHandler = () => {
+        dispatch(startLoading({ endingGame: true }));
+        setTimeout(() => {
+            dispatch(finishLoading({ leaderboard: [] }));
+        }, 3000);
+    };
+
+    const continueSaveGameHandler = () => {
+        dispatch(turnSaveMenuOff());
+    };
+
+    const openLeaderboardHandler = () => {
+        dispatch(startLoading({}));
+        setTimeout(() => {
+            dispatch(finishLoading({ leaderboard: [] }));
+        }, 3000);
+    };
+
+    const endGameLeaderboardHandler = () => {
+        dispatch(finishGameAuth());
+        dispatch(finishGameGameStatus());
+        dispatch(finishGameMenu());
+    };
+
+    const continueGameLeaderboardHandler = () => {
+        dispatch(closeLeaderboard());
+    };
 
     let menu = null;
 
     if (!isAuth && hasLocalUser) {
         menu = (
-            <ModalWithOverlay>
-                <UserQuestion
-                    localUserHandler={localUserHandler}
-                    newUserHandler={clearLocalHandler}
-                />
-            </ModalWithOverlay>
+            <UserQuestion
+                localUserHandler={localUserHandler}
+                newUserHandler={clearLocalHandler}
+            />
         );
     } else if (!isAuth) {
         menu = (
-            <ModalWithOverlay>
-                <LoginForm
-                    usernameInputHandler={usernameInputHandler}
-                    loginHandler={loginHandler}
-                    inputValue={username}
-                />
-            </ModalWithOverlay>
+            <LoginForm
+                usernameInputHandler={usernameInputHandler}
+                loginHandler={loginHandler}
+                nameError={nameError}
+            />
+        );
+    } else if (menuOn) {
+        menu = (
+            <GameMenu
+                closeMenuHandler={closeMenuHandler}
+                levelMenuHandler={levelMenuHandler}
+                saveMenuHandler={saveMenuHandler}
+                openLeaderboardHandler={openLeaderboardHandler}
+                levelSelected={levelSelected}
+            />
+        );
+    } else if (saveMenuOn) {
+        menu = (
+            <BoardQuestion
+                saveScore={saveScoreHandler}
+                continueGame={continueSaveGameHandler}
+            />
+        );
+    } else if (leaderboardLoading || assetLoading) {
+        menu = <Loader />;
+    } else if (leaderboardOn) {
+        menu = (
+            <Leaderboard
+                leaderboardItems={leaderboard}
+                endingGame={endingGame}
+                continueGame={continueGameLeaderboardHandler}
+                endGame={endGameLeaderboardHandler}
+            />
         );
     }
 
-    return menu;
+    return menu && <Modal>{menu}</Modal>;
 };
 
 export default Menu;
