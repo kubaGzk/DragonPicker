@@ -14,10 +14,13 @@ interface UserMenuProps {
 const UserMenu: FC<UserMenuProps> = (props) => {
     const { width, height, scale } = props;
 
-    const { coins, username, currentStatus } = useAppSelector((state) => ({
-        ...state.auth,
-        ...state.gameStatus,
-    }));
+    const { coins, username, currentStatus, menuItems } = useAppSelector(
+        (state) => ({
+            ...state.auth,
+            ...state.gameStatus,
+            ...state.sprites,
+        }),
+    );
 
     const dispatch = useAppDispatch();
 
@@ -34,12 +37,14 @@ const UserMenu: FC<UserMenuProps> = (props) => {
                 scale={scale}
                 currentStatus={currentStatus}
                 openMenuHandler={openMenuHandler}
+                menuItems={menuItems!}
             />
             <CoinsBar
                 width={width}
                 height={height}
                 coins={coins}
                 scale={scale}
+                menuItems={menuItems!}
             />
         </>
     );

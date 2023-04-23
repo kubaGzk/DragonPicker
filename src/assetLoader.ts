@@ -17,10 +17,7 @@ export interface SpritesState {
     menuItems: Spritesheet;
 }
 
-export const assetLoader = async (
-    onResolve: () => void,
-    onError?: () => void,
-) => {
+export const assetLoader = (onResolve: () => void, onError?: () => void) => {
     const DragonSprites = new Spritesheet(
         BaseTexture.from(DragonAssets.meta.image),
         DragonAssets,
@@ -49,24 +46,27 @@ export const assetLoader = async (
         Background3: Background3,
     });
 
-    try {
-        await DragonSprites.parse();
-        await ButtonSprites.parse();
-        await LevelSprites.parse();
-        await GameControlsSprites.parse();
-        await MenuItemsSprites.parse();
+    const load = async () => {
+        try {
+            await DragonSprites.parse();
+            await ButtonSprites.parse();
+            await LevelSprites.parse();
+            await GameControlsSprites.parse();
+            await MenuItemsSprites.parse();
 
-        await Assets.loadBundle("backgrounds");
+            await Assets.loadBundle("backgrounds");
 
-        onResolve();
-        return {
-            dragon: DragonSprites,
-            button: ButtonSprites,
-            level: LevelSprites,
-            gameControl: GameControlsSprites,
-            menuItems: MenuItemsSprites,
-        };
-    } catch (err) {
-        console.log(err);
-    }
+            onResolve();
+        } catch (err) {}
+    };
+
+    load();
+
+    return {
+        dragon: DragonSprites,
+        button: ButtonSprites,
+        level: LevelSprites,
+        gameControl: GameControlsSprites,
+        menuItems: MenuItemsSprites,
+    };
 };

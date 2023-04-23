@@ -16,18 +16,24 @@ const Leaderboard: FC<LeaderboardProps> = (props) => {
     return (
         <>
             <table className={classes.LeaderboardTable}>
-                <th>Position</th>
-                <th>Username</th>
-                <th>Coins</th>
-                {leaderboardItems.map((item) => {
-                    return (
-                        <tr>
-                            <td>{item.id}</td>
-                            <td>{item.username}</td>
-                            <td>{item.coins}</td>
-                        </tr>
-                    );
-                })}
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Username</th>
+                        <th>Coins</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {leaderboardItems.map((item) => {
+                        return (
+                            <tr key={item.index}>
+                                <td>{item.index}</td>
+                                <td>{item.username}</td>
+                                <td>{item.coins}</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
             </table>
 
             {endingGame ? (

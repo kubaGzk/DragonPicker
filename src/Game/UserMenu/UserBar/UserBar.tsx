@@ -6,13 +6,14 @@ import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
 import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 import { usernameTextStyle } from "../../../styles";
 import { CurrentStatus } from "../../../types";
-import { Filter } from "pixi.js";
+import { Filter, Spritesheet } from "pixi.js";
 
 interface UserBarProps {
     username: string;
     scale: number;
     currentStatus: CurrentStatus;
     openMenuHandler: () => void;
+    menuItems: Spritesheet;
 }
 
 const UserBar: FC<UserBarProps> = (props) => {

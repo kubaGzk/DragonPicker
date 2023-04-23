@@ -20,7 +20,7 @@ export enum CurrentStatus {
 }
 
 export interface LeaderboardItem {
-    id: number;
+    index: number;
     username: string;
     coins: number;
 }

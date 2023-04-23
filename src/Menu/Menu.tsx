@@ -7,17 +7,20 @@ import Modal from "./Modal/Modal";
 import { addCoins, finishGameGameStatus, quitLevel } from "../store/gameStatus";
 import GameMenu from "./GameMenu/GameMenu";
 import {
-    finishLoading,
-    startLoading,
     turnMenuOff,
     turnSaveMenuOn,
     turnSaveMenuOff,
     closeLeaderboard,
     finishGameMenu,
+    postScore,
+    fetchLeaderboard,
+    clearError,
 } from "../store/menu";
 import Loader from "./Loader/Loader";
 import BoardQuestion from "./BoardQuestion/BoardQuestion";
 import Leaderboard from "./Leaderboard/Leaderboard";
+import Error from "./Error/Error";
+import ConfirmSave from "./ConfirmSave/ConfirmSave";
 
 interface FormProps {
     assetLoading: boolean;
@@ -39,6 +42,9 @@ const Menu: FunctionComponent<FormProps> = (props) => {
         leaderboardOn,
         leaderboardLoading,
         endingGame,
+        coins,
+        username,
+        confirmMenuOn,
     } = useAppSelector((state) => ({
         ...state.auth,
         ...state.menu,
@@ -47,13 +53,13 @@ const Menu: FunctionComponent<FormProps> = (props) => {
 
     const dispatch = useAppDispatch();
 
-    const [username, setUsername] = useState<string>("");
+    const [inputName, setInputName] = useState<string>("");
     const [nameError, setNameError] = useState<boolean>(false);
     const [nameTouched, setNameTouched] = useState<boolean>(false);
 
     const loginHandler = () => {
         if (!nameError && nameTouched) {
-            dispatch(login({ username }));
+            dispatch(login({ username: inputName }));
             dispatch(addCoins({ coins: 1000 }));
         }
     };
@@ -62,7 +68,7 @@ const Menu: FunctionComponent<FormProps> = (props) => {
         const pattern = /^[a-zA-Z0-9_.-]{1,10}$/;
         const result = !pattern.test(e.currentTarget.value);
         setNameError(result);
-        setUsername(e.currentTarget.value);
+        setInputName(e.currentTarget.value);
         setNameTouched(true);
     };
 
@@ -91,10 +97,7 @@ const Menu: FunctionComponent<FormProps> = (props) => {
     };
 
     const saveScoreHandler = () => {
-        dispatch(startLoading({ endingGame: true }));
-        setTimeout(() => {
-            dispatch(finishLoading({ leaderboard: [] }));
-        }, 3000);
+        dispatch(postScore({ username, coins }));
     };
 
     const continueSaveGameHandler = () => {
@@ -102,10 +105,7 @@ const Menu: FunctionComponent<FormProps> = (props) => {
     };
 
     const openLeaderboardHandler = () => {
-        dispatch(startLoading({}));
-        setTimeout(() => {
-            dispatch(finishLoading({ leaderboard: [] }));
-        }, 3000);
+        dispatch(fetchLeaderboard());
     };
 
     const endGameLeaderboardHandler = () => {
@@ -116,6 +116,10 @@ const Menu: FunctionComponent<FormProps> = (props) => {
 
     const continueGameLeaderboardHandler = () => {
         dispatch(closeLeaderboard());
+    };
+
+    const confirmErrorHandler = () => {
+        dispatch(clearError());
     };
 
     let menu = null;
@@ -163,6 +167,10 @@ const Menu: FunctionComponent<FormProps> = (props) => {
                 endGame={endGameLeaderboardHandler}
             />
         );
+    } else if (leaderboardError) {
+        menu = <Error confirmError={confirmErrorHandler} />;
+    } else if (confirmMenuOn) {
+        menu = <ConfirmSave showLeaderboard={openLeaderboardHandler} />;
     }
 
     return menu && <Modal>{menu}</Modal>;

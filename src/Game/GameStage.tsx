@@ -17,7 +17,15 @@ import { scaleCalculator } from "../utils";
 interface GameStageProps {}
 
 const GameStage: FC<GameStageProps> = () => {
-    const { isAuth, levelSelected, menuOn } = useAppSelector((state) => ({
+    const {
+        isAuth,
+        levelSelected,
+        menuOn,
+        saveMenuOn,
+        confirmMenuOn,
+        leaderboardLoading,
+        leaderboardOn,
+    } = useAppSelector((state) => ({
         ...state.auth,
         ...state.gameStatus,
         ...state.menu,
@@ -28,6 +36,13 @@ const GameStage: FC<GameStageProps> = () => {
         () => scaleCalculator(width, height),
         [width, height],
     );
+
+    const logoOn =
+        !saveMenuOn &&
+        !confirmMenuOn &&
+        !leaderboardLoading &&
+        !leaderboardOn &&
+        !menuOn;
 
     return (
         <Stage width={width} height={height}>
@@ -44,7 +59,7 @@ const GameStage: FC<GameStageProps> = () => {
                         <Map width={width} height={height} scale={scale} />
                     ) : (
                         <>
-                            {!menuOn && (
+                            {logoOn && (
                                 <GameLogo
                                     width={width}
                                     height={height}

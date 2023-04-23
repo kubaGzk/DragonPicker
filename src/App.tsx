@@ -8,6 +8,7 @@ import FontFaceObserver from "fontfaceobserver";
 import Loader from "./Menu/Loader/Loader";
 import { assetLoader } from "./assetLoader";
 import Modal from "./Menu/Modal/Modal";
+import { setSprites } from "./store/sprites";
 
 function App() {
     const { isAuth, loading, menuOn } = useAppSelector((state) => ({
@@ -22,9 +23,10 @@ function App() {
 
     useEffect(() => {
         const sprites = assetLoader(() => {
-            console.log("Resolved");
             setAssetLoading(false);
         });
+
+        dispatch(setSprites(sprites));
     }, []);
 
     useEffect(() => {
