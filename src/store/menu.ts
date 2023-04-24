@@ -11,6 +11,7 @@ export interface MenuState {
     leaderboard: LeaderboardItem[];
     leaderboardError: boolean;
     endingGame: boolean;
+    mousePointer: boolean;
 }
 
 const initialState: MenuState = {
@@ -22,6 +23,7 @@ const initialState: MenuState = {
     leaderboard: [],
     leaderboardError: false,
     endingGame: false,
+    mousePointer: false,
 };
 
 export const fetchLeaderboard = createAsyncThunk(
@@ -81,6 +83,13 @@ const menuSlice = createSlice({
         clearError: (state) => {
             return { ...initialState, menuOn: true, leaderboardError: false };
         },
+        mousePointerOn: (state) => {
+            return { ...state, mousePointer: true };
+        },
+        mousePointerOff: (state) => {
+            return { ...state, mousePointer: false };
+        },
+
         finishGameMenu: (state) => {
             return initialState;
         },
@@ -133,6 +142,8 @@ export const {
     turnSaveMenuOff,
     closeLeaderboard,
     clearError,
+    mousePointerOn,
+    mousePointerOff,
     finishGameMenu,
 } = menuSlice.actions;
 

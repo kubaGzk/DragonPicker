@@ -9,7 +9,7 @@ export const store = configureStore({
         auth: authReducer,
         gameStatus: gameStatusReducer,
         menu: menuReducer,
-        sprites: spritesReducer,
+        // sprites: spritesReducer,
     },
 });
 

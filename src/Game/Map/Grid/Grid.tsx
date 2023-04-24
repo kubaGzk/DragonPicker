@@ -9,10 +9,12 @@ import {
 
 interface GridProps {
     scale: number;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const Grid: FC<GridProps> = (props) => {
-    const { scale } = props;
+    const { scale, turnPointerOnHandler, turnPointerOffHandler } = props;
 
     const {
         gridElWidth,
@@ -63,6 +65,8 @@ const Grid: FC<GridProps> = (props) => {
                         onCollect={() => collectHandler(el.id)}
                         levelSelected={levelSelected}
                         scale={scale}
+                        turnPointerOnHandler={turnPointerOnHandler}
+                        turnPointerOffHandler={turnPointerOffHandler}
                     />
                 );
             })}

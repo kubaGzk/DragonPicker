@@ -12,6 +12,8 @@ interface LevelProps {
     width: number;
     height: number;
     onClick: () => void;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
     numberOfLevels: number;
     scale: number;
 }
@@ -27,6 +29,8 @@ const Level: FC<LevelProps> = (props) => {
         onClick,
         numberOfLevels,
         scale,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
     } = props;
 
     const { x, y } = calculateDimension(width, height, index, numberOfLevels);
@@ -38,12 +42,18 @@ const Level: FC<LevelProps> = (props) => {
         [],
     );
 
-    const addFilterHandler = () => {
+    const mouseEnter = () => {
+        turnPointerOnHandler();
         setFilters([outlineFilter]);
     };
 
-    const removeFilterHandler = () => {
+    const mouseLeave = () => {
+        turnPointerOffHandler();
         setFilters([]);
+    };
+    const mouseClick = () => {
+        onClick();
+        turnPointerOffHandler();
     };
 
     return (
@@ -51,12 +61,11 @@ const Level: FC<LevelProps> = (props) => {
             x={x}
             y={y}
             interactive={true}
-            onmouseenter={addFilterHandler}
-            onmouseleave={removeFilterHandler}
-            onclick={onClick}
+            onmouseenter={mouseEnter}
+            onmouseleave={mouseLeave}
+            onclick={mouseClick}
             pivot={{ x: 0.5, y: 0 }}
             scale={scale}
-            cursor="pointer"
         >
             <Sprite image={img_url} anchor={0.5} filters={filters} />
             <Text

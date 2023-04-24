@@ -13,11 +13,20 @@ interface UserBarProps {
     scale: number;
     currentStatus: CurrentStatus;
     openMenuHandler: () => void;
-    menuItems: Spritesheet;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
+    // menuItems: Spritesheet;
 }
 
 const UserBar: FC<UserBarProps> = (props) => {
-    const { username, scale, currentStatus, openMenuHandler } = props;
+    const {
+        username,
+        scale,
+        currentStatus,
+        openMenuHandler,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
+    } = props;
 
     const [filters, setFilters] = useState<Filter[]>([]);
 
@@ -26,12 +35,19 @@ const UserBar: FC<UserBarProps> = (props) => {
         [],
     );
 
-    const addFilterHandler = () => {
-        currentStatus === CurrentStatus.Start && setFilters([outlineFilter]);
+    const mouseEnter = () => {
+        setFilters([outlineFilter]);
+        turnPointerOnHandler();
     };
 
-    const removeFilterHandler = () => {
-        currentStatus === CurrentStatus.Start && setFilters([]);
+    const mouseLeave = () => {
+        setFilters([]);
+        turnPointerOffHandler();
+    };
+
+    const mouseClick = () => {
+        openMenuHandler();
+        turnPointerOffHandler();
     };
 
     return (
@@ -53,11 +69,10 @@ const UserBar: FC<UserBarProps> = (props) => {
                     y={43}
                     scale={0.8}
                     anchor={{ x: 1, y: 0.5 }}
-                    onmouseenter={addFilterHandler}
-                    onmouseleave={removeFilterHandler}
-                    onmousedown={openMenuHandler}
+                    onmouseenter={mouseEnter}
+                    onmouseleave={mouseLeave}
+                    onclick={mouseClick}
                     filters={filters}
-                    cursor="pointer"
                 />
             )}
         </Container>

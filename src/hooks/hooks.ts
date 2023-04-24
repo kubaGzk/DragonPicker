@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import type { RootState, AppDispatch } from '../store/store'
+import { useState, useEffect, useCallback, MouseEvent } from "react";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import type { RootState, AppDispatch } from "../store/store";
 
 interface UseWindowResize {
     width: number;
@@ -31,6 +31,19 @@ export const useWindowResize = (): UseWindowResize => {
     return windowSize;
 };
 
-type DispatchFunc = () => AppDispatch
-export const useAppDispatch: DispatchFunc = useDispatch
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+type DispatchFunc = () => AppDispatch;
+export const useAppDispatch: DispatchFunc = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export function useMouseMove() {
+    const [mouseX, setMouseX] = useState(0);
+    const [mouseY, setMouseY] = useState(0);
+
+    const onMouseMove = useCallback((e: MouseEvent): void => {
+        e.preventDefault();
+        setMouseX(e.clientX);
+        setMouseY(e.clientY);
+    }, []);
+
+    return { mouseX, mouseY, onMouseMove };
+}

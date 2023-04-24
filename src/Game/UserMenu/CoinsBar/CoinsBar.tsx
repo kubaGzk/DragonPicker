@@ -1,31 +1,46 @@
-import { FC, useEffect } from "react";
-import { Container, Sprite, Text, useApp } from "@pixi/react";
+import { FC, useEffect, useState } from "react";
+import { Container, Sprite, Text } from "@pixi/react";
 
 import Img_Coin from "../../../assets/UI/Menu/Coin.png";
 import Img_CoinsBar from "../../../assets/UI/Menu/CoinsBar.png";
 import MenuItemsAssets from "../../../assets/UI/Menu/MenuItems.json";
 
 import { coinsTextStyle } from "../../../styles";
-import { BaseTexture, Spritesheet } from "pixi.js";
+import { BaseTexture, Spritesheet, Texture } from "pixi.js";
 
 interface CoinsBarProps {
     width: number;
     height: number;
     coins: number;
     scale: number;
-    menuItems: Spritesheet;
+    // menuItems: Spritesheet;
 }
 
 const CoinsBar: FC<CoinsBarProps> = (props) => {
-    const { width, coins, scale, menuItems } = props;
+    const { width, coins, scale, } = props;
 
     const stringCoins = coins.toString();
 
-    const MenuItemsSprites = new Spritesheet(
-        BaseTexture.from(MenuItemsAssets.meta.image),
-        MenuItemsAssets,
-    );
+    const [sprites, setSprites] = useState<Spritesheet | null>(null);
 
+    const loader = async (callback: (arg: Spritesheet | null) => void) => {
+        const MenuItemsSprites = new Spritesheet(
+            BaseTexture.from(MenuItemsAssets.meta.image),
+            MenuItemsAssets,
+        );
+
+        await MenuItemsSprites.parse();
+
+        callback(MenuItemsSprites);
+    };
+
+    useEffect(() => {
+        (async () => {
+            await loader(setSprites);
+        })();
+    }, []);
+
+    console.log(sprites?.textures["Coin.png"]);
 
     return (
         <Container
@@ -36,9 +51,9 @@ const CoinsBar: FC<CoinsBarProps> = (props) => {
         >
             <Sprite image={Img_CoinsBar} x={0} y={0} />
 
-            {menuItems && (
+            {sprites && (
                 <Sprite
-                    texture={menuItems.textures["CoinsBar.png"]}
+                    texture={sprites.textures["Coin.png"]}
                     anchor={{ x: 0, y: 0.5 }}
                     y={43}
                     x={-20}

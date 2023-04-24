@@ -48,6 +48,7 @@ export const assetLoader = (onResolve: () => void, onError?: () => void) => {
 
     const load = async () => {
         try {
+
             await DragonSprites.parse();
             await ButtonSprites.parse();
             await LevelSprites.parse();

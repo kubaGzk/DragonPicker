@@ -10,10 +10,18 @@ interface LevelsProps {
     width: number;
     height: number;
     scale: number;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const Levels: FC<LevelsProps> = (props) => {
-    const { width, height, scale } = props;
+    const {
+        width,
+        height,
+        scale,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
+    } = props;
 
     const levelArr: {
         name: string;
@@ -61,6 +69,8 @@ const Levels: FC<LevelsProps> = (props) => {
                     onClick={() => levelSelectHandler(lvl.id)}
                     numberOfLevels={levelArr.length}
                     scale={scale}
+                    turnPointerOnHandler={turnPointerOnHandler}
+                    turnPointerOffHandler={turnPointerOffHandler}
                 />
             ))}
         </>

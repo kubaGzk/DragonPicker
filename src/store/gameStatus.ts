@@ -113,7 +113,11 @@ const gameStatusSlice = createSlice({
             return state;
         },
         increaseBid: (state, action: PayloadAction<{ id: string }>) => {
-            if (state.currentStatus === CurrentStatus.Play) return state;
+            if (
+                state.currentStatus === CurrentStatus.Play ||
+                state.currentStatus === CurrentStatus.Collect
+            )
+                return state;
 
             const { id } = action.payload;
 
@@ -135,7 +139,11 @@ const gameStatusSlice = createSlice({
             };
         },
         decreaseBid: (state, action: PayloadAction<{ id: string }>) => {
-            if (state.currentStatus === CurrentStatus.Play) return state;
+            if (
+                state.currentStatus === CurrentStatus.Play ||
+                state.currentStatus === CurrentStatus.Collect
+            )
+                return state;
 
             const { id } = action.payload;
 

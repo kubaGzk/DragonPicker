@@ -21,6 +21,8 @@ interface GridElementProps {
     onCollect: () => void;
     levelSelected: number;
     scale: number;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const GridElement: FC<GridElementProps> = (props) => {
@@ -39,6 +41,8 @@ const GridElement: FC<GridElementProps> = (props) => {
         onCollect,
         levelSelected,
         scale,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
     } = props;
 
     const fillColors: number[] = useMemo(
@@ -71,6 +75,21 @@ const GridElement: FC<GridElementProps> = (props) => {
         [elHeight, collectable],
     );
 
+    const mouseEnter = () => {
+        collectable && turnPointerOnHandler();
+    };
+
+    const mouseLeave = () => {
+        collectable && turnPointerOffHandler();
+    };
+
+    const mouseClick = () => {
+        if (collectable && currentStatus === CurrentStatus.Collect) {
+            turnPointerOffHandler();
+            onCollect();
+        }
+    };
+
     const increaserType =
         currentStatus === CurrentStatus.Play ||
         currentStatus === CurrentStatus.Collect
@@ -85,9 +104,10 @@ const GridElement: FC<GridElementProps> = (props) => {
             <Graphics
                 draw={draw}
                 interactive={collectable}
-                onclick={onCollect}
-                cursor={collectable ? "pointer" : "default"}
+                onclick={mouseClick}
                 filters={[pixelFilter]}
+                onmouseenter={mouseEnter}
+                onmouseleave={mouseLeave}
             />
 
             <Increaser
@@ -96,6 +116,8 @@ const GridElement: FC<GridElementProps> = (props) => {
                 onDecrease={onDecrease}
                 width={elWidth}
                 height={elHeight}
+                turnPointerOnHandler={turnPointerOnHandler}
+                turnPointerOffHandler={turnPointerOffHandler}
             />
             <Text
                 text={currValue.toString()}

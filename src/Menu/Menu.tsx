@@ -22,13 +22,9 @@ import Leaderboard from "./Leaderboard/Leaderboard";
 import Error from "./Error/Error";
 import ConfirmSave from "./ConfirmSave/ConfirmSave";
 
-interface FormProps {
-    assetLoading: boolean;
-}
+interface FormProps {}
 
 const Menu: FunctionComponent<FormProps> = (props) => {
-    const { assetLoading } = props;
-
     const {
         isAuth,
         localUsername,
@@ -45,6 +41,7 @@ const Menu: FunctionComponent<FormProps> = (props) => {
         coins,
         username,
         confirmMenuOn,
+        assetsLoaded,
     } = useAppSelector((state) => ({
         ...state.auth,
         ...state.menu,
@@ -156,7 +153,7 @@ const Menu: FunctionComponent<FormProps> = (props) => {
                 continueGame={continueSaveGameHandler}
             />
         );
-    } else if (leaderboardLoading || assetLoading) {
+    } else if (leaderboardLoading || !assetsLoaded) {
         menu = <Loader />;
     } else if (leaderboardOn) {
         menu = (

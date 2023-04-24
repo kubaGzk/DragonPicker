@@ -12,10 +12,20 @@ interface IncreaserProps {
     height: number;
     onIncrease: () => void;
     onDecrease: () => void;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const Increaser: FC<IncreaserProps> = (props) => {
-    const { width, height, type, onIncrease, onDecrease } = props;
+    const {
+        width,
+        height,
+        type,
+        onIncrease,
+        onDecrease,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
+    } = props;
 
     let topButton: string;
     let lowButton: string;
@@ -76,12 +86,24 @@ const Increaser: FC<IncreaserProps> = (props) => {
             break;
     }
 
+    const mouseEnterTop = () => {
+        topCursor === "pointer" && turnPointerOnHandler();
+    };
+
+    const mouseLeaveTop = () => {
+        topCursor === "pointer" && turnPointerOffHandler();
+    };
+
+    const mouseEnterBottom = () => {
+        lowCursor === "pointer" && turnPointerOnHandler();
+    };
+
+    const mouseLeaveBottom = () => {
+        lowCursor === "pointer" && turnPointerOffHandler();
+    };
+
     return (
-        <Container
-            x={0.8 * width}
-            y={0}
-            height={height}
-        >
+        <Container x={0.8 * width} y={0} height={height}>
             <Sprite
                 image={topButton}
                 height={height / 2}
@@ -91,7 +113,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 angle={topRotate}
                 interactive={true}
                 onclick={onIncrease}
-                cursor={topCursor}
+                onmouseenter={mouseEnterTop}
+                onmouseleave={mouseLeaveTop}
             />
             <Sprite
                 image={lowButton}
@@ -102,7 +125,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 angle={lowRotate}
                 interactive={true}
                 onclick={onDecrease}
-                cursor={lowCursor}
+                onmouseenter={mouseEnterBottom}
+                onmouseleave={mouseLeaveBottom}
             />
         </Container>
     );

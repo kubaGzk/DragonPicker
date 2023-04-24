@@ -15,6 +15,8 @@ interface GameControlProps {
     height: number;
     startGame: () => void;
     collectAll: () => void;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
     totalWin: number;
     scale: number;
 }
@@ -26,6 +28,8 @@ const GameControl: FC<GameControlProps> = (props) => {
         currentStatus,
         startGame,
         collectAll,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
         totalWin,
         scale,
     } = props;
@@ -34,6 +38,22 @@ const GameControl: FC<GameControlProps> = (props) => {
         () => new OutlineFilter(10, 0x000000, 0.1, 0.5),
         [],
     );
+    const mouseEnter = () => {
+        turnPointerOnHandler();
+    };
+
+    const mouseLeave = () => {
+        turnPointerOffHandler();
+    };
+
+    const startMouseClick = () => {
+        startGame();
+        turnPointerOffHandler();
+    };
+
+    const collecMouseClick = () => {
+        collectAll();
+    };
 
     let control: ReactNode;
 
@@ -53,12 +73,13 @@ const GameControl: FC<GameControlProps> = (props) => {
                     <Sprite
                         image={Play}
                         interactive={true}
-                        onclick={startGame}
+                        onclick={startMouseClick}
                         x={0}
                         y={height / 4}
                         anchor={0.5}
-                        cursor="pointer"
                         scale={scale}
+                        onmouseenter={mouseEnter}
+                        onmouseleave={mouseLeave}
                     />
                 </Container>
             );
@@ -83,12 +104,13 @@ const GameControl: FC<GameControlProps> = (props) => {
                         <Sprite
                             image={CollectAll}
                             interactive={true}
-                            onclick={collectAll}
+                            onclick={collecMouseClick}
                             x={0}
                             y={height / 4}
                             anchor={0.5}
-                            cursor="pointer"
                             scale={scale}
+                            onmouseenter={mouseEnter}
+                            onmouseleave={mouseLeave}
                         />
                     </Container>
                 ) : (
@@ -105,12 +127,13 @@ const GameControl: FC<GameControlProps> = (props) => {
                         <Sprite
                             image={EndGame}
                             interactive={true}
-                            onclick={collectAll}
+                            onclick={collecMouseClick}
                             x={0}
                             y={height / 4}
                             anchor={0.5}
-                            cursor="pointer"
                             scale={scale}
+                            onmouseenter={mouseEnter}
+                            onmouseleave={mouseLeave}
                         />
                     </Container>
                 );

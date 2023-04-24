@@ -1,9 +1,14 @@
-import { FC, useMemo } from "react";
-import { useAppSelector, useWindowResize } from "../hooks/hooks";
+import { FC, useMemo, ReactNode } from "react";
+import {
+    useAppDispatch,
+    useAppSelector,
+    useWindowResize,
+} from "../hooks/hooks";
 import Levels from "./Levels/Levels";
 import Map from "./Map/Map";
 import Stage from "./BridgedStage/BridgedStage";
 import UserMenu from "./UserMenu/UserMenu";
+import { mousePointerOff, mousePointerOn } from "../store/menu";
 
 import Background0 from "../assets/Background/Battleground0.png";
 import Background1 from "../assets/Background/Battleground1.png";
@@ -31,11 +36,22 @@ const GameStage: FC<GameStageProps> = () => {
         ...state.menu,
     }));
 
+    const dispatch = useAppDispatch();
+
     const { width, height } = useWindowResize();
+
     const scale = useMemo(
         () => scaleCalculator(width, height),
         [width, height],
     );
+
+    const turnPointerOnHandler = () => {
+        dispatch(mousePointerOn());
+    };
+
+    const turnPointerOffHandler = () => {
+        dispatch(mousePointerOff());
+    };
 
     const logoOn =
         !saveMenuOn &&
@@ -43,6 +59,33 @@ const GameStage: FC<GameStageProps> = () => {
         !leaderboardLoading &&
         !leaderboardOn &&
         !menuOn;
+
+    let mainElement: ReactNode | null = null;
+
+    if (isAuth && levelSelected > 0) {
+        mainElement = (
+            <Map
+                width={width}
+                height={height}
+                scale={scale}
+                turnPointerOnHandler={turnPointerOnHandler}
+                turnPointerOffHandler={turnPointerOffHandler}
+            />
+        );
+    } else if (isAuth && logoOn) {
+        mainElement = (
+            <>
+                <GameLogo width={width} height={height} scale={scale} />
+                <Levels
+                    width={width}
+                    height={height}
+                    scale={scale}
+                    turnPointerOnHandler={turnPointerOnHandler}
+                    turnPointerOffHandler={turnPointerOffHandler}
+                />
+            </>
+        );
+    }
 
     return (
         <Stage width={width} height={height}>
@@ -53,28 +96,15 @@ const GameStage: FC<GameStageProps> = () => {
                 assets={[Background0, Background1, Background2, Background3]}
             />
             {isAuth && (
-                <>
-                    <UserMenu width={width} height={height} scale={scale} />
-                    {levelSelected > 0 ? (
-                        <Map width={width} height={height} scale={scale} />
-                    ) : (
-                        <>
-                            {logoOn && (
-                                <GameLogo
-                                    width={width}
-                                    height={height}
-                                    scale={scale}
-                                />
-                            )}
-                            <Levels
-                                width={width}
-                                height={height}
-                                scale={scale}
-                            />
-                        </>
-                    )}
-                </>
+                <UserMenu
+                    width={width}
+                    height={height}
+                    scale={scale}
+                    turnPointerOnHandler={turnPointerOnHandler}
+                    turnPointerOffHandler={turnPointerOffHandler}
+                />
             )}
+            {mainElement}
         </Stage>
     );
 };

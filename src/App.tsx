@@ -1,34 +1,31 @@
-import { useEffect, useMemo, useState } from "react";
-import "./App.css";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import Menu from "./Menu/Menu";
-import { localCheck } from "./store/auth";
+import { completeAssetLoading, localCheck } from "./store/auth";
 import GameStage from "./Game/GameStage";
 import FontFaceObserver from "fontfaceobserver";
-import Loader from "./Menu/Loader/Loader";
 import { assetLoader } from "./assetLoader";
-import Modal from "./Menu/Modal/Modal";
 import { setSprites } from "./store/sprites";
 
+import classes from "./App.module.css";
+
 function App() {
-    const { isAuth, loading, menuOn } = useAppSelector((state) => ({
+    const { assetsLoaded, mousePointer } = useAppSelector((state) => ({
         ...state.auth,
         ...state.menu,
     }));
+
     const dispatch = useAppDispatch();
-
-    const font = useMemo(() => new FontFaceObserver("Alagard"), []);
-
-    const [assetLoading, setAssetLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const sprites = assetLoader(() => {
-            setAssetLoading(false);
+            dispatch(completeAssetLoading());
         });
 
         dispatch(setSprites(sprites));
-    }, []);
+    }, [dispatch]);
 
+    const font = useMemo(() => new FontFaceObserver("Alagard"), []);
     useEffect(() => {
         dispatch(localCheck());
 
@@ -38,10 +35,15 @@ function App() {
         );
     }, [dispatch, font]);
 
+    const appClasses = [classes.App];
+    if (mousePointer) {
+        appClasses.push(classes.Pointer);
+    }
+
     return (
-        <div className="App">
-            {!assetLoading && <GameStage />}
-            <Menu assetLoading={assetLoading} />
+        <div className={appClasses.join(" ")}>
+            {assetsLoaded && <GameStage />}
+            <Menu />
         </div>
     );
 }
