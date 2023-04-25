@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback, MouseEvent } from "react";
+import { useState, useEffect } from "react";
+
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
+import { Assets } from "pixi.js";
 
 interface UseWindowResize {
     width: number;
     height: number;
 }
-
 export const useWindowResize = (): UseWindowResize => {
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
@@ -35,15 +36,12 @@ type DispatchFunc = () => AppDispatch;
 export const useAppDispatch: DispatchFunc = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export function useMouseMove() {
-    const [mouseX, setMouseX] = useState(0);
-    const [mouseY, setMouseY] = useState(0);
+export const useSounds = () => {
+    const clickSound = Assets.get("clickSound");
 
-    const onMouseMove = useCallback((e: MouseEvent): void => {
-        e.preventDefault();
-        setMouseX(e.clientX);
-        setMouseY(e.clientY);
-    }, []);
+    const playClick = () => {
+        clickSound.play();
+    };
 
-    return { mouseX, mouseY, onMouseMove };
-}
+    return { playClick };
+};

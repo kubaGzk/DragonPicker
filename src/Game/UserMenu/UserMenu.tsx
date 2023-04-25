@@ -26,7 +26,6 @@ const UserMenu: FC<UserMenuProps> = (props) => {
     const { coins, username, currentStatus } = useAppSelector((state) => ({
         ...state.auth,
         ...state.gameStatus,
-        // ...state.sprites,
     }));
 
     const dispatch = useAppDispatch();
@@ -46,14 +45,12 @@ const UserMenu: FC<UserMenuProps> = (props) => {
                 openMenuHandler={openMenuHandler}
                 turnPointerOnHandler={turnPointerOnHandler}
                 turnPointerOffHandler={turnPointerOffHandler}
-                // menuItems={menuItems!}
             />
             <CoinsBar
                 width={width}
                 height={height}
                 coins={coins}
                 scale={scale}
-                // menuItems={menuItems!}
             />
         </>
     );

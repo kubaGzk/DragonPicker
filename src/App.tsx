@@ -5,7 +5,6 @@ import { completeAssetLoading, localCheck } from "./store/auth";
 import GameStage from "./Game/GameStage";
 import FontFaceObserver from "fontfaceobserver";
 import { assetLoader } from "./assetLoader";
-import { setSprites } from "./store/sprites";
 
 import classes from "./App.module.css";
 
@@ -18,14 +17,18 @@ function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        const sprites = assetLoader(() => {
-            dispatch(completeAssetLoading());
-        });
-
-        dispatch(setSprites(sprites));
-    }, [dispatch]);
+        assetLoader(
+            () => {
+                dispatch(completeAssetLoading());
+            },
+            () => {
+                dispatch(completeAssetLoading());
+            },
+        );
+    }, []);
 
     const font = useMemo(() => new FontFaceObserver("Alagard"), []);
+
     useEffect(() => {
         dispatch(localCheck());
 

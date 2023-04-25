@@ -3,9 +3,9 @@ import { FC, useMemo, useState } from "react";
 import { calculateDimension } from "../../../utils";
 import { levelTextStyle, multiplierTextStyle } from "../../../styles";
 import { OutlineFilter } from "@pixi/filter-outline";
+import { Assets, Texture } from "pixi.js";
 
 interface LevelProps {
-    img_url: string;
     name: string;
     multiplier: string;
     index: number;
@@ -16,14 +16,15 @@ interface LevelProps {
     turnPointerOffHandler: () => void;
     numberOfLevels: number;
     scale: number;
+    id: number;
 }
 
 const Level: FC<LevelProps> = (props) => {
     const {
-        img_url,
         name,
         multiplier,
         index,
+        id,
         width,
         height,
         onClick,
@@ -41,6 +42,8 @@ const Level: FC<LevelProps> = (props) => {
         () => new OutlineFilter(5, 0xfcee21, 0.1, 0.3),
         [],
     );
+
+    const levelImg: Texture = Assets.get(`level${id}`);
 
     const mouseEnter = () => {
         turnPointerOnHandler();
@@ -67,7 +70,7 @@ const Level: FC<LevelProps> = (props) => {
             pivot={{ x: 0.5, y: 0 }}
             scale={scale}
         >
-            <Sprite image={img_url} anchor={0.5} filters={filters} />
+            <Sprite texture={levelImg} anchor={0.5} filters={filters} />
             <Text
                 text={`Bid Multiplier ${multiplier}`}
                 style={multiplierTextStyle}

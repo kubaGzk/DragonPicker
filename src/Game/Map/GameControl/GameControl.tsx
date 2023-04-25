@@ -4,10 +4,7 @@ import Dragon from "../Dragon/Dragon";
 import { Sprite, Text, Container } from "@pixi/react";
 import { endGameStyle } from "../../../styles";
 import { OutlineFilter } from "@pixi/filter-outline";
-
-import Play from "../../../assets/UI/GameControls/Play.png";
-import EndGame from "../../../assets/UI/GameControls/EndGame.png";
-import CollectAll from "../../../assets/UI/GameControls/CollectAll.png";
+import { Assets, Texture } from "pixi.js";
 
 interface GameControlProps {
     currentStatus: CurrentStatus;
@@ -38,6 +35,11 @@ const GameControl: FC<GameControlProps> = (props) => {
         () => new OutlineFilter(10, 0x000000, 0.1, 0.5),
         [],
     );
+
+    const playButton: Texture = Assets.get("playButton");
+    const endGameButton: Texture = Assets.get("endGameButton");
+    const collectAllButton: Texture = Assets.get("collectAllButton");
+
     const mouseEnter = () => {
         turnPointerOnHandler();
     };
@@ -71,7 +73,7 @@ const GameControl: FC<GameControlProps> = (props) => {
                         scale={scale}
                     />
                     <Sprite
-                        image={Play}
+                        texture={playButton}
                         interactive={true}
                         onclick={startMouseClick}
                         x={0}
@@ -102,7 +104,7 @@ const GameControl: FC<GameControlProps> = (props) => {
                             scale={scale}
                         />
                         <Sprite
-                            image={CollectAll}
+                            texture={collectAllButton}
                             interactive={true}
                             onclick={collecMouseClick}
                             x={0}
@@ -125,7 +127,7 @@ const GameControl: FC<GameControlProps> = (props) => {
                             scale={scale}
                         />
                         <Sprite
-                            image={EndGame}
+                            texture={endGameButton}
                             interactive={true}
                             onclick={collecMouseClick}
                             x={0}

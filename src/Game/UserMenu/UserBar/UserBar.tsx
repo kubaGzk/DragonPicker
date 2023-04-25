@@ -6,7 +6,7 @@ import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
 import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 import { usernameTextStyle } from "../../../styles";
 import { CurrentStatus } from "../../../types";
-import { Filter, Spritesheet } from "pixi.js";
+import { Assets, Filter, Texture } from "pixi.js";
 
 interface UserBarProps {
     username: string;
@@ -15,7 +15,6 @@ interface UserBarProps {
     openMenuHandler: () => void;
     turnPointerOnHandler: () => void;
     turnPointerOffHandler: () => void;
-    // menuItems: Spritesheet;
 }
 
 const UserBar: FC<UserBarProps> = (props) => {
@@ -35,6 +34,9 @@ const UserBar: FC<UserBarProps> = (props) => {
         [],
     );
 
+    const menu: Texture = Assets.get("menu");
+    const userBar: Texture = Assets.get("userBar");
+
     const mouseEnter = () => {
         setFilters([outlineFilter]);
         turnPointerOnHandler();
@@ -52,7 +54,7 @@ const UserBar: FC<UserBarProps> = (props) => {
 
     return (
         <Container x={30 * scale} y={10 * scale} scale={scale} anchor={0}>
-            <Sprite image={Img_UserBar} x={0} y={0} />
+            <Sprite texture={userBar} x={0} y={0} />
             <Text
                 text={username}
                 style={usernameTextStyle}
@@ -64,7 +66,7 @@ const UserBar: FC<UserBarProps> = (props) => {
             {currentStatus === CurrentStatus.Start && (
                 <Sprite
                     interactive={true}
-                    image={Img_Menu}
+                    texture={menu}
                     x={340}
                     y={43}
                     scale={0.8}

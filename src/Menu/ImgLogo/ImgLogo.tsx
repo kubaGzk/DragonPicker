@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
-import Logo from "../../assets/UI/GameLogo/GameLogo.png";
+import Logo from "../../assets/UI/Menu/GameLogo.png";
 import classes from "./ImgLogo.module.css";
 
 interface ImgLogoProps {}

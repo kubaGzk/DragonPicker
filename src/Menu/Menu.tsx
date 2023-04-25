@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector, useSounds } from "../hooks/hooks";
 import { clearLocalUser, finishGameAuth, login } from "../store/auth";
 import LoginForm from "./LoginForm/LoginForm";
 import UserQuestion from "./UserQuestion/UserQuestion";
@@ -24,7 +24,7 @@ import ConfirmSave from "./ConfirmSave/ConfirmSave";
 
 interface FormProps {}
 
-const Menu: FunctionComponent<FormProps> = (props) => {
+const Menu: FunctionComponent<FormProps> = () => {
     const {
         isAuth,
         localUsername,
@@ -49,6 +49,8 @@ const Menu: FunctionComponent<FormProps> = (props) => {
     }));
 
     const dispatch = useAppDispatch();
+
+    const { playClick } = useSounds();
 
     const [inputName, setInputName] = useState<string>("");
     const [nameError, setNameError] = useState<boolean>(false);
@@ -81,47 +83,57 @@ const Menu: FunctionComponent<FormProps> = (props) => {
     };
 
     const closeMenuHandler = () => {
+        playClick();
         dispatch(turnMenuOff());
     };
 
     const levelMenuHandler = () => {
+        playClick();
         dispatch(turnMenuOff());
         dispatch(quitLevel());
     };
 
     const saveMenuHandler = () => {
+        playClick();
         dispatch(turnSaveMenuOn());
     };
 
     const saveScoreHandler = () => {
+        playClick();
         dispatch(postScore({ username, coins }));
     };
 
     const continueSaveGameHandler = () => {
+        playClick();
         dispatch(turnSaveMenuOff());
     };
 
     const openLeaderboardHandler = () => {
+        playClick();
         dispatch(fetchLeaderboard());
     };
 
     const endGameLeaderboardHandler = () => {
+        playClick();
         dispatch(finishGameAuth());
         dispatch(finishGameGameStatus());
         dispatch(finishGameMenu());
     };
 
     const continueGameLeaderboardHandler = () => {
+        playClick();
         dispatch(closeLeaderboard());
     };
 
     const confirmErrorHandler = () => {
+        playClick();
         dispatch(clearError());
     };
 
     let menu = null;
-
-    if (!isAuth && hasLocalUser) {
+    if (leaderboardLoading || !assetsLoaded) {
+        menu = <Loader />;
+    } else if (!isAuth && hasLocalUser) {
         menu = (
             <UserQuestion
                 localUserHandler={localUserHandler}
@@ -153,8 +165,6 @@ const Menu: FunctionComponent<FormProps> = (props) => {
                 continueGame={continueSaveGameHandler}
             />
         );
-    } else if (leaderboardLoading || !assetsLoaded) {
-        menu = <Loader />;
     } else if (leaderboardOn) {
         menu = (
             <Leaderboard

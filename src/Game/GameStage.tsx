@@ -10,11 +10,6 @@ import Stage from "./BridgedStage/BridgedStage";
 import UserMenu from "./UserMenu/UserMenu";
 import { mousePointerOff, mousePointerOn } from "../store/menu";
 
-import Background0 from "../assets/Background/Battleground0.png";
-import Background1 from "../assets/Background/Battleground1.png";
-import Background2 from "../assets/Background/Battleground2.png";
-import Background3 from "../assets/Background/Battleground3.png";
-
 import Background from "./Background/Background";
 import GameLogo from "./UserMenu/GameLogo/GameLogo";
 import { scaleCalculator } from "../utils";
@@ -93,7 +88,6 @@ const GameStage: FC<GameStageProps> = () => {
                 width={width}
                 height={height}
                 levelSelected={levelSelected}
-                assets={[Background0, Background1, Background2, Background3]}
             />
             {isAuth && (
                 <UserMenu

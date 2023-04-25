@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { AnimatedSprite } from "@pixi/react";
 
-
 import Attack1 from "../../../../assets/Dragon/Attack1.png";
 import Attack2 from "../../../../assets/Dragon/Attack2.png";
 import Attack3 from "../../../../assets/Dragon/Attack3.png";
@@ -16,8 +15,6 @@ interface AttackingDragonProps {
 
 const AttackingDragon: FC<AttackingDragonProps> = (props) => {
     const { onComplete, x, y, gridElHeight } = props;
-
-
 
     return (
         <AnimatedSprite
