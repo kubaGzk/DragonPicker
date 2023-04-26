@@ -14,7 +14,7 @@ interface DragonProps {
 
 const Dragon: FC<DragonProps> = (props) => {
     const { width } = props;
-    console.log(width);
+
 
     const { winners, gridElHeight } = useAppSelector(
         (state) => state.gameStatus,

@@ -1,16 +1,34 @@
 import { FC } from "react";
-import classes from "./GameMenu.module.css"
+import classes from "./GameMenu.module.css";
 
-interface GameMenuProps {}
+interface GameMenuProps {
+    closeMenuHandler: () => void;
+    levelMenuHandler: () => void;
+    saveMenuHandler: () => void;
+    openLeaderboardHandler: () => void;
+    levelSelected: number;
+}
 
-const GameMenu: FC<GameMenuProps> = () => {
+const GameMenu: FC<GameMenuProps> = (props) => {
+    const {
+        closeMenuHandler,
+        levelMenuHandler,
+        saveMenuHandler,
+        openLeaderboardHandler,
+        levelSelected,
+    } = props;
+
     return (
         <div className={classes.GameMenu}>
             <ul>
-                <li> Continue Game</li>
-                <li> Save your score on leaderboard</li>
-                <li> Show Leaderboard</li>
-                <li>Go to Level menu</li>
+                <li onClick={closeMenuHandler}> Continue Game</li>
+                <li onClick={saveMenuHandler}>
+                    Save your score on leaderboard
+                </li>
+                <li onClick={openLeaderboardHandler}> Show Leaderboard</li>
+                {levelSelected > 0 && (
+                    <li onClick={levelMenuHandler}>Go to Level menu</li>
+                )}
             </ul>
         </div>
     );

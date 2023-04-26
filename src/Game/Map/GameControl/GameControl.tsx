@@ -4,10 +4,7 @@ import Dragon from "../Dragon/Dragon";
 import { Sprite, Text, Container } from "@pixi/react";
 import { endGameStyle } from "../../../styles";
 import { OutlineFilter } from "@pixi/filter-outline";
-
-import Play from "../../../assets/UI/GameControls/Play.png";
-import EndGame from "../../../assets/UI/GameControls/EndGame.png";
-import CollectAll from "../../../assets/UI/GameControls/CollectAll.png";
+import { Assets, Texture } from "pixi.js";
 
 interface GameControlProps {
     currentStatus: CurrentStatus;
@@ -15,6 +12,8 @@ interface GameControlProps {
     height: number;
     startGame: () => void;
     collectAll: () => void;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
     totalWin: number;
     scale: number;
 }
@@ -26,6 +25,8 @@ const GameControl: FC<GameControlProps> = (props) => {
         currentStatus,
         startGame,
         collectAll,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
         totalWin,
         scale,
     } = props;
@@ -34,6 +35,27 @@ const GameControl: FC<GameControlProps> = (props) => {
         () => new OutlineFilter(10, 0x000000, 0.1, 0.5),
         [],
     );
+
+    const playButton: Texture = Assets.get("playButton");
+    const endGameButton: Texture = Assets.get("endGameButton");
+    const collectAllButton: Texture = Assets.get("collectAllButton");
+
+    const mouseEnter = () => {
+        turnPointerOnHandler();
+    };
+
+    const mouseLeave = () => {
+        turnPointerOffHandler();
+    };
+
+    const startMouseClick = () => {
+        startGame();
+        turnPointerOffHandler();
+    };
+
+    const collecMouseClick = () => {
+        collectAll();
+    };
 
     let control: ReactNode;
 
@@ -51,14 +73,15 @@ const GameControl: FC<GameControlProps> = (props) => {
                         scale={scale}
                     />
                     <Sprite
-                        image={Play}
+                        texture={playButton}
                         interactive={true}
-                        onclick={startGame}
+                        onclick={startMouseClick}
                         x={0}
                         y={height / 4}
                         anchor={0.5}
-                        cursor="pointer"
                         scale={scale}
+                        onmouseenter={mouseEnter}
+                        onmouseleave={mouseLeave}
                     />
                 </Container>
             );
@@ -81,14 +104,15 @@ const GameControl: FC<GameControlProps> = (props) => {
                             scale={scale}
                         />
                         <Sprite
-                            image={CollectAll}
+                            texture={collectAllButton}
                             interactive={true}
-                            onclick={collectAll}
+                            onclick={collecMouseClick}
                             x={0}
                             y={height / 4}
                             anchor={0.5}
-                            cursor="pointer"
                             scale={scale}
+                            onmouseenter={mouseEnter}
+                            onmouseleave={mouseLeave}
                         />
                     </Container>
                 ) : (
@@ -103,14 +127,15 @@ const GameControl: FC<GameControlProps> = (props) => {
                             scale={scale}
                         />
                         <Sprite
-                            image={EndGame}
+                            texture={endGameButton}
                             interactive={true}
-                            onclick={collectAll}
+                            onclick={collecMouseClick}
                             x={0}
                             y={height / 4}
                             anchor={0.5}
-                            cursor="pointer"
                             scale={scale}
+                            onmouseenter={mouseEnter}
+                            onmouseleave={mouseLeave}
                         />
                     </Container>
                 );

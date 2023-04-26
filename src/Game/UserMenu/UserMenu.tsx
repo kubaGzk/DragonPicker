@@ -2,17 +2,26 @@ import { FC } from "react";
 import CoinsBar from "./CoinsBar/CoinsBar";
 import UserBar from "./UserBar/UserBar";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { turnMenuOn } from "../../store/menu";
+
 import { CurrentStatus } from "../../types";
+import { turnMenuOn } from "../../store/menu";
 
 interface UserMenuProps {
     width: number;
     height: number;
     scale: number;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const UserMenu: FC<UserMenuProps> = (props) => {
-    const { width, height, scale } = props;
+    const {
+        width,
+        height,
+        scale,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
+    } = props;
 
     const { coins, username, currentStatus } = useAppSelector((state) => ({
         ...state.auth,
@@ -34,6 +43,8 @@ const UserMenu: FC<UserMenuProps> = (props) => {
                 scale={scale}
                 currentStatus={currentStatus}
                 openMenuHandler={openMenuHandler}
+                turnPointerOnHandler={turnPointerOnHandler}
+                turnPointerOffHandler={turnPointerOffHandler}
             />
             <CoinsBar
                 width={width}

@@ -1,10 +1,6 @@
 import { Container, Sprite } from "@pixi/react";
 import { FC } from "react";
-
-import Img_Button_Block_High from "../../../../assets/Grid/Button_Block_High.png";
-import Img_Button_Block_Low from "../../../../assets/Grid/Button_Block_Low.png";
-import Img_Button_Plus from "../../../../assets/Grid/Button_Plus.png";
-import Img_Button_Minus from "../../../../assets/Grid/Button_Minus.png";
+import { Assets, Texture } from "pixi.js";
 
 interface IncreaserProps {
     type: "low" | "regular" | "high" | "blocked";
@@ -12,13 +8,23 @@ interface IncreaserProps {
     height: number;
     onIncrease: () => void;
     onDecrease: () => void;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const Increaser: FC<IncreaserProps> = (props) => {
-    const { width, height, type, onIncrease, onDecrease } = props;
+    const {
+        width,
+        height,
+        type,
+        onIncrease,
+        onDecrease,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
+    } = props;
 
-    let topButton: string;
-    let lowButton: string;
+    let topButton: Texture;
+    let lowButton: Texture;
 
     let topRotate: number;
     let lowRotate: number;
@@ -28,8 +34,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
 
     switch (type) {
         case "low":
-            topButton = Img_Button_Plus;
-            lowButton = Img_Button_Block_Low;
+            topButton = Assets.get("plusButton");
+            lowButton = Assets.get("blockLowButton");
 
             topRotate = 270;
             lowRotate = 270;
@@ -40,8 +46,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
             break;
 
         case "regular":
-            topButton = Img_Button_Plus;
-            lowButton = Img_Button_Minus;
+            topButton = Assets.get("plusButton");
+            lowButton = Assets.get("minusButton");
 
             topRotate = 270;
             lowRotate = 270;
@@ -52,8 +58,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
             break;
 
         case "high":
-            topButton = Img_Button_Block_High;
-            lowButton = Img_Button_Minus;
+            topButton = Assets.get("blockHighButton");
+            lowButton = Assets.get("minusButton");
 
             topRotate = 270;
             lowRotate = 270;
@@ -64,8 +70,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
             break;
 
         case "blocked":
-            topButton = Img_Button_Block_High;
-            lowButton = Img_Button_Block_Low;
+            topButton = Assets.get("blockHighButton");
+            lowButton = Assets.get("blockLowButton");
 
             topRotate = 270;
             lowRotate = 270;
@@ -76,14 +82,26 @@ const Increaser: FC<IncreaserProps> = (props) => {
             break;
     }
 
+    const mouseEnterTop = () => {
+        topCursor === "pointer" && turnPointerOnHandler();
+    };
+
+    const mouseLeaveTop = () => {
+        topCursor === "pointer" && turnPointerOffHandler();
+    };
+
+    const mouseEnterBottom = () => {
+        lowCursor === "pointer" && turnPointerOnHandler();
+    };
+
+    const mouseLeaveBottom = () => {
+        lowCursor === "pointer" && turnPointerOffHandler();
+    };
+
     return (
-        <Container
-            x={0.8 * width}
-            y={0}
-            height={height}
-        >
+        <Container x={0.8 * width} y={0} height={height}>
             <Sprite
-                image={topButton}
+                texture={topButton}
                 height={height / 2}
                 width={height / 2}
                 x={0}
@@ -91,10 +109,11 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 angle={topRotate}
                 interactive={true}
                 onclick={onIncrease}
-                cursor={topCursor}
+                onmouseenter={mouseEnterTop}
+                onmouseleave={mouseLeaveTop}
             />
             <Sprite
-                image={lowButton}
+                texture={lowButton}
                 x={0}
                 height={height / 2}
                 width={height / 2}
@@ -102,7 +121,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 angle={lowRotate}
                 interactive={true}
                 onclick={onDecrease}
-                cursor={lowCursor}
+                onmouseenter={mouseEnterBottom}
+                onmouseleave={mouseLeaveBottom}
             />
         </Container>
     );

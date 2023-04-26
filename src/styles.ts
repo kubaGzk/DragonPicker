@@ -100,10 +100,10 @@ export const usernameTextStyle = new TextStyle({
     fill: ["#ffffff", "#ffffff"], // gradient
     stroke: "#808080",
     strokeThickness: 2,
-    letterSpacing: 8,
+    letterSpacing: 6,
     dropShadow: true,
     dropShadowColor: "#ccced2",
-    dropShadowBlur: 5,
+    dropShadowBlur: 2,
     dropShadowDistance: 2,
     wordWrap: true,
     wordWrapWidth: 440,

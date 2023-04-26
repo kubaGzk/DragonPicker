@@ -1,20 +1,22 @@
 import { Sprite } from "@pixi/react";
+import { Assets } from "pixi.js";
 import { FC } from "react";
 
 interface BackgroundProps {
     width: number;
     height: number;
     levelSelected: number;
-    assets: string[];
 }
 
 const Background: FC<BackgroundProps> = (props) => {
-    const { width, height, levelSelected, assets } = props;
+    const { width, height, levelSelected } = props;
 
     //every background must be 1920x1080
+    const texture = Assets.get(`background${levelSelected}`);
+
     return (
         <Sprite
-            image={assets[levelSelected]}
+            texture={texture}
             anchor={0.5}
             x={width / 2}
             y={height / 2}

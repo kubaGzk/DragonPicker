@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { Sprite } from "@pixi/react";
-
-import Logo from "../../../assets/UI/GameLogo/GameLogo.png";
+import { Assets, Texture } from "pixi.js";
 
 interface GameLogoProps {
     width: number;
@@ -11,9 +10,12 @@ interface GameLogoProps {
 
 const GameLogo: FC<GameLogoProps> = (props) => {
     const { width, height, scale } = props;
+
+    const logo: Texture = Assets.get("gameLogo");
+
     return (
         <Sprite
-            image={Logo}
+            texture={logo}
             anchor={{ x: 0.5, y: 0 }}
             x={width / 2}
             y={height * 0.05}

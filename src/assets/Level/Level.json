@@ -1,0 +1,39 @@
+{"frames": {
+
+"Level1.png":
+{
+	"frame": {"x":0,"y":0,"w":320,"h":380},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":380},
+	"sourceSize": {"w":320,"h":380}
+},
+"Level2.png":
+{
+	"frame": {"x":320,"y":0,"w":320,"h":380},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":380},
+	"sourceSize": {"w":320,"h":380}
+},
+"Level3.png":
+{
+	"frame": {"x":640,"y":0,"w":320,"h":380},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":320,"h":380},
+	"sourceSize": {"w":320,"h":380}
+}},
+"animations": {
+	"Level": ["Level1.png","Level2.png","Level3.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "Level.png",
+	"format": "RGBA8888",
+	"size": {"w":960,"h":380},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:41ebc445f1cda23b7451642858455e95:27791155acf461e66e6479e355e69ecc:cc0be829ecfaa09be857a92075ab0d1e$"
+}
+}

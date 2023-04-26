@@ -6,17 +6,26 @@ import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
 import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 import { usernameTextStyle } from "../../../styles";
 import { CurrentStatus } from "../../../types";
-import { Filter } from "pixi.js";
+import { Assets, Filter, Texture } from "pixi.js";
 
 interface UserBarProps {
     username: string;
     scale: number;
     currentStatus: CurrentStatus;
     openMenuHandler: () => void;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const UserBar: FC<UserBarProps> = (props) => {
-    const { username, scale, currentStatus, openMenuHandler } = props;
+    const {
+        username,
+        scale,
+        currentStatus,
+        openMenuHandler,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
+    } = props;
 
     const [filters, setFilters] = useState<Filter[]>([]);
 
@@ -25,17 +34,27 @@ const UserBar: FC<UserBarProps> = (props) => {
         [],
     );
 
-    const addFilterHandler = () => {
-        currentStatus === CurrentStatus.Start && setFilters([outlineFilter]);
+    const menu: Texture = Assets.get("menu");
+    const userBar: Texture = Assets.get("userBar");
+
+    const mouseEnter = () => {
+        setFilters([outlineFilter]);
+        turnPointerOnHandler();
     };
 
-    const removeFilterHandler = () => {
-        currentStatus === CurrentStatus.Start && setFilters([]);
+    const mouseLeave = () => {
+        setFilters([]);
+        turnPointerOffHandler();
+    };
+
+    const mouseClick = () => {
+        openMenuHandler();
+        turnPointerOffHandler();
     };
 
     return (
         <Container x={30 * scale} y={10 * scale} scale={scale} anchor={0}>
-            <Sprite image={Img_UserBar} x={0} y={0} />
+            <Sprite texture={userBar} x={0} y={0} />
             <Text
                 text={username}
                 style={usernameTextStyle}
@@ -47,16 +66,15 @@ const UserBar: FC<UserBarProps> = (props) => {
             {currentStatus === CurrentStatus.Start && (
                 <Sprite
                     interactive={true}
-                    image={Img_Menu}
+                    texture={menu}
                     x={340}
                     y={43}
                     scale={0.8}
                     anchor={{ x: 1, y: 0.5 }}
-                    onmouseenter={addFilterHandler}
-                    onmouseleave={removeFilterHandler}
-                    onmousedown={openMenuHandler}
+                    onmouseenter={mouseEnter}
+                    onmouseleave={mouseLeave}
+                    onclick={mouseClick}
                     filters={filters}
-                    cursor="pointer"
                 />
             )}
         </Container>

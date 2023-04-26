@@ -113,7 +113,11 @@ const gameStatusSlice = createSlice({
             return state;
         },
         increaseBid: (state, action: PayloadAction<{ id: string }>) => {
-            if (state.currentStatus === CurrentStatus.Play) return state;
+            if (
+                state.currentStatus === CurrentStatus.Play ||
+                state.currentStatus === CurrentStatus.Collect
+            )
+                return state;
 
             const { id } = action.payload;
 
@@ -135,7 +139,11 @@ const gameStatusSlice = createSlice({
             };
         },
         decreaseBid: (state, action: PayloadAction<{ id: string }>) => {
-            if (state.currentStatus === CurrentStatus.Play) return state;
+            if (
+                state.currentStatus === CurrentStatus.Play ||
+                state.currentStatus === CurrentStatus.Collect
+            )
+                return state;
 
             const { id } = action.payload;
 
@@ -164,10 +172,6 @@ const gameStatusSlice = createSlice({
             const { minStake, maxStake } = action.payload;
 
             return { ...state, minStake, maxStake };
-        },
-
-        quitLevel: () => {
-            return { ...initialState };
         },
 
         startGame: (state) => {
@@ -219,6 +223,8 @@ const gameStatusSlice = createSlice({
             };
         },
         collectWinElement: (state, action: PayloadAction<{ id: string }>) => {
+            if (state.currentStatus === CurrentStatus.Play) return state;
+
             const { id } = action.payload;
 
             const { newGridElements, itemsToCollect, collectedWin } =
@@ -266,7 +272,14 @@ const gameStatusSlice = createSlice({
                 totalWin: 0,
             };
         },
-
+        quitLevel: (state) => {
+            if (state.currentStatus === CurrentStatus.Start) {
+                return { ...initialState, coins: state.coins };
+            }
+        },
+        finishGameGameStatus: () => {
+            return initialState;
+        },
     },
 });
 
@@ -283,6 +296,7 @@ export const {
     setCollectable,
     collectWinElement,
     collectAllWinElements,
+    finishGameGameStatus,
 } = gameStatusSlice.actions;
 
 export default gameStatusSlice.reducer;

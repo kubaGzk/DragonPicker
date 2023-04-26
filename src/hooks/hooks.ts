@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import type { RootState, AppDispatch } from '../store/store'
+
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import type { RootState, AppDispatch } from "../store/store";
+import { Assets } from "pixi.js";
 
 interface UseWindowResize {
     width: number;
     height: number;
 }
-
 export const useWindowResize = (): UseWindowResize => {
     const [windowSize, setWindowSize] = useState({
         width: window.innerWidth,
@@ -31,6 +32,16 @@ export const useWindowResize = (): UseWindowResize => {
     return windowSize;
 };
 
-type DispatchFunc = () => AppDispatch
-export const useAppDispatch: DispatchFunc = useDispatch
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+type DispatchFunc = () => AppDispatch;
+export const useAppDispatch: DispatchFunc = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export const useSounds = () => {
+    const clickSound = Assets.get("clickSound");
+
+    const playClick = () => {
+        clickSound.play();
+    };
+
+    return { playClick };
+};

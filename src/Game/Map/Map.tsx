@@ -13,10 +13,18 @@ interface MapProps {
     width: number;
     height: number;
     scale: number;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const Map: FC<MapProps> = (props) => {
-    const { width, height, scale } = props;
+    const {
+        width,
+        height,
+        scale,
+        turnPointerOnHandler,
+        turnPointerOffHandler,
+    } = props;
 
     const { levelSelected, currentStatus, totalWin } = useAppSelector(
         (state) => state.gameStatus,
@@ -43,7 +51,11 @@ const Map: FC<MapProps> = (props) => {
 
     return (
         <>
-            <Grid scale={scale} />
+            <Grid
+                scale={scale}
+                turnPointerOnHandler={turnPointerOnHandler}
+                turnPointerOffHandler={turnPointerOffHandler}
+            />
             <GameControl
                 currentStatus={currentStatus}
                 width={width}
@@ -52,6 +64,8 @@ const Map: FC<MapProps> = (props) => {
                 collectAll={collectAllWinHandler}
                 totalWin={totalWin}
                 scale={scale}
+                turnPointerOnHandler={turnPointerOnHandler}
+                turnPointerOffHandler={turnPointerOffHandler}
             />
         </>
     );

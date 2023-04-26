@@ -1,17 +1,31 @@
 import { useEffect, useMemo } from "react";
-import "./App.css";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import Menu from "./Menu/Menu";
-import { localCheck } from "./store/auth";
+import { completeAssetLoading, localCheck } from "./store/auth";
 import GameStage from "./Game/GameStage";
 import FontFaceObserver from "fontfaceobserver";
+import { assetLoader } from "./assetLoader";
+
+import classes from "./App.module.css";
 
 function App() {
-    const { isAuth, loading, menuOn } = useAppSelector((state) => ({
+    const { assetsLoaded, mousePointer } = useAppSelector((state) => ({
         ...state.auth,
         ...state.menu,
     }));
+
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        assetLoader(
+            () => {
+                dispatch(completeAssetLoading());
+            },
+            () => {
+                dispatch(completeAssetLoading());
+            },
+        );
+    }, []);
 
     const font = useMemo(() => new FontFaceObserver("Alagard"), []);
 
@@ -24,10 +38,15 @@ function App() {
         );
     }, [dispatch, font]);
 
+    const appClasses = [classes.App];
+    if (mousePointer) {
+        appClasses.push(classes.Pointer);
+    }
+
     return (
-        <div className="App">
-            {!loading && <GameStage />}
-            {!loading && (!isAuth || menuOn) && <Menu />}
+        <div className={appClasses.join(" ")}>
+            {assetsLoaded && <GameStage />}
+            <Menu />
         </div>
     );
 }

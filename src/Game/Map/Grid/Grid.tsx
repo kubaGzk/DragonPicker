@@ -6,14 +6,15 @@ import {
     decreaseBid,
     increaseBid,
 } from "../../../store/gameStatus";
-import { Container } from "@pixi/react";
 
 interface GridProps {
     scale: number;
+    turnPointerOnHandler: () => void;
+    turnPointerOffHandler: () => void;
 }
 
 const Grid: FC<GridProps> = (props) => {
-    const { scale } = props;
+    const { scale, turnPointerOnHandler, turnPointerOffHandler } = props;
 
     const {
         gridElWidth,
@@ -45,7 +46,7 @@ const Grid: FC<GridProps> = (props) => {
     };
 
     return (
-        <Container x={0} y={0} >
+        <>
             {gridElements.map((el) => {
                 return (
                     <GridElement
@@ -64,10 +65,12 @@ const Grid: FC<GridProps> = (props) => {
                         onCollect={() => collectHandler(el.id)}
                         levelSelected={levelSelected}
                         scale={scale}
+                        turnPointerOnHandler={turnPointerOnHandler}
+                        turnPointerOffHandler={turnPointerOffHandler}
                     />
                 );
             })}
-        </Container>
+        </>
     );
 };
 

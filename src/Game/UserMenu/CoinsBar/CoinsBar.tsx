@@ -1,9 +1,6 @@
 import { FC } from "react";
 import { Container, Sprite, Text } from "@pixi/react";
-
-import Img_Coin from "../../../assets/UI/Menu/Coin.png";
-import Img_CoinsBar from "../../../assets/UI/Menu/CoinsBar.png";
-
+import { Assets, Texture } from "pixi.js";
 import { coinsTextStyle } from "../../../styles";
 
 interface CoinsBarProps {
@@ -18,6 +15,9 @@ const CoinsBar: FC<CoinsBarProps> = (props) => {
 
     const stringCoins = coins.toString();
 
+    const coinsBar: Texture = Assets.get("coinsBar");
+    const coin: Texture = Assets.get("coin");
+
     return (
         <Container
             x={width - 384 * scale}
@@ -25,10 +25,10 @@ const CoinsBar: FC<CoinsBarProps> = (props) => {
             scale={scale}
             anchor={{ x: 0, y: 0 }}
         >
-            <Sprite image={Img_CoinsBar} x={0} y={0} />
+            <Sprite texture={coinsBar} x={0} y={0} />
 
             <Sprite
-                image={Img_Coin}
+                texture={coin}
                 anchor={{ x: 0, y: 0.5 }}
                 y={43}
                 x={-20}

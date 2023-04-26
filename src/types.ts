@@ -18,3 +18,9 @@ export enum CurrentStatus {
     Play,
     Collect,
 }
+
+export interface LeaderboardItem {
+    index: number;
+    username: string;
+    coins: number;
+}
