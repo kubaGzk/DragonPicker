@@ -42,7 +42,7 @@ export const gridElementStyle = (elHeight: number, collectable: boolean) =>
         fontFamily: "Alagard",
         fontSize: elHeight * 0.45,
         fontWeight: "400",
-        fill: collectable ? ["#ffffff", "#B6B393"] : ["#ffffff", "#B6B393"], // gradient
+        fill: collectable ? ["#ffffff", "#B6B393"] : ["#ffffff", "#B6B393"], 
         stroke: "#5A5749",
         strokeThickness: 2,
         letterSpacing: 8,
@@ -61,7 +61,7 @@ export const multiplierTextStyle = new TextStyle({
     fontFamily: "Alagard",
     fontSize: 40,
     fontWeight: "600",
-    fill: ["#ffffff", "#FCEE21"], // gradient
+    fill: ["#ffffff", "#FCEE21"],
     stroke: "645110",
     strokeThickness: 5,
     letterSpacing: 5,
