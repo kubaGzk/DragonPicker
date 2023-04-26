@@ -5,8 +5,8 @@ import {
     getWinElement,
     selectWinners,
     getAllWinElements,
-    newCalculateGrid,
-} from "../utils";
+    calculateGrid,
+} from "./utils";
 import { CurrentStatus, GridElement, Winner } from "../types";
 
 export interface GameStatusState {
@@ -53,10 +53,6 @@ const gameStatusSlice = createSlice({
                 coins,
             };
         },
-        completeLoading: (state) => {
-            return { ...state, loading: false };
-        },
-
         selectLevel: (
             state,
             action: PayloadAction<{
@@ -66,8 +62,10 @@ const gameStatusSlice = createSlice({
         ) => {
             const { level, scale } = action.payload;
 
-            const { gridElWidth, gridElHeight, gridElements } =
-                newCalculateGrid(level, scale);
+            const { gridElWidth, gridElHeight, gridElements } = calculateGrid(
+                level,
+                scale,
+            );
 
             return {
                 ...state,
@@ -87,7 +85,7 @@ const gameStatusSlice = createSlice({
 
             if (state.levelSelected !== 0) {
                 const { gridElWidth, gridElHeight, gridElements } =
-                    newCalculateGrid(state.levelSelected, scale);
+                    calculateGrid(state.levelSelected, scale);
 
                 const updatedElements = gridElements.map((el) => {
                     const lookInd = state.gridElements.findIndex(
@@ -164,7 +162,6 @@ const gameStatusSlice = createSlice({
                 coins: state.coins + state.bidAmount,
             };
         },
-
         setStakes: (
             state,
             action: PayloadAction<{ minStake: number; maxStake: number }>,
@@ -173,7 +170,6 @@ const gameStatusSlice = createSlice({
 
             return { ...state, minStake, maxStake };
         },
-
         startGame: (state) => {
             const { winners } = selectWinners(
                 state.levelSelected!,
@@ -206,7 +202,6 @@ const gameStatusSlice = createSlice({
                 currentStatus: CurrentStatus.Collect,
             };
         },
-
         setCollectable: (state, action: PayloadAction<{ id: string }>) => {
             const { id } = action.payload;
 

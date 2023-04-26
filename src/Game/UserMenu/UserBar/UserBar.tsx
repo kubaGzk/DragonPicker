@@ -2,11 +2,10 @@ import { FC, useState, useMemo } from "react";
 import { Container, Sprite, Text } from "@pixi/react";
 import { OutlineFilter } from "@pixi/filter-outline";
 
-import Img_UserBar from "../../../assets/UI/Menu/UserBar.png";
-import Img_Menu from "../../../assets/UI/Menu/Menu.png";
 import { usernameTextStyle } from "../../../styles";
 import { CurrentStatus } from "../../../types";
 import { Assets, Filter, Texture } from "pixi.js";
+import { useSounds } from "../../../hooks/sounds";
 
 interface UserBarProps {
     username: string;
@@ -37,6 +36,8 @@ const UserBar: FC<UserBarProps> = (props) => {
     const menu: Texture = Assets.get("menu");
     const userBar: Texture = Assets.get("userBar");
 
+    const { playClick } = useSounds();
+
     const mouseEnter = () => {
         setFilters([outlineFilter]);
         turnPointerOnHandler();
@@ -50,6 +51,7 @@ const UserBar: FC<UserBarProps> = (props) => {
     const mouseClick = () => {
         openMenuHandler();
         turnPointerOffHandler();
+        playClick();
     };
 
     return (

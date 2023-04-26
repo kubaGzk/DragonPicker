@@ -1,10 +1,11 @@
-import { FC, ReactNode, useMemo } from "react";
-import { CurrentStatus } from "../../../types";
-import Dragon from "../Dragon/Dragon";
+import { FC, ReactNode, useMemo, useEffect } from "react";
 import { Sprite, Text, Container } from "@pixi/react";
-import { endGameStyle } from "../../../styles";
 import { OutlineFilter } from "@pixi/filter-outline";
 import { Assets, Texture } from "pixi.js";
+import Dragon from "../Dragon/Dragon";
+import { CurrentStatus } from "../../../types";
+import { endGameStyle } from "../../../styles";
+import { useSounds } from "../../../hooks/sounds";
 
 interface GameControlProps {
     currentStatus: CurrentStatus;
@@ -40,6 +41,16 @@ const GameControl: FC<GameControlProps> = (props) => {
     const endGameButton: Texture = Assets.get("endGameButton");
     const collectAllButton: Texture = Assets.get("collectAllButton");
 
+    const { playClick, playCollect, playWin, playLose } = useSounds();
+
+    useEffect(() => {
+        if (currentStatus === CurrentStatus.Collect && totalWin > 0) {
+            playWin();
+        } else if (currentStatus === CurrentStatus.Collect) {
+            playLose();
+        }
+    }, [currentStatus, totalWin, playWin, playLose]);
+
     const mouseEnter = () => {
         turnPointerOnHandler();
     };
@@ -51,10 +62,17 @@ const GameControl: FC<GameControlProps> = (props) => {
     const startMouseClick = () => {
         startGame();
         turnPointerOffHandler();
+        playClick();
     };
 
-    const collecMouseClick = () => {
+    const collectMouseClick = () => {
         collectAll();
+        playCollect();
+    };
+
+    const endMouseClick = () => {
+        collectAll();
+        playClick();
     };
 
     let control: ReactNode;
@@ -106,7 +124,7 @@ const GameControl: FC<GameControlProps> = (props) => {
                         <Sprite
                             texture={collectAllButton}
                             interactive={true}
-                            onclick={collecMouseClick}
+                            onclick={collectMouseClick}
                             x={0}
                             y={height / 4}
                             anchor={0.5}
@@ -129,7 +147,7 @@ const GameControl: FC<GameControlProps> = (props) => {
                         <Sprite
                             texture={endGameButton}
                             interactive={true}
-                            onclick={collecMouseClick}
+                            onclick={endMouseClick}
                             x={0}
                             y={height / 4}
                             anchor={0.5}

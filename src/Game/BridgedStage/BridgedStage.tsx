@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-
 import { Stage } from "@pixi/react";
 import { ReactReduxContext } from "react-redux";
 import { ContextBridge } from "../../hoc/ContextBridge";

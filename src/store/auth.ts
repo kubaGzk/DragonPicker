@@ -3,21 +3,21 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface GameStatusState {
     username: string;
     isAuth: boolean;
-    loading: boolean;
     localUsername: string;
     localCoins: number;
     hasLocalUser: boolean;
     assetsLoaded: boolean;
+    assetsError: boolean;
 }
 
 const initialState: GameStatusState = {
     username: "",
     isAuth: false,
-    loading: true,
     localUsername: "",
     localCoins: 0,
     hasLocalUser: false,
     assetsLoaded: false,
+    assetsError: false,
 };
 
 const authSlice = createSlice({
@@ -68,6 +68,9 @@ const authSlice = createSlice({
         completeAssetLoading: (state) => {
             return { ...state, assetsLoaded: true };
         },
+        errorAssetLoading: (state) => {
+            return { ...state, assersLoaded: true, assetsError: true };
+        },
         finishGameAuth: () => {
             return { ...initialState, loading: false };
         },
@@ -79,6 +82,7 @@ export const {
     login,
     clearLocalUser,
     completeAssetLoading,
+    errorAssetLoading,
     finishGameAuth,
 } = authSlice.actions;
 

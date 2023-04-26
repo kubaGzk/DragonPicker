@@ -1,12 +1,16 @@
 import { useEffect, useMemo } from "react";
+import FontFaceObserver from "fontfaceobserver";
 import { useAppDispatch, useAppSelector } from "./hooks/hooks";
 import Menu from "./Menu/Menu";
-import { completeAssetLoading, localCheck } from "./store/auth";
+import {
+    completeAssetLoading,
+    errorAssetLoading,
+    localCheck,
+} from "./store/auth";
 import GameStage from "./Game/GameStage";
-import FontFaceObserver from "fontfaceobserver";
 import { assetLoader } from "./assetLoader";
-
 import classes from "./App.module.css";
+
 
 function App() {
     const { assetsLoaded, mousePointer } = useAppSelector((state) => ({
@@ -22,7 +26,7 @@ function App() {
                 dispatch(completeAssetLoading());
             },
             () => {
-                dispatch(completeAssetLoading());
+                dispatch(errorAssetLoading());
             },
         );
     }, []);

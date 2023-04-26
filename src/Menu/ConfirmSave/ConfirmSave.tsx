@@ -1,6 +1,5 @@
 import { FC } from "react";
 import Button from "../Button/Button";
-import classes from "./Leaderboard.module.css";
 
 interface ConfirmSaveProps {
     showLeaderboard: () => void;

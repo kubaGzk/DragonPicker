@@ -1,8 +1,10 @@
 import { FC, useState, useEffect } from "react";
+import { AnimatedSprite } from "@pixi/react";
+import { useSounds } from "../../../../../hooks/sounds";
+
 import Fire_Attack4 from "../../../../../assets/Dragon/Fire_Attack4.png";
 import Fire_Attack5 from "../../../../../assets/Dragon/Fire_Attack5.png";
 import Fire_Attack6 from "../../../../../assets/Dragon/Fire_Attack6.png";
-import { AnimatedSprite } from "@pixi/react";
 
 interface FlameBlowProps {
     x: number;
@@ -17,6 +19,8 @@ const FlameBlow: FC<FlameBlowProps> = (props) => {
 
     const [showBlow, setShowBlow] = useState<boolean>(false);
 
+    const { playHit } = useSounds();
+
     useEffect(() => {
         if (
             showBlow === false &&
@@ -24,8 +28,9 @@ const FlameBlow: FC<FlameBlowProps> = (props) => {
             Math.round(flameX) > Math.round(x) - 5
         ) {
             setShowBlow(true);
+            playHit();
         }
-    }, [flameX, x, showBlow]);
+    }, [flameX, x, showBlow, playHit]);
 
     const completeBlowHandler = () => {
         if (showBlow) {

@@ -1,5 +1,5 @@
 import { FunctionComponent, useState } from "react";
-import { useAppDispatch, useAppSelector, useSounds } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { clearLocalUser, finishGameAuth, login } from "../store/auth";
 import LoginForm from "./LoginForm/LoginForm";
 import UserQuestion from "./UserQuestion/UserQuestion";
@@ -21,6 +21,7 @@ import BoardQuestion from "./BoardQuestion/BoardQuestion";
 import Leaderboard from "./Leaderboard/Leaderboard";
 import Error from "./Error/Error";
 import ConfirmSave from "./ConfirmSave/ConfirmSave";
+import { useSounds } from "../hooks/sounds";
 
 interface FormProps {}
 
@@ -42,6 +43,7 @@ const Menu: FunctionComponent<FormProps> = () => {
         username,
         confirmMenuOn,
         assetsLoaded,
+        assetsError,
     } = useAppSelector((state) => ({
         ...state.auth,
         ...state.menu,
@@ -49,7 +51,6 @@ const Menu: FunctionComponent<FormProps> = () => {
     }));
 
     const dispatch = useAppDispatch();
-
     const { playClick } = useSounds();
 
     const [inputName, setInputName] = useState<string>("");
@@ -174,8 +175,13 @@ const Menu: FunctionComponent<FormProps> = () => {
                 endGame={endGameLeaderboardHandler}
             />
         );
-    } else if (leaderboardError) {
-        menu = <Error confirmError={confirmErrorHandler} />;
+    } else if (leaderboardError || assetsError) {
+        menu = (
+            <Error
+                confirmError={confirmErrorHandler}
+                assetsError={assetsError}
+            />
+        );
     } else if (confirmMenuOn) {
         menu = <ConfirmSave showLeaderboard={openLeaderboardHandler} />;
     }

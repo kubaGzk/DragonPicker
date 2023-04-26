@@ -1,6 +1,7 @@
-import { Container, Sprite } from "@pixi/react";
 import { FC } from "react";
+import { Container, Sprite } from "@pixi/react";
 import { Assets, Texture } from "pixi.js";
+import { useSounds } from "../../../../hooks/sounds";
 
 interface IncreaserProps {
     type: "low" | "regular" | "high" | "blocked";
@@ -22,6 +23,8 @@ const Increaser: FC<IncreaserProps> = (props) => {
         turnPointerOnHandler,
         turnPointerOffHandler,
     } = props;
+
+    const { playClick } = useSounds();
 
     let topButton: Texture;
     let lowButton: Texture;
@@ -98,6 +101,16 @@ const Increaser: FC<IncreaserProps> = (props) => {
         lowCursor === "pointer" && turnPointerOffHandler();
     };
 
+    const increaseClick = () => {
+        topCursor === "pointer" && playClick();
+        onIncrease();
+    };
+
+    const decreaseClick = () => {
+        lowCursor === "pointer" && playClick();
+        onDecrease();
+    };
+
     return (
         <Container x={0.8 * width} y={0} height={height}>
             <Sprite
@@ -108,7 +121,7 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 y={height / 2}
                 angle={topRotate}
                 interactive={true}
-                onclick={onIncrease}
+                onclick={increaseClick}
                 onmouseenter={mouseEnterTop}
                 onmouseleave={mouseLeaveTop}
             />
@@ -120,7 +133,7 @@ const Increaser: FC<IncreaserProps> = (props) => {
                 y={height}
                 angle={lowRotate}
                 interactive={true}
-                onclick={onDecrease}
+                onclick={decreaseClick}
                 onmouseenter={mouseEnterBottom}
                 onmouseleave={mouseLeaveBottom}
             />
