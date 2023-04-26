@@ -72,7 +72,7 @@ const authSlice = createSlice({
             return { ...state, assersLoaded: true, assetsError: true };
         },
         finishGameAuth: () => {
-            return { ...initialState, loading: false };
+            return { ...initialState, loading: false, assetsLoaded: true };
         },
     },
 });
