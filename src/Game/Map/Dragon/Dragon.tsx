@@ -11,10 +11,11 @@ import { useSounds } from "../../../hooks/sounds";
 interface DragonProps {
     width: number;
     height: number;
+    scale: number;
 }
 
 const Dragon: FC<DragonProps> = (props) => {
-    const { width } = props;
+    const { width, scale } = props;
 
     const { winners, gridElHeight } = useAppSelector(
         (state) => state.gameStatus,
@@ -35,7 +36,7 @@ const Dragon: FC<DragonProps> = (props) => {
     useTick((delta) => {
         //DragonEntrance
         if (walk && walkX > width * 0.8) {
-            setWalkX((prevX) => prevX - delta * 2);
+            setWalkX((prevX) => prevX - delta * 4 * scale);
         } else if (walk && walkX <= width * 0.8) {
             setWalk(false);
 
@@ -47,14 +48,14 @@ const Dragon: FC<DragonProps> = (props) => {
 
         //DragonExit
         if (exit && walkX < width * 1.05) {
-            setWalkX((prevX) => prevX + delta);
+            setWalkX((prevX) => prevX + delta * 4 * scale);
         } else if (exit && walkX <= width * 1.05) {
             setExit(false);
         }
 
         //FlameThrower
         if (throwFlame && flameX > winners[winners.length - 1].x) {
-            setFlameX((prevX) => prevX - delta * 2);
+            setFlameX((prevX) => prevX - delta * 4 * scale);
         } else if (throwFlame && flameX <= winners[winners.length - 1].x) {
             setThrowFlame(false);
         }

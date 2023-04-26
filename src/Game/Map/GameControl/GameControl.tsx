@@ -106,7 +106,7 @@ const GameControl: FC<GameControlProps> = (props) => {
             break;
 
         case CurrentStatus.Play:
-            control = <Dragon width={width} height={height} />;
+            control = <Dragon width={width} height={height} scale={scale} />;
             break;
         case CurrentStatus.Collect:
             control =

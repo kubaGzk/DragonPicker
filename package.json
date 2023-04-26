@@ -1,6 +1,6 @@
 {
     "homepage": "https://kubaGzk.github.io/DragonPicker",
-    "name": "my-app",
+    "name": "dragon-picker",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
