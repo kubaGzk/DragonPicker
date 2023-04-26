@@ -1,0 +1,36 @@
+{
+  "files": {
+    "main.css": "/DragonPicker/static/css/main.89909b8f.css",
+    "main.js": "/DragonPicker/static/js/main.6dfa525f.js",
+    "static/js/845.06b2f083.chunk.js": "/DragonPicker/static/js/845.06b2f083.chunk.js",
+    "static/js/787.28cb0dcd.chunk.js": "/DragonPicker/static/js/787.28cb0dcd.chunk.js",
+    "static/media/Battleground0.png": "/DragonPicker/static/media/Battleground0.d1dd7db0adf2c9aa8503.png",
+    "static/media/Battleground2.png": "/DragonPicker/static/media/Battleground2.1cd881142112048970db.png",
+    "static/media/Battleground1.png": "/DragonPicker/static/media/Battleground1.e6dd6009e8537b02a401.png",
+    "static/media/Battleground3.png": "/DragonPicker/static/media/Battleground3.377eb6dfb8cc701486fe.png",
+    "static/media/Win.mp3": "/DragonPicker/static/media/Win.26caf21da490529c5fae.mp3",
+    "static/media/Lose.mp3": "/DragonPicker/static/media/Lose.2fdff10a888b10b0befe.mp3",
+    "static/media/Level2.png": "/DragonPicker/static/media/Level2.518f1ca5ae8380241409.png",
+    "static/media/CollectAll.png": "/DragonPicker/static/media/CollectAll.dfa87320395cc6b9fbad.png",
+    "static/media/EndGame.png": "/DragonPicker/static/media/EndGame.2b582dfcdf874c27ebfc.png",
+    "static/media/Dragon.mp3": "/DragonPicker/static/media/Dragon.4487b24e3d9ffa02463e.mp3",
+    "static/media/Hit.mp3": "/DragonPicker/static/media/Hit.9cd6d804a69168f24cb4.mp3",
+    "static/media/Level3.png": "/DragonPicker/static/media/Level3.0d736b88966373078b79.png",
+    "static/media/Level1.png": "/DragonPicker/static/media/Level1.42518fb9febd0ee1a111.png",
+    "static/media/Click.wav": "/DragonPicker/static/media/Click.da177e5f88d2332c89bc.wav",
+    "static/media/alagard.ttf": "/DragonPicker/static/media/alagard.685ec71b2fb55a5702b0.ttf",
+    "static/media/Play.png": "/DragonPicker/static/media/Play.ed1ba67e4056a54e6f3a.png",
+    "static/media/Miss.mp3": "/DragonPicker/static/media/Miss.ccf084fe51e7be6ae074.mp3",
+    "static/media/GameLogo.png": "/DragonPicker/static/media/GameLogo.f84bff74db00fd345419.png",
+    "static/media/Collect.mp3": "/DragonPicker/static/media/Collect.dc311e1529a8c0880928.mp3",
+    "index.html": "/DragonPicker/index.html",
+    "main.89909b8f.css.map": "/DragonPicker/static/css/main.89909b8f.css.map",
+    "main.6dfa525f.js.map": "/DragonPicker/static/js/main.6dfa525f.js.map",
+    "845.06b2f083.chunk.js.map": "/DragonPicker/static/js/845.06b2f083.chunk.js.map",
+    "787.28cb0dcd.chunk.js.map": "/DragonPicker/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.89909b8f.css",
+    "static/js/main.6dfa525f.js"
+  ]
+}
