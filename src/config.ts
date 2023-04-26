@@ -1,0 +1,2 @@
+export const BACKGROUND_WIDTH = 1920;
+export const BACKGROUND_HEIGHT = 1080;

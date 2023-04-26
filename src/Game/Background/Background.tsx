@@ -1,6 +1,6 @@
+import { FC } from "react";
 import { Sprite } from "@pixi/react";
 import { Assets } from "pixi.js";
-import { FC } from "react";
 
 interface BackgroundProps {
     width: number;

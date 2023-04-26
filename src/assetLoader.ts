@@ -33,7 +33,7 @@ import coinsBar from "./assets/UI/Menu/CoinsBar.png";
 import gameLogo from "./assets/UI/Menu/GameLogo.png";
 import menu from "./assets/UI/Menu/Menu.png";
 import userBar from "./assets/UI/Menu/UserBar.png";
-import clickSound from "./assets/Sounds/Click.wav";
+
 
 export const assetLoader = (onResolve: () => void, onError: () => void) => {
     Assets.addBundle("dragon", {
@@ -80,10 +80,6 @@ export const assetLoader = (onResolve: () => void, onError: () => void) => {
         userBar,
     });
 
-    Assets.addBundle("sounds", {
-        clickSound,
-    });
-
     const load = async () => {
         try {
             await Assets.loadBundle("dragon");
@@ -91,7 +87,6 @@ export const assetLoader = (onResolve: () => void, onError: () => void) => {
             await Assets.loadBundle("levels");
             await Assets.loadBundle("backgrounds");
             await Assets.loadBundle("menu");
-            await Assets.loadBundle("sounds");
 
             onResolve();
         } catch (err) {

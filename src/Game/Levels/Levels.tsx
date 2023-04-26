@@ -2,6 +2,7 @@ import { FC } from "react";
 import Level from "./Level/Level";
 import { useAppDispatch } from "../../hooks/hooks";
 import { selectLevel } from "../../store/gameStatus";
+import { useSounds } from "../../hooks/sounds";
 
 interface LevelsProps {
     width: number;
@@ -45,8 +46,11 @@ const Levels: FC<LevelsProps> = (props) => {
 
     const dispatch = useAppDispatch();
 
+    const { playClick } = useSounds();
+
     const levelSelectHandler = (level: number) => {
         dispatch(selectLevel({ level, scale }));
+        playClick();
     };
 
     return (

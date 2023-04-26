@@ -6,6 +6,7 @@ import DragonFlame from "./DragonFlame/DragonFlame";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import Flames from "./Flames/Flames";
 import { endGame, setCollectable } from "../../../store/gameStatus";
+import { useSounds } from "../../../hooks/sounds";
 
 interface DragonProps {
     width: number;
@@ -14,7 +15,6 @@ interface DragonProps {
 
 const Dragon: FC<DragonProps> = (props) => {
     const { width } = props;
-
 
     const { winners, gridElHeight } = useAppSelector(
         (state) => state.gameStatus,
@@ -30,13 +30,7 @@ const Dragon: FC<DragonProps> = (props) => {
 
     const [commonY, setCommonY] = useState<number>(0);
 
-    useEffect(() => {
-        setWalkX(width * 1.05);
-        setFlameX(width * 0.8);
-        setCommonY(winners[0].y);
-
-        dragonEntrance();
-    }, []);
+    const { playDragon } = useSounds();
 
     useTick((delta) => {
         //DragonEntrance
@@ -45,6 +39,7 @@ const Dragon: FC<DragonProps> = (props) => {
         } else if (walk && walkX <= width * 0.8) {
             setWalk(false);
 
+            playDragon();
             setTimeout(() => {
                 setThrowFlame(true);
             }, 300);
@@ -72,6 +67,14 @@ const Dragon: FC<DragonProps> = (props) => {
     const dragonExit = () => {
         setExit(true);
     };
+
+    useEffect(() => {
+        setWalkX(width * 1.05);
+        setFlameX(width * 0.8);
+        setCommonY(winners[0].y);
+
+        dragonEntrance();
+    }, []);
 
     const collectableHandler = (id: string, ind: number) => {
         dispatch(setCollectable({ id }));

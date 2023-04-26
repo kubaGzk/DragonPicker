@@ -12,7 +12,7 @@ import { mousePointerOff, mousePointerOn } from "../store/menu";
 
 import Background from "./Background/Background";
 import GameLogo from "./UserMenu/GameLogo/GameLogo";
-import { scaleCalculator } from "../utils";
+import { scaleCalculator } from "./game-utils";
 
 interface GameStageProps {}
 
@@ -25,6 +25,7 @@ const GameStage: FC<GameStageProps> = () => {
         confirmMenuOn,
         leaderboardLoading,
         leaderboardOn,
+        leaderboardError,
     } = useAppSelector((state) => ({
         ...state.auth,
         ...state.gameStatus,
@@ -48,12 +49,13 @@ const GameStage: FC<GameStageProps> = () => {
         dispatch(mousePointerOff());
     };
 
-    const logoOn =
+    const logoOn: boolean =
         !saveMenuOn &&
         !confirmMenuOn &&
         !leaderboardLoading &&
         !leaderboardOn &&
-        !menuOn;
+        !menuOn &&
+        !leaderboardError;
 
     let mainElement: ReactNode | null = null;
 

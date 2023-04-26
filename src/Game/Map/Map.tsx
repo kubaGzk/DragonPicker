@@ -1,5 +1,4 @@
 import { FC, useEffect } from "react";
-
 import Grid from "./Grid/Grid";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import {
@@ -9,6 +8,7 @@ import {
 } from "../../store/gameStatus";
 import GameControl from "./GameControl/GameControl";
 import { CurrentStatus } from "../../types";
+
 interface MapProps {
     width: number;
     height: number;
@@ -41,11 +41,7 @@ const Map: FC<MapProps> = (props) => {
     };
 
     useEffect(() => {
-        if (
-            levelSelected &&
-            (currentStatus === CurrentStatus.Start ||
-                currentStatus === CurrentStatus.Collect)
-        )
+        if (levelSelected && currentStatus !== CurrentStatus.Play)
             dispatch(recalculateGrid({ scale }));
     }, [scale, dispatch, levelSelected, currentStatus]);
 

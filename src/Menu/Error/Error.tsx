@@ -1,18 +1,32 @@
 import { FC } from "react";
 import Button from "../Button/Button";
-import classes from "./Leaderboard.module.css";
 
 interface ErrorProps {
     confirmError: () => void;
+    assetsError: boolean;
 }
 
 const Error: FC<ErrorProps> = (props) => {
-    const { confirmError } = props;
+    const { confirmError, assetsError } = props;
+
+    const confirmErrorHandler = () => {
+        if (assetsError) {
+            window.location.reload();
+        } else {
+            confirmError();
+        }
+    };
+
+    const errorMessage = assetsError ? (
+        <h2>Game Assets cannot be loaded, please try again later.</h2>
+    ) : (
+        <h2>Unexpected network error, please try again later.</h2>
+    );
 
     return (
         <>
-            <h2>Unexpected network error, please try again later.</h2>
-            <Button onClick={confirmError}>OK</Button>
+            {errorMessage}
+            <Button onClick={confirmErrorHandler}>OK</Button>
         </>
     );
 };

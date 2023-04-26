@@ -1,9 +1,10 @@
-import { Container, Sprite, Text } from "@pixi/react";
 import { FC, useMemo, useState } from "react";
-import { calculateDimension } from "../../../utils";
-import { levelTextStyle, multiplierTextStyle } from "../../../styles";
-import { OutlineFilter } from "@pixi/filter-outline";
 import { Assets, Texture } from "pixi.js";
+import { Container, Sprite, Text } from "@pixi/react";
+import { OutlineFilter } from "@pixi/filter-outline";
+import { calculateDimension } from "./level-utils";
+import { levelTextStyle, multiplierTextStyle } from "../../../styles";
+import { useSounds } from "../../../hooks/sounds";
 
 interface LevelProps {
     name: string;
@@ -34,7 +35,12 @@ const Level: FC<LevelProps> = (props) => {
         turnPointerOffHandler,
     } = props;
 
-    const { x, y } = calculateDimension(width, height, index, numberOfLevels);
+    const levelImg: Texture = Assets.get(`level${id}`);
+
+    const { x, y } = useMemo(
+        () => calculateDimension(width, height, index, numberOfLevels),
+        [width, height, index, numberOfLevels],
+    );
 
     const [filters, setFilters] = useState<OutlineFilter[]>([]);
 
@@ -43,7 +49,7 @@ const Level: FC<LevelProps> = (props) => {
         [],
     );
 
-    const levelImg: Texture = Assets.get(`level${id}`);
+    const { playClick } = useSounds();
 
     const mouseEnter = () => {
         turnPointerOnHandler();
@@ -57,6 +63,7 @@ const Level: FC<LevelProps> = (props) => {
     const mouseClick = () => {
         onClick();
         turnPointerOffHandler();
+        playClick();
     };
 
     return (

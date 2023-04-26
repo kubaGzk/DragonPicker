@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import classes from "./Button.module.css";
-import { useSounds } from "../../hooks/hooks";
+import { useSounds } from "../../hooks/sounds";
 
 interface ButtonProps {
     onClick: () => void;
@@ -14,7 +14,7 @@ const Button: FC<ButtonProps> = (props) => {
     const { playClick } = useSounds();
 
     const clickHandler = () => {
-        // playClick();
+        playClick();
         onClick();
     };
 
