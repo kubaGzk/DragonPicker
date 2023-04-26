@@ -5,6 +5,7 @@ import { CurrentStatus } from "../../../types";
 import { gridElementStyle } from "../../../styles";
 import { Graphics as PixiGraphics } from "pixi.js";
 import { PixelateFilter } from "@pixi/filter-pixelate";
+import { useSounds } from "../../../hooks/sounds";
 
 interface GridElementProps {
     minStake: number;
@@ -55,6 +56,8 @@ const GridElement: FC<GridElementProps> = (props) => {
         return new PixelateFilter(pixelScale);
     }, [scale]);
 
+    const { playCollect } = useSounds();
+
     const draw = useCallback(
         (g: PixiGraphics) => {
             g.clear();
@@ -87,6 +90,7 @@ const GridElement: FC<GridElementProps> = (props) => {
         if (collectable && currentStatus === CurrentStatus.Collect) {
             turnPointerOffHandler();
             onCollect();
+            playCollect();
         }
     };
 
