@@ -22,6 +22,7 @@ export interface GameStatusState {
     winners: Winner[];
     totalWin: number;
     itemsToCollect: boolean;
+    gameOver: boolean;
 }
 
 const initialState: GameStatusState = {
@@ -38,6 +39,7 @@ const initialState: GameStatusState = {
     winners: [],
     totalWin: 0,
     itemsToCollect: false,
+    gameOver: false,
 };
 
 const gameStatusSlice = createSlice({
@@ -258,6 +260,12 @@ const gameStatusSlice = createSlice({
             const validCoins = state.coins + collectedWin;
             localStorage.setItem("GAME_Coins", validCoins.toString());
 
+            let gameOver: boolean = false;
+
+            if (state.coins + collectedWin <= 0) {
+                gameOver = true;
+            }
+
             return {
                 ...state,
                 gridElements: newGridElements,
@@ -266,6 +274,7 @@ const gameStatusSlice = createSlice({
                 currentStatus: CurrentStatus.Start,
                 winners: [],
                 totalWin: 0,
+                gameOver,
             };
         },
         quitLevel: (state) => {
