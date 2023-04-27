@@ -6,13 +6,14 @@ import {
     getAllWinElements,
     calculateGrid,
 } from "./utils";
-import { CurrentStatus, GridElement, Winner } from "../types";
+import { CurrentStatus, GridElement, GridHeaders, Winner } from "../types";
 
 export interface GameStatusState {
     coins: number;
     levelSelected: number;
     currentStatus: CurrentStatus;
     gridElements: GridElement[];
+    gridHeaders: GridHeaders[];
     gridElWidth: number;
     gridElHeight: number;
     minStake: number;
@@ -28,6 +29,7 @@ const initialState: GameStatusState = {
     levelSelected: 0,
     currentStatus: CurrentStatus.Start,
     gridElements: [],
+    gridHeaders: [],
     gridElWidth: 0,
     gridElHeight: 0,
     minStake: 0,
@@ -61,10 +63,8 @@ const gameStatusSlice = createSlice({
         ) => {
             const { level, scale } = action.payload;
 
-            const { gridElWidth, gridElHeight, gridElements } = calculateGrid(
-                level,
-                scale,
-            );
+            const { gridElWidth, gridElHeight, gridElements, gridHeaders } =
+                calculateGrid(level, scale);
 
             return {
                 ...state,
@@ -72,6 +72,7 @@ const gameStatusSlice = createSlice({
                 gridElWidth,
                 gridElHeight,
                 gridElements,
+                gridHeaders,
             };
         },
         recalculateGrid: (
@@ -83,7 +84,7 @@ const gameStatusSlice = createSlice({
             const { scale } = action.payload;
 
             if (state.levelSelected !== 0) {
-                const { gridElWidth, gridElHeight, gridElements } =
+                const { gridElWidth, gridElHeight, gridElements, gridHeaders } =
                     calculateGrid(state.levelSelected, scale);
 
                 const updatedElements = gridElements.map((el) => {
@@ -104,6 +105,7 @@ const gameStatusSlice = createSlice({
                     gridElWidth,
                     gridElHeight,
                     gridElements: updatedElements,
+                    gridHeaders,
                 };
             }
 
