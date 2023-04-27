@@ -6,6 +6,7 @@ import {
     decreaseBid,
     increaseBid,
 } from "../../../store/gameStatus";
+import GridHeader from "../GridHeader/GridHeader";
 
 interface GridProps {
     scale: number;
@@ -26,6 +27,7 @@ const Grid: FC<GridProps> = (props) => {
         maxStake,
         coins,
         levelSelected,
+        gridHeaders,
     } = useAppSelector((state) => state.gameStatus);
 
     const dispatch = useAppDispatch();
@@ -67,6 +69,17 @@ const Grid: FC<GridProps> = (props) => {
                         scale={scale}
                         turnPointerOnHandler={turnPointerOnHandler}
                         turnPointerOffHandler={turnPointerOffHandler}
+                    />
+                );
+            })}
+
+            {gridHeaders.map((el) => {
+                return (
+                    <GridHeader
+                        x={el.x}
+                        y={el.y}
+                        value={el.value}
+                        scale={scale}
                     />
                 );
             })}

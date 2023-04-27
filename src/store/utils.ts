@@ -1,5 +1,5 @@
 import { BACKGROUND_HEIGHT, BACKGROUND_WIDTH } from "../config";
-import { GridElement, Winner } from "../types";
+import { GridElement, GridHeaders, Winner } from "../types";
 
 export const calculateGrid = (
     level: number,
@@ -8,8 +8,10 @@ export const calculateGrid = (
     gridElWidth: number;
     gridElHeight: number;
     gridElements: GridElement[];
+    gridHeaders: GridHeaders[];
 } => {
     const gridElements: GridElement[] = [];
+    const gridHeaders: GridHeaders[] = [];
 
     const lvlGrid: number = level + 2;
 
@@ -23,6 +25,12 @@ export const calculateGrid = (
     const spaceHeight = gridElHeight / (lvlGrid + 1);
 
     for (let i = 0; i < lvlGrid; i++) {
+        gridHeaders.push({
+            x: i * (gridElWidth + spaceWidth) + spaceWidth,
+            y: 0.2 * BACKGROUND_HEIGHT * scale,
+            value: `x${(lvlGrid - i) * 2}`,
+        });
+
         for (let j = 0; j < lvlGrid; j++) {
             gridElements.push({
                 x: i * (gridElWidth + spaceWidth) + spaceWidth,
@@ -37,7 +45,7 @@ export const calculateGrid = (
         }
     }
 
-    return { gridElHeight, gridElWidth, gridElements };
+    return { gridElHeight, gridElWidth, gridElements, gridHeaders };
 };
 
 export const selectWinners = (

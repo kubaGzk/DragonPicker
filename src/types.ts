@@ -7,6 +7,12 @@ export interface GridElement {
     collectable: boolean;
 }
 
+export interface GridHeaders {
+    x: number;
+    y: number;
+    value: string;
+}
+
 export interface Winner {
     x: number;
     y: number;
