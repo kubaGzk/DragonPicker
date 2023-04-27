@@ -22,6 +22,7 @@ import Leaderboard from "./Leaderboard/Leaderboard";
 import Error from "./Error/Error";
 import ConfirmSave from "./ConfirmSave/ConfirmSave";
 import { useSounds } from "../hooks/sounds";
+import GameOver from "./GameOver/GameOver";
 
 interface FormProps {}
 
@@ -44,6 +45,7 @@ const Menu: FunctionComponent<FormProps> = () => {
         confirmMenuOn,
         assetsLoaded,
         assetsError,
+        gameOver,
     } = useAppSelector((state) => ({
         ...state.auth,
         ...state.menu,
@@ -114,7 +116,7 @@ const Menu: FunctionComponent<FormProps> = () => {
         dispatch(fetchLeaderboard());
     };
 
-    const endGameLeaderboardHandler = () => {
+    const endGameHandler = () => {
         playClick();
         dispatch(finishGameAuth());
         dispatch(finishGameGameStatus());
@@ -172,7 +174,7 @@ const Menu: FunctionComponent<FormProps> = () => {
                 leaderboardItems={leaderboard}
                 endingGame={endingGame}
                 continueGame={continueGameLeaderboardHandler}
-                endGame={endGameLeaderboardHandler}
+                endGame={endGameHandler}
             />
         );
     } else if (leaderboardError || assetsError) {
@@ -184,6 +186,8 @@ const Menu: FunctionComponent<FormProps> = () => {
         );
     } else if (confirmMenuOn) {
         menu = <ConfirmSave showLeaderboard={openLeaderboardHandler} />;
+    } else if (gameOver) {
+        menu = <GameOver startAgain={endGameHandler} />;
     }
 
     return menu && <Modal>{menu}</Modal>;
