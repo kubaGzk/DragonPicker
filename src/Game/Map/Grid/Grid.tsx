@@ -80,6 +80,7 @@ const Grid: FC<GridProps> = (props) => {
                         y={el.y}
                         value={el.value}
                         scale={scale}
+                        key={el.value}
                     />
                 );
             })}
